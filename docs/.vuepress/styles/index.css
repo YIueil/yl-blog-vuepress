@@ -1,0 +1,27 @@
+.blue-archive::before {
+    content: "";
+    position: fixed;
+    top: 50%;
+    left: 0;
+    width: 300px;
+    height: 600px;
+    z-index: -9999;
+    transform: translateY(-10%);
+    background-image: url("/ba/left.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.blue-archive::after {
+    content: "";
+    position: fixed;
+    top: 50%;
+    right: 0;
+    width: 300px;
+    height: 600px;
+    z-index: -9999;
+    transform: translateY(-10%);
+    background-image: url("/ba/right.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+}
