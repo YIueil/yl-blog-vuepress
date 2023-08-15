@@ -5,7 +5,7 @@ modules: # 指定首页展示模块
 - Blog
 - Banner
 banner: # banner 模块的配置
-  bgImage: /footer.webp
+  bgImage: /footer/footer.webp
   bgImageStyle:
     width: 1000px
     height: 220px
@@ -13,7 +13,7 @@ banner: # banner 模块的配置
 bannerBrand: # bannerBrand 模块的配置
   title: YIueilの Blog
   description: 樱花落时雨, 雨落镜成花
-  tagline: 兹属职九品之芝麻程式官，好游戏。重软体之规范，行开源之道。以编码之力供公家之需，造福于国家、山河和社稷之民众。
+  tagline: 兹属职九品之芝麻程式官，好游戏。重软体规范，行开源之道。以编码之力供公家之需，建设山河社稷。
   bgImage: /bg.svg
   buttons:
     - { text: 个人简历, link: '/docs/guide/introduce' }
