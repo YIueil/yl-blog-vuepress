@@ -5,6 +5,7 @@ export const navbar = [
     { text: 'GitHub', link: 'https://github.com/YIueil/yl-blog-vuepress', icon: 'LogoGithub' }
 ]
 export default defineUserConfig({
+    base: '/yl-blog-vuepress/',
     title: 'YIueil Blog',
     head: [['link', { rel: 'icon', href: '/favicon.ico' }]],
     theme: recoTheme({
