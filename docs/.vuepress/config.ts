@@ -7,7 +7,7 @@ export const navbar = [
 export default defineUserConfig({
     base: '/yl-blog-vuepress/',
     title: 'YIueil Blog',
-    head: [['link', { rel: 'icon', href: '/favicon/favicon.ico' }]],
+    head: [['link', { rel: 'icon', href: '/yl-blog-vuepress/favicon/favicon.ico' }]],
     theme: recoTheme({
         author: '弋孓',
         authorAvatar: '/header/author.png',
