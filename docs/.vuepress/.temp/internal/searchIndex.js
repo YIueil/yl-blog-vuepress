@@ -239,35 +239,6 @@ export const searchIndex = [
     "extraFields": []
   },
   {
-    "title": "Git代理设置",
-    "headers": [
-      {
-        "level": 2,
-        "title": "清除现有的代理设置",
-        "slug": "清除现有的代理设置",
-        "link": "#清除现有的代理设置",
-        "children": []
-      },
-      {
-        "level": 2,
-        "title": "全局添加代理设置",
-        "slug": "全局添加代理设置",
-        "link": "#全局添加代理设置",
-        "children": []
-      },
-      {
-        "level": 2,
-        "title": "为指定的域名配置代理",
-        "slug": "为指定的域名配置代理",
-        "link": "#为指定的域名配置代理",
-        "children": []
-      }
-    ],
-    "path": "/blogs/Git/Gitdailishezhi.html",
-    "pathLocale": "/",
-    "extraFields": []
-  },
-  {
     "title": "Optional学习笔记",
     "headers": [
       {
@@ -329,6 +300,35 @@ export const searchIndex = [
       }
     ],
     "path": "/blogs/JavaScript/jieliuhefangdou.html",
+    "pathLocale": "/",
+    "extraFields": []
+  },
+  {
+    "title": "Git代理设置",
+    "headers": [
+      {
+        "level": 2,
+        "title": "清除现有的代理设置",
+        "slug": "清除现有的代理设置",
+        "link": "#清除现有的代理设置",
+        "children": []
+      },
+      {
+        "level": 2,
+        "title": "全局添加代理设置",
+        "slug": "全局添加代理设置",
+        "link": "#全局添加代理设置",
+        "children": []
+      },
+      {
+        "level": 2,
+        "title": "为指定的域名配置代理",
+        "slug": "为指定的域名配置代理",
+        "link": "#为指定的域名配置代理",
+        "children": []
+      }
+    ],
+    "path": "/blogs/Git/Gitdailishezhi.html",
     "pathLocale": "/",
     "extraFields": []
   },
