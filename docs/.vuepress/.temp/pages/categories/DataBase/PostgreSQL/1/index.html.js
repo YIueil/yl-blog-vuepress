@@ -1,0 +1,1 @@
+export const data = JSON.parse("{\"key\":\"v-0e94d6df\",\"path\":\"/categories/DataBase/PostgreSQL/1/\",\"title\":\"\",\"lang\":\"en-US\",\"frontmatter\":{\"layout\":\"Categories\"},\"headers\":[],\"git\":{},\"filePathRelative\":null}")
