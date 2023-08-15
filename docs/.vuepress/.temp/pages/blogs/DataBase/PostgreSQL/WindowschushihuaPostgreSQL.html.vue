@@ -1,9 +1,0 @@
-<template><div><h2 id="初始化数据库" tabindex="-1"><a class="header-anchor" href="#初始化数据库" aria-hidden="true">#</a> 初始化数据库</h2>
-<div class="language-sql line-numbers-mode" data-ext="sql"><pre v-pre class="language-sql"><code>initdb<span class="token punctuation">.</span>exe <span class="token operator">-</span>D <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">/</span><span class="token keyword">data</span> <span class="token operator">-</span>E UTF8
-</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div></div></div><h2 id="启动服务" tabindex="-1"><a class="header-anchor" href="#启动服务" aria-hidden="true">#</a> 启动服务</h2>
-<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code>pg_ctl.exe <span class="token parameter variable">-D</span> <span class="token punctuation">..</span>/data <span class="token parameter variable">-l</span> <span class="token punctuation">..</span>/logs/logfile start
-</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div></div></div><h2 id="其他常用命令" tabindex="-1"><a class="header-anchor" href="#其他常用命令" aria-hidden="true">#</a> 其他常用命令</h2>
-<div class="language-bash line-numbers-mode" data-ext="sh"><pre v-pre class="language-bash"><code>
-</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div></div></div></div></template>
-
-
