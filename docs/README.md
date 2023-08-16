@@ -10,6 +10,7 @@ banner: # banner 模块的配置
     width: 1000px
     height: 220px
     margin: -30px auto
+    maxWidth: 100vw
 bannerBrand: # bannerBrand 模块的配置
   title: YIueilの Blog
   description: 樱花落时雨, 雨落镜成花
