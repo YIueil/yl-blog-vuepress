@@ -24,4 +24,3 @@ pg_ctl.exe -D ../data -l ../logs/logfile start
 ```sh
 
 ```
-
