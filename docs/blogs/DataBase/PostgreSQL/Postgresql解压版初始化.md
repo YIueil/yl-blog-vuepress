@@ -2,7 +2,7 @@
   date: 2023/8/15 2:26
   pageClass: blue-archive
   tags:
-    - 未分类
+    - PostgreSQL
   categories:
     - 未归档
 ---
