@@ -1,7 +1,13 @@
 # yl-blog-vuepress
-基于vuepress生成的静态个人博客网站
+
+基于 `vuepress`生成的静态个人博客网站
 
 ## 发布方式
-### 通过本地构建结果, 在github上创建新的blog-pages分支, 然后配置pages到blog-pages分支的root下
 
-### 通过github-actions ⭐推荐
+### 通过本地构建结果, 在 github 上创建新的 blog-pages 分支, 然后配置 pages 到 blog-pages 分支的 root 下
+
+### 通过 github-actions ⭐推荐
+
+## 常见问题
+
+### 在本地新增的 md 文件推送后没有更新到发布网站中?
