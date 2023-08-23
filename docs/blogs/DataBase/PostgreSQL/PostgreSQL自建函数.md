@@ -1,3 +1,11 @@
+---
+  date: 2023/8/23 21:14
+  pageClass: blue-archive
+  tags:
+    - 未分类
+  categories:
+    - 未归档
+---
 ## 给某个表插入随机数据
 
 ```sql
