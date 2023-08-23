@@ -6,7 +6,7 @@
   categories:
     - 未归档
 ---
-# Postgresql解压版初始化
+# Windows环境下Postgresql解压版初始化
 
 ##  初始化数据库
 
