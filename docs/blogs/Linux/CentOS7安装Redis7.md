@@ -84,7 +84,11 @@ PONG
 
 ![eBFXNLiRuQVrbhT.png](https://s2.loli.net/2024/03/08/eBFXNLiRuQVrbhT.png)
 
-## 7 redis的停止命令
+## 7 redis-cli的常用命令
 ```shell
+# 连接
+redis-cli -p 16379 -a password
+
+# 停止服务
 redis-cli -p 16379 shutdown
 ```
