@@ -7,7 +7,7 @@
     - 未归档
 ---
 
-# CentOS下安装MySQL8
+# CentOS7下安装MySQL8
 
 ## 1 下载mysql包
 
