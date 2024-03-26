@@ -7,6 +7,7 @@
     - 未归档
 ---
 
+# 通过adb驱动删除内置软件.md
 ```sh
 # 进入adb shell
 adb shell
