@@ -17,8 +17,8 @@ bannerBrand: # bannerBrand 模块的配置
   tagline: 兹属职九品之芝麻程式官，好游戏。重软体规范，行开源之道。以编码之力供公家之需，建设山河社稷。
   bgImage: /bg.svg
   buttons:
-    - { text: 个人简历, link: '/yl-blog-vuepress/docs/blogs/Other/gerenjianli.html' }
-    - { text: 联系方式, link: '/yl-blog-vuepress/docs/blogs/Other/gerenjianli.html', type: 'plain' }
+    - { text: 个人简历, link: '/yl-blog-vuepress/blogs/Other/gerenjianli.html' }
+    - { text: 联系方式, link: '/yl-blog-vuepress/blogs/Other/gerenjianli.html', type: 'plain' }
 blog: # blog 模块的配置
   socialLinks:
     - { icon: 'LogoGithub', link: 'https://github.com/YIueil' }
