@@ -6,11 +6,11 @@
     "emojiStyle": "native",
     "iconColor": null,
     "recentlyUsedIcons": [
+      "LiGithub",
+      "SiPostgresql",
+      "TiBrandMysql",
       "SiReadme",
-      "CoSettings",
-      "LiBook",
-      "LiPackage",
-      "LiHammer"
+      "CoSettings"
     ],
     "recentlyUsedIconsSize": 5,
     "rules": [],
@@ -54,7 +54,6 @@
   "docs/blogs/Template": "TiTemplate",
   "docs/blogs/Vue": "FabVuejs",
   "docs/blogs/Vue/Vue3/Pinia": "BoBxsPear",
-  "docs/blogs/Windows": "RiWindowsLine",
   "docs/blogs/YIueil": "LiUser",
   "docs/blogs/BPMN": "BoBxGitBranch",
   "docs/blogs/BPMN/Activiti": "LiActivity",
@@ -63,5 +62,8 @@
   "docs/blogs": "LiPackage",
   "docs": "LiBook",
   "docs/README.md": "CoSettings",
-  "README.md": "SiReadme"
+  "README.md": "SiReadme",
+  "docs/blogs/DataBase/MySQL": "TiBrandMysql",
+  "docs/blogs/DataBase/PostgreSQL": "SiPostgresql",
+  "docs/blogs/Git/Github": "LiGithub"
 }

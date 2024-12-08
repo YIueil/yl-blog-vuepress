@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "docs/README.md",
+                "file": "README.md",
                 "mode": "source",
                 "source": false
               },
@@ -77,7 +77,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 380.49999618530273
   },
   "right": {
     "id": "9161af131d6eb6d9",
@@ -172,11 +172,23 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "364f0fd5dd62cf11",
+  "active": "dd1b98bb1b8440ef",
   "lastOpenFiles": [
+    "docs/blogs/YIueil/个人简历.md",
+    "docs/blogs/Linux/CentOS7安装Nginx.md",
+    "docs/blogs/Linux/CentOS7安装Redis7.md",
+    "docs/blogs/Git/Git代理设置.md",
+    "docs/blogs/DataBase/MySQL/CentOS下安装MySQL8.md",
+    "docs/blogs/Linux/CentOS7安装MySQL8.md",
+    "docs/blogs/DataBase/PostgreSQL/安装教程/CentOS7安装PostgreSQL.md",
+    "docs/blogs/DataBase/MySQL",
+    "docs/blogs/DataBase/PostgreSQL/安装教程/Windows环境下Postgresql解压版初始化.md",
+    "docs/blogs/Linux/CentOS7安装PostgreSQL(含离线安装.md",
+    "docs/blogs/DataBase/PostgreSQL/安装教程",
+    "docs/blogs/Windows/Windows安装解压版PostgreSQL.md",
     "README.md",
-    "docs/blogs/IDE/IntelliJ/Intellij系列产品绿化.md",
     "docs/README.md",
+    "docs/blogs/IDE/IntelliJ/Intellij系列产品绿化.md",
     "docs/blogs/Other/个人简历.md",
     "docs/blogs/Other/自动给Markdown添加标题的CSS.md",
     "docs/blogs/Java/Maven/Nexus/通过命令行发布war或jar到nexus.md",
@@ -191,24 +203,12 @@
     "docs/blogs/Java/JDK",
     "docs/blogs/Java/Maven",
     "docs/blogs/BPMN/Activiti/Activiti中的25张表结构.md",
-    "docs/blogs/Java/SSO",
     "docs/blogs/前端基础/CSS/Flex布局.md",
-    "docs/blogs/BPMN",
     "docs/blogs/未分类/自用常用软件.md",
     "docs/blogs/未分类/ADB驱动删除内置软件.md",
     "docs/blogs/Unshift/自用常用软件.md",
     "docs/blogs/未分类/Git代理设置.md",
     "docs/blogs/未分类/Intellij系列产品绿化.md",
-    "docs/blogs/Vue/Vue3/Pinia/Pinia学习项目.md",
-    "docs/blogs/Windows/Windows安装解压版PostgreSQL.md",
-    "docs/blogs/YIueil/个人简历.md",
-    "docs/blogs/Git/通过SSH和GitHub交互.md",
-    "docs/blogs/Linux/CentOS下安装MySQL8.md",
-    "docs/blogs/Linux/CentOS7安装PostgreSQL(含离线安装.md",
-    "docs/blogs/Git/Github/通过SSH和GitHub交互.md",
-    "docs/blogs/DataBase/PostgreSQL/PostgreSQL编写实例.md",
-    "docs/blogs/DataBase/PostgreSQL/PostgreSQL相似度比较函数.md",
-    "docs/blogs/设计模式/行为型/桥接.md",
-    "docs/blogs/设计模式/结构型/责任链.md"
+    "docs/blogs/Vue/Vue3/Pinia/Pinia学习项目.md"
   ]
 }

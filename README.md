@@ -1,6 +1,6 @@
 # yl-blog-vuepress
 
-基于 `vuepress`生成的静态个人博客网站
+基于 `vuepress`生成的静态个人博客网站, 同时也是`Obsidian`的文档仓库。
 
 ## 发布方式
 
@@ -29,4 +29,5 @@ TypeError: Cannot read properties of undefined (reading 'replace')
 Error: Process completed with exit code 1.
 ```
  - 或许你提交了一个没有头部信息的MarkDown, 或者时间格式不对
-> 来自移动端
+
+> 天黑了，开始独自一人的享受。
