@@ -6,11 +6,11 @@
     "emojiStyle": "native",
     "iconColor": null,
     "recentlyUsedIcons": [
+      "LiBird",
+      "LiGitPullRequest",
       "LiGithub",
       "SiPostgresql",
-      "TiBrandMysql",
-      "SiReadme",
-      "CoSettings"
+      "TiBrandMysql"
     ],
     "recentlyUsedIconsSize": 5,
     "rules": [],
@@ -58,12 +58,14 @@
   "docs/blogs/BPMN": "BoBxGitBranch",
   "docs/blogs/BPMN/Activiti": "LiActivity",
   "docs/blogs/未分类": "RiDraftFill",
-  "docs/blogs/设计模式": "LiHammer",
   "docs/blogs": "LiPackage",
   "docs": "LiBook",
   "docs/README.md": "CoSettings",
   "README.md": "SiReadme",
   "docs/blogs/DataBase/MySQL": "TiBrandMysql",
   "docs/blogs/DataBase/PostgreSQL": "SiPostgresql",
-  "docs/blogs/Git/Github": "LiGithub"
+  "docs/blogs/Git/Github": "LiGithub",
+  "docs/blogs/BPMN/Flowable": "LiGitPullRequest",
+  "docs/blogs/设计模式": "LiHammer",
+  "docs/blogs/Java/Mybatis": "LiBird"
 }

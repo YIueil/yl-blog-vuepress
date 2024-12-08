@@ -1,13 +1,14 @@
 ---
-  date: 2023/8/15 21:42
-  pageClass: blue-archive
-  tags:
-    - 未分类
-  categories:
-    - 未归档
+date: 2023/8/15 21:42
+pageClass: blue-archive
+tags:
+  - Spring
+  - SpringMVC
+categories:
+  - Spring
 ---
 
-# springmvc创建自定义类型转换器
+# SpringMVC创建自定义类型转换器
 
 ## 1 创建自定义转换类
 

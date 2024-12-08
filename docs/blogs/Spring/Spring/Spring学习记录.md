@@ -351,14 +351,12 @@ public class UserService {
 定义触发事务回滚的异常, 默认是`RuntimeException`运行时异常及其子类进行事务回滚。
 
 ---
-## 4 Spring整合篇
 
----
-## 5 Spring注解版
+## 4 Spring注解版
 
 Spring4.x之后以及后面的SpringBoot推荐的开发方式都是使用注解进行开发，后续的Spring开发主流将会是注解，如果实在遇到需要修改注解的时候，可以使用xml配置的方式进行覆盖。
 
-### 5.1 常用注解
+### 4.1 常用注解
 
 **组件相关**
 - @ComponentScan: 设计基础扫描包，将该包及其子包进行注解扫描
@@ -384,4 +382,17 @@ Spring4.x之后以及后面的SpringBoot推荐的开发方式都是使用注解�
 - @Resource: 基于对象ID，注入依赖组件，如果名字没有指定，则按照类型注入依赖组件。来源于JSR标准规范注解
 - @Value: 使用${}语法，为非静态属性进行注入
 - @PropertySource: 指定properties配置文件的路径
-### 5.2 
+ 
+---
+## 5 Spring整合篇
+
+### 5.1 Spring整合日志框架
+
+### 5.2 Spring整合Mybatis
+
+### 5.3 Spring整合Hibernate
+
+### 5.4 Spring整合多数据源
+
+---
+

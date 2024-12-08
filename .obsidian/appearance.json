@@ -1,1 +1,6 @@
-{}
+{
+  "enabledCssSnippets": [
+    "custom"
+  ],
+  "showViewHeader": false
+}

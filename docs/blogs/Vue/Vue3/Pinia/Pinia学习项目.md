@@ -1,10 +1,11 @@
 ---
-  date: 2024-12-08 18:34:27
-  pageClass: blue-archive
-  tags:
-    - 未分类
-  categories:
-    - 未归档
+date: 2024-12-08 18:34:27
+pageClass: blue-archive
+tags:
+  - Vue
+  - Pinia
+categories:
+  - Vue
 ---
 
 # pinia-study  
