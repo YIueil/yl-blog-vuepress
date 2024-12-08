@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README.md",
+                "file": "docs/README.md",
                 "mode": "source",
                 "source": false
               },
@@ -172,14 +172,14 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "dd1b98bb1b8440ef",
+  "active": "364f0fd5dd62cf11",
   "lastOpenFiles": [
-    "docs/README.md",
     "README.md",
+    "docs/blogs/IDE/IntelliJ/Intellij系列产品绿化.md",
+    "docs/README.md",
     "docs/blogs/Other/个人简历.md",
     "docs/blogs/Other/自动给Markdown添加标题的CSS.md",
     "docs/blogs/Java/Maven/Nexus/通过命令行发布war或jar到nexus.md",
-    "docs/blogs/IDE/IntelliJ/Intellij系列产品绿化.md",
     "docs/blogs/Java/Util/OkHttp",
     "docs/blogs/Java/Util",
     "docs/blogs/Java/JDK/Optional学习笔记.md",

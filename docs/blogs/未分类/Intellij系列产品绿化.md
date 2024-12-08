@@ -1,4 +1,14 @@
+---
+  date: 2024-12-08 18:35:38
+  pageClass: blue-archive
+  tags:
+    - 未分类
+  categories:
+    - 未归档
+---
+
 # Intellij系列产品绿化
+
 > 基于[ja-netfilter](https://gitee.com/ja-netfilter/ja-netfilter)插件实现绿化.
 
 ## 1 修改idea.properties

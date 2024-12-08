@@ -3,31 +3,31 @@
 对于CrossUI来说，后端会返回一个json对象，将json对象解析，将绑定的字段渲染到表单中。对于project表，由于对象数组中只有一个对象，所以取值不会有问题。而对于fwgz表，有两个记录对象，则会用第一个数据渲染到表单上。在切换表单数据的时候，进行排序后重新setData()方法来实现表单的切换。
 ```json
 {
-    "project": [
-        {
-            "guid": "467854a0-91ec-25bd-d428-db3b275659dc",
-            "name": "测试勘查类项目",
-            "businessName": "临时用地审批",
-            "version": "1.3.6",
-            "spqx": "州级",
-            "xmlxname": "勘查类",
-            "zyyt": "矿产资源勘查"
-        }
-    ],
-    "bz_fwgz": [
-        {
-            "guid": "26c55a49-ffab-fe1a-4a02-6c1b1d133f53",
-            "projectGuid": "467854a0-91ec-25bd-d428-db3b275659dc",
-            "name": "发文稿纸1",
-            "content": "稿纸1内容"
-        },
-        {
-            "guid": "3692408b-f416-4ce1-a7aa-abfaaa91b124",
-            "projectGuid": "467854a0-91ec-25bd-d428-db3b275659dc",
-            "name": "发文稿纸2",
-            "content": "稿纸2内容"
-        }
-    ]
+    "project": [
+        {
+            "guid": "467854a0-91ec-25bd-d428-db3b275659dc",
+            "name": "测试勘查类项目",
+            "businessName": "临时用地审批",
+            "version": "1.3.6",
+            "spqx": "州级",
+            "xmlxname": "勘查类",
+            "zyyt": "矿产资源勘查"
+        }
+    ],
+    "bz_fwgz": [
+        {
+            "guid": "26c55a49-ffab-fe1a-4a02-6c1b1d133f53",
+            "projectGuid": "467854a0-91ec-25bd-d428-db3b275659dc",
+            "name": "发文稿纸1",
+            "content": "稿纸1内容"
+        },
+        {
+            "guid": "3692408b-f416-4ce1-a7aa-abfaaa91b124",
+            "projectGuid": "467854a0-91ec-25bd-d428-db3b275659dc",
+            "name": "发文稿纸2",
+            "content": "稿纸2内容"
+        }
+    ]
 }
 ```
 ## 1 构建段配置

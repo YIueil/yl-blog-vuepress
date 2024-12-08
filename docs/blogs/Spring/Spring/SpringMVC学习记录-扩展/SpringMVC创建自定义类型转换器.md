@@ -1,3 +1,12 @@
+---
+  date: 2024-12-08 18:33:49
+  pageClass: blue-archive
+  tags:
+    - 未分类
+  categories:
+    - 未归档
+---
+
 # springmvc创建自定义类型转换器
 
 ## 1 创建自定义转换类

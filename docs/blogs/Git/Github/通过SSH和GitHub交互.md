@@ -7,7 +7,6 @@
   categories:
     - git
 ---
-# H1
 
 # 通过SSH和GitHub交互
 

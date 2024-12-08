@@ -1,3 +1,14 @@
+---
+  date: 2024-12-08 18:31:06
+  pageClass: blue-archive
+  tags:
+    - 未分类
+  categories:
+    - 未归档
+---
+
+# PostgreSQL编写实例
+
 ## 1 递归查询
 ```sql
 WITH RECURSIVE SubDirectories AS (

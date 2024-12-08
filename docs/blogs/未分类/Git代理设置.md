@@ -1,3 +1,12 @@
+---
+  date: 2024-12-08 18:35:28
+  pageClass: blue-archive
+  tags:
+    - 未分类
+  categories:
+    - 未归档
+---
+
 # Git代理设置
 
 `在拉取诸如github上的代码资源时, 出现网络相关问题, 这里通过设置git代理解决。`

@@ -1,3 +1,12 @@
+---
+  date: 2024-12-08 18:35:59
+  pageClass: blue-archive
+  tags:
+    - 未分类
+  categories:
+    - 未归档
+---
+
 # CentOS7安装PostgreSQL(含离线安装)
 
 ## 1 安装包下载、解压缩

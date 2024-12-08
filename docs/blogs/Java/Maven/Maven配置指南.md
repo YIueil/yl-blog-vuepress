@@ -1,11 +1,12 @@
 ---
-date: 2023/8/24 2:02
-pageClass: blue-archive
-tags:
-  - Maven
-categories:
-  - 未归档
+  date: 2024-12-08 18:33:29
+  pageClass: blue-archive
+  tags:
+    - 未分类
+  categories:
+    - 未归档
 ---
+
 # Maven参考指南
 
 ## 1 Maven和IDEA的兼容性问题

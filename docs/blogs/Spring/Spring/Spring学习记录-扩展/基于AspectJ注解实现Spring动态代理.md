@@ -1,3 +1,12 @@
+---
+  date: 2024-12-08 18:35:59
+  pageClass: blue-archive
+  tags:
+    - 未分类
+  categories:
+    - 未归档
+---
+
 # 基于AspectJ注解实现Spring动态代理
 
 基于AspectJ注解在Spring中实现动态代理，能够减少配置的同时支持使用注解来组织切面。

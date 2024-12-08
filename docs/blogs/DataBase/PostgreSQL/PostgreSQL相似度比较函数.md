@@ -1,3 +1,12 @@
+---
+  date: 2024-12-08 18:30:55
+  pageClass: blue-archive
+  tags:
+    - 未分类
+  categories:
+    - 未归档
+---
+
 # PostgreSQL相似度比较函数
 
 ## 通过插件实现
