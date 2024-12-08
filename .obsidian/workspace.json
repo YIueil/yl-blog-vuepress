@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README.md",
+                "file": "docs/blogs/未分类/自用常用软件.md",
                 "mode": "source",
-                "source": false
+                "source": true
               },
               "icon": "lucide-file",
-              "title": "README"
+              "title": "自用常用软件"
             }
           }
         ]
@@ -174,6 +174,8 @@
   },
   "active": "dd1b98bb1b8440ef",
   "lastOpenFiles": [
+    "docs/blogs/未分类/ADB驱动删除内置软件.md",
+    "README.md",
     "docs/blogs/YIueil/个人简历.md",
     "docs/blogs/Linux/CentOS7安装Nginx.md",
     "docs/blogs/Linux/CentOS7安装Redis7.md",
@@ -186,7 +188,6 @@
     "docs/blogs/Linux/CentOS7安装PostgreSQL(含离线安装.md",
     "docs/blogs/DataBase/PostgreSQL/安装教程",
     "docs/blogs/Windows/Windows安装解压版PostgreSQL.md",
-    "README.md",
     "docs/README.md",
     "docs/blogs/IDE/IntelliJ/Intellij系列产品绿化.md",
     "docs/blogs/Other/个人简历.md",
@@ -205,7 +206,6 @@
     "docs/blogs/BPMN/Activiti/Activiti中的25张表结构.md",
     "docs/blogs/前端基础/CSS/Flex布局.md",
     "docs/blogs/未分类/自用常用软件.md",
-    "docs/blogs/未分类/ADB驱动删除内置软件.md",
     "docs/blogs/Unshift/自用常用软件.md",
     "docs/blogs/未分类/Git代理设置.md",
     "docs/blogs/未分类/Intellij系列产品绿化.md",
