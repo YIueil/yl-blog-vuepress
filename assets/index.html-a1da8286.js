@@ -1,0 +1,1 @@
+const e=JSON.parse('{"key":"v-79342ebc","path":"/categories/DataBase/PostgreSQL/anzhuangjiaocheng/1/","title":"","lang":"en-US","frontmatter":{"layout":"Categories"},"headers":[],"git":{},"filePathRelative":null}');export{e as data};
