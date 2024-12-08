@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "docs/blogs/未分类/自用常用软件.md",
+                "file": "docs/blogs/Git/Git代理设置.md",
                 "mode": "source",
-                "source": true
+                "source": false
               },
               "icon": "lucide-file",
-              "title": "自用常用软件"
+              "title": "Git代理设置"
             }
           }
         ]
@@ -174,12 +174,15 @@
   },
   "active": "dd1b98bb1b8440ef",
   "lastOpenFiles": [
+    "docs/blogs/Git/Git代理设置.md",
+    "docs/blogs/Git/Git代理设置.md",
+    "docs/blogs/未分类/Intellij系列产品绿化.md",
+    "docs/blogs/YIueil/个人简历.md",
+    "docs/blogs/未分类/自用常用软件.md",
     "docs/blogs/未分类/ADB驱动删除内置软件.md",
     "README.md",
-    "docs/blogs/YIueil/个人简历.md",
     "docs/blogs/Linux/CentOS7安装Nginx.md",
     "docs/blogs/Linux/CentOS7安装Redis7.md",
-    "docs/blogs/Git/Git代理设置.md",
     "docs/blogs/DataBase/MySQL/CentOS下安装MySQL8.md",
     "docs/blogs/Linux/CentOS7安装MySQL8.md",
     "docs/blogs/DataBase/PostgreSQL/安装教程/CentOS7安装PostgreSQL.md",
@@ -205,10 +208,7 @@
     "docs/blogs/Java/Maven",
     "docs/blogs/BPMN/Activiti/Activiti中的25张表结构.md",
     "docs/blogs/前端基础/CSS/Flex布局.md",
-    "docs/blogs/未分类/自用常用软件.md",
     "docs/blogs/Unshift/自用常用软件.md",
-    "docs/blogs/未分类/Git代理设置.md",
-    "docs/blogs/未分类/Intellij系列产品绿化.md",
     "docs/blogs/Vue/Vue3/Pinia/Pinia学习项目.md"
   ]
 }

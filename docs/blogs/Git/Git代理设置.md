@@ -1,12 +1,12 @@
 ---
-  date: 2023/8/15 21:44
+  date: 2024-12-08 18:35:28
   pageClass: blue-archive
   tags:
-    - git
-    - 代理
+    - 未分类
   categories:
-    - git
+    - 未归档
 ---
+
 # Git代理设置
 
 `在拉取诸如github上的代码资源时, 出现网络相关问题, 这里通过设置git代理解决。`
@@ -22,8 +22,8 @@ git config --global --unset http.proxy
 
 ```sh
 # http和https
-git config --global http.proxy http://127.0.0.1:10809
-git config --global https.proxy https://127.0.0.1:10809
+git config --global http.proxy http://127.0.0.1:10808
+git config --global https.proxy https://127.0.0.1:10808
 
 # socks5
 git config --global http.proxy socks5://127.0.0.1:10808
