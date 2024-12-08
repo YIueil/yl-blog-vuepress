@@ -1,17 +1,6 @@
----
-  date: 2023/8/15 2:26
-  pageClass: blue-archive
-  tags:
-    - 未分类
-  categories:
-    - 未归档
----
+# Optional.of()和Optional.ofNullAable()
 
-# Optional学习笔记
-
-## Optional.of()和Optional.ofNullAable()
-
-#### 测试代码1
+## 测试代码1
 
 ```java
 /**
@@ -29,7 +18,7 @@ public void test1() {
 }
 ```
 
-#### 运行结果
+## 运行结果
 
 对象为空
 
@@ -45,7 +34,7 @@ User(username=立轩.张, address=Address(id=0, detail=汪旁98号, 安阳, 川 
 进程已结束，退出代码为 0
 ```
 
-#### 测试代码2
+## 测试代码2
 
 ```java
 /**
@@ -63,7 +52,7 @@ public void test2() {
 }
 ```
 
-#### 运行结果
+## 运行结果
 
 对象为空
 
@@ -77,16 +66,16 @@ Optional.empty
 Optional[User(username=浩.戴, address=Address(id=2, detail=廖巷30874号, 大同, 澳 597639))]
 ```
 
-#### 小结
+## 小结
 
 - 当通过某种方式获取对象后，需要进行对象的校验时，可以使用Optional.of()或者Optional.ofNullAble()进行包装
 - 对象为空时不继续执行使用of()，否则使用ofNullAble()
 
 ---
 
-## Optional.orElse()、Optional.orElseGet()、Optional.orElseThrow()
+# Optional.orElse()、Optional.orElseGet()、Optional.orElseThrow()
 
-#### 测试代码
+## 测试代码
 
 ```java
 /**
@@ -116,7 +105,7 @@ User defaultUser() {
 }
 ```
 
-#### 运行结果
+## 运行结果
 
 对象为空
 
@@ -138,16 +127,16 @@ User(username=晓啸.杨, address=Address(id=0, detail=罗侬60632号, 临安, �
 User(username=晓啸.杨, address=Address(id=0, detail=罗侬60632号, 临安, 宁 211368))
 ```
 
-#### 小结
+## 小结
 
 - orElse()的三个方法的入参传入方式不同
 - 对于orElse()来说，传入的方法将始终被执行
 
 ---
 
-## Optional.map()、Optianal.flatMap()
+# Optional.map()、Optianal.flatMap()
 
-#### 测试代码
+## 测试代码
 
 ```java
     /**
@@ -178,7 +167,7 @@ User(username=晓啸.杨, address=Address(id=0, detail=罗侬60632号, 临安, �
     }
 ```
 
-#### 运行结果
+## 运行结果
 
 对象为空
 
@@ -194,15 +183,15 @@ Optional[Suite 715 蒋路40059号, 大连, 川 290252]
 Optional[Suite 715 蒋路40059号, 大连, 川 290252]
 ```
 
-#### 小结
+## 小结
 
 - 对于未知对象的内部属性进行操作时，使用map()和flatMap()方法进行操作
 
 ---
 
-## Optional.ifPresent()
+# Optional.ifPresent()
 
-#### 测试代码
+## 测试代码
 
 ```java
 /**
@@ -221,7 +210,7 @@ public void test5() {
 }
 ```
 
-#### 运行结果
+## 运行结果
 
 对象为空
 
@@ -238,15 +227,15 @@ public void test5() {
 进程已结束，退出代码为 0
 ```
 
-#### 小结
+## 小结
 
 - ifPresent()执行后的返回值为void，即在Optional使用中应该放在最后
 
 ---
 
-## Optional.filter()
+# Optional.filter()
 
-#### 测试代码
+## 测试代码
 
 ```java
     /**
@@ -262,13 +251,13 @@ public void test5() {
     }
 ```
 
-#### 运行结果
+## 运行结果
 
 ```logiql
 Optional.empty
 Optional[User(username=李四, address=Address(id=2, detail=李四的详情住址))]
 ```
 
-#### 小结
+## 小结
 
 - 需要判断后进一步操作时使用Optional.filter()

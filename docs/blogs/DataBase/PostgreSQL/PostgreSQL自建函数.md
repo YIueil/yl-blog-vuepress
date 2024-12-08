@@ -1,14 +1,3 @@
----
-  date: 2023/8/23 22:18
-  pageClass: blue-archive
-  tags:
-    - PostgreSQL
-  categories:
-    - 未归档
----
-
-# PostgreSQL自建函数
-
 ## 给某个表插入随机数据
 
 ```sql

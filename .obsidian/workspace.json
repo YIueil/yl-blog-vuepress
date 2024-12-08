@@ -4,17 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "c84244c593135675",
+        "id": "b5b25dfe22196520",
         "type": "tabs",
         "children": [
           {
-            "id": "94993387f5734147",
+            "id": "dd1b98bb1b8440ef",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "README.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "新标签页"
+              "title": "README"
             }
           }
         ]
@@ -89,6 +93,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "docs/blogs/Java/JDK/Optional学习笔记.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -98,7 +103,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "反向链接"
+              "title": "Optional学习笔记 的反向链接列表"
             }
           },
           {
@@ -132,9 +137,11 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {},
+              "state": {
+                "file": "docs/blogs/Java/JDK/Optional学习笔记.md"
+              },
               "icon": "lucide-list",
-              "title": "大纲"
+              "title": "Optional学习笔记 的大纲"
             }
           },
           {
@@ -165,14 +172,43 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "94993387f5734147",
+  "active": "dd1b98bb1b8440ef",
   "lastOpenFiles": [
-    "docs/blogs/设计模式/创建型/抽象工厂.md",
-    "docs/blogs/设计模式/创建型/单例模式.md",
-    "docs/blogs/设计模式/创建型/工厂方法.md",
-    "docs/blogs/设计模式/创建型/原型模式.md",
     "docs/README.md",
     "README.md",
-    "docs/blogs/Unshift/自用常用软件.md"
+    "docs/blogs/Other/个人简历.md",
+    "docs/blogs/Other/自动给Markdown添加标题的CSS.md",
+    "docs/blogs/Java/Maven/Nexus/通过命令行发布war或jar到nexus.md",
+    "docs/blogs/IDE/IntelliJ/Intellij系列产品绿化.md",
+    "docs/blogs/Java/Util/OkHttp",
+    "docs/blogs/Java/Util",
+    "docs/blogs/Java/JDK/Optional学习笔记.md",
+    "docs/blogs/前端基础/JavaScript",
+    "docs/blogs/前端基础/HTML",
+    "docs/blogs/前端基础",
+    "docs/未命名",
+    "docs/blogs/Java/Maven/Maven配置指南.md",
+    "docs/blogs/Java/JDK",
+    "docs/blogs/Java/Maven",
+    "docs/blogs/BPMN/Activiti/Activiti中的25张表结构.md",
+    "docs/blogs/Java/SSO",
+    "docs/blogs/前端基础/CSS/Flex布局.md",
+    "docs/blogs/BPMN",
+    "docs/blogs/未分类/自用常用软件.md",
+    "docs/blogs/未分类/ADB驱动删除内置软件.md",
+    "docs/blogs/Unshift/自用常用软件.md",
+    "docs/blogs/未分类/Git代理设置.md",
+    "docs/blogs/未分类/Intellij系列产品绿化.md",
+    "docs/blogs/Vue/Vue3/Pinia/Pinia学习项目.md",
+    "docs/blogs/Windows/Windows安装解压版PostgreSQL.md",
+    "docs/blogs/YIueil/个人简历.md",
+    "docs/blogs/Git/通过SSH和GitHub交互.md",
+    "docs/blogs/Linux/CentOS下安装MySQL8.md",
+    "docs/blogs/Linux/CentOS7安装PostgreSQL(含离线安装.md",
+    "docs/blogs/Git/Github/通过SSH和GitHub交互.md",
+    "docs/blogs/DataBase/PostgreSQL/PostgreSQL编写实例.md",
+    "docs/blogs/DataBase/PostgreSQL/PostgreSQL相似度比较函数.md",
+    "docs/blogs/设计模式/行为型/桥接.md",
+    "docs/blogs/设计模式/结构型/责任链.md"
   ]
 }

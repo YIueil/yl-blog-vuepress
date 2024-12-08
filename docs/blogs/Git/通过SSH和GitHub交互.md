@@ -1,13 +1,13 @@
 ---
-  date: 2024-12-08 16:02:24
-  pageClass: blue-archive
-  tags:
-    - git
-    - github
-  categories:
-    - git
+date: 2024-12-08 16:02:24
+pageClass: blue-archive
+tags:
+  - git
+  - github
+categories:
+  - git
 ---
-# H1
+# 通过SSH和GitHub交互
 
 # 通过SSH和GitHub交互
 

@@ -6,7 +6,6 @@
   categories:
     - 未归档
 ---
-
 # OkHttp3学习笔记
 
 >  OkHttp3是一个网络框架工具包, OkHttp3 提供了简洁、高效、可靠的 API, 可以用来发送 HTTP/HTTPS 请求, 并支持 WebSockets 协议。它采用了连接池技术, 可以复用 TCP 连接从而减少网络延迟。同时还内置了 Gzip 压缩、数据缓存、Cookie 管理等功能，方便开发者进行网络请求操作。
@@ -198,4 +197,3 @@ OkHttpClient client = new OkHttpClient().newBuilder()
 ## 3 使用总结
 
 - 对于OkHttpClient, Request, HttpUrl, MultipartBody等都使用了建造者模式, 类中还有子类Builder来实现对于对象属性的构造。
-

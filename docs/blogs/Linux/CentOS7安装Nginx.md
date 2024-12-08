@@ -78,4 +78,3 @@ make & make install
 ```
 
 > 安装完成后, 进入sbin目录 ./nginx 执行启动即可
-
