@@ -28,8 +28,7 @@ spring属于轻量级框架:
   - new UserServiceImpl()  
   - class.forName("cn.yiueil.UserServiceImpl")  
   - 读取额外properties文件定义:UserService=cn.yiueil.UserServiceImpl替换全限命名  
-  
----  
+
   
 ## 2 Spring IOC 
 ### 2.1 创建一个Spring工厂
@@ -108,10 +107,6 @@ public class PokemonBeanPostProcessor implements BeanPostProcessor {
 ```java
 <bean id="pokemon" class="cn.yiueil.entity.Pokemon" destroy-method="myDestroy">
 ```
----  
-  
-
----
 ## 3 Spring AOP   
 
 ### 3.1 面向切面编程概念
@@ -350,8 +345,6 @@ public class UserService {
 ###### 异常属性  
 定义触发事务回滚的异常, 默认是`RuntimeException`运行时异常及其子类进行事务回滚。
 
----
-
 ## 4 Spring注解版
 
 Spring4.x之后以及后面的SpringBoot推荐的开发方式都是使用注解进行开发，后续的Spring开发主流将会是注解，如果实在遇到需要修改注解的时候，可以使用xml配置的方式进行覆盖。
@@ -383,7 +376,6 @@ Spring4.x之后以及后面的SpringBoot推荐的开发方式都是使用注解�
 - @Value: 使用${}语法，为非静态属性进行注入
 - @PropertySource: 指定properties配置文件的路径
  
----
 ## 5 Spring整合篇
 
 ### 5.1 Spring整合日志框架
@@ -394,5 +386,4 @@ Spring4.x之后以及后面的SpringBoot推荐的开发方式都是使用注解�
 
 ### 5.4 Spring整合多数据源
 
----
 

@@ -1,3 +1,11 @@
+---
+  date: 2024-12-09 01:11:17
+  pageClass: blue-archive
+  tags:
+    - 未分类
+  categories:
+    - 未归档
+---
 # Mybatis学习记录
 
 ## 1 快速入门
