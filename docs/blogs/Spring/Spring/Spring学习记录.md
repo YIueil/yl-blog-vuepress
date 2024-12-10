@@ -10,7 +10,7 @@ categories:
 # Spring学习记录
 
 > 代码地址: https://gitee.com/yiueil/spring-study
-## 1 前言  
+## 1 前言
 
 ### JAVA框架历史
 

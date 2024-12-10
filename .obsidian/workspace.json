@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "docs/blogs/Spring/Spring/Spring学习记录.md",
+                "file": "docs/blogs/Java/Mybatis/Mybatis学习记录.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Spring学习记录"
+              "title": "Mybatis学习记录"
             }
           }
         ]
@@ -77,7 +77,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 310.5
+    "width": 299.5
   },
   "right": {
     "id": "9161af131d6eb6d9",
@@ -172,10 +172,12 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "39ca4db57ccd6e77",
+  "active": "02981380a11886ed",
   "lastOpenFiles": [
-    "docs/blogs/Spring/SpringMVC/SpringMVC学习记录.md",
+    "docs/blogs/Java/Maven/Maven配置指南.md",
     "docs/blogs/Java/Mybatis/Mybatis学习记录.md",
+    "docs/blogs/Spring/Spring/Spring学习记录.md",
+    "docs/blogs/Spring/SpringMVC/SpringMVC学习记录.md",
     "logback 1.xml",
     "logback.xml",
     "docs/blogs/DataBase/MySQL/安装教程/Windows下安装MySQL5.7.md",
@@ -184,11 +186,9 @@
     "docs/blogs/DataBase/MySQL/安装教程",
     "docs/blogs/Spring/SpringMVC/SpringMVC-扩展/SpringMVC创建自定义类型转换器.md",
     "docs/blogs/Spring/SpringMVC/SpringMVC-扩展",
-    "docs/blogs/Spring/Spring/Spring学习记录.md",
     "docs/blogs/Spring/Spring/Spring学习记录-扩展/基于AspectJ注解实现Spring动态代理.md",
     "docs/blogs/Vue/Vue3/Pinia/Pinia学习项目.md",
     "docs/blogs/BPMN/Flowable",
-    "docs/blogs/Java/Maven/Maven配置指南.md",
     "docs/blogs/YIueil/个人简历.md~",
     "docs/blogs/Java/Maven/Maven配置指南.md~",
     "docs/blogs/Template/少数派MarkDown的CSS样式.md",

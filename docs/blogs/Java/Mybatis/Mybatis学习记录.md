@@ -1,14 +1,14 @@
 ---
-  date: 2024-12-09 01:11:17
-  pageClass: blue-archive
-  tags:
-    - 未分类
-  categories:
-    - 未归档
+date: 2024-12-09 01:11:17
+pageClass: blue-archive-azusa
+tags:
+  - 未分类
+categories:
+  - 未归档
 ---
 # Mybatis学习记录
 
-## 1 快速入门
+## 1 快速入门程序
 使用SqlSessionFactoryBuilder加载配置文件创建SqlSessionFactory。
 并使用SqlSessionFactory获取到SqlSession后进行查询操作。
 最终实现基本的mybatis框架的使用。
@@ -317,4 +317,10 @@ LOGBACK| 2024-12-08 23:50:11.718 | main | DEBUG | o.a.i.d.p.PooledDataSource - R
 3. mybatis使用mybatis-config进行全局配置(包括jdbc配置创建DataSource，xml文件扫描加载)  
 4. mybatis确实减少了jdbc代码(抽象为为编写实体DAO接口和XML的配置文件)  
 
-## 2  
+## 2 增删改查实现
+
+## 3 配置详解
+
+## 4 ORM映射
+
+## 5 动态SQL
