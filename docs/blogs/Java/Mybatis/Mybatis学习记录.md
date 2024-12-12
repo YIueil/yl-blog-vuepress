@@ -2,9 +2,10 @@
 date: 2024-12-09 01:11:17
 pageClass: blue-archive-azusa
 tags:
-  - 未分类
+  - mybatis
+  - Java
 categories:
-  - 未归档
+  - Java
 ---
 # Mybatis学习记录
 
@@ -322,5 +323,37 @@ LOGBACK| 2024-12-08 23:50:11.718 | main | DEBUG | o.a.i.d.p.PooledDataSource - R
 ## 3 配置详解
 
 ## 4 ORM映射
+### 单表映射
+### 多对一映射
+**级联查询**
 
+**assoiaction**
+
+**分布查询**
+### 一对多映射
+**collection**
+
+**分步查询**
+### 多对多映射
+
+> 多对多会分解成两个一对多进行编写实现。
 ## 5 动态SQL
+### if
+
+### where
+
+### set
+
+### foreach
+
+## 6 缓存机制
+
+>通过减少IO提高查询效率。
+### 一级缓存
+> 默认开启: 将查询的数据存储在SqlSession中。
+
+### 二级缓存
+> 配置开启: 将查询的数据存储在SqlSessionFactory中。
+
+### 三级缓存
+> 集成第三方缓存租组件开启:
