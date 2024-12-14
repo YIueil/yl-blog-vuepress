@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "docs/blogs/Java/Mybatis/Mybatis学习记录.md",
+                "file": "README.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Mybatis学习记录"
+              "title": "README"
             }
           }
         ]
@@ -138,14 +138,14 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "docs/blogs/Spring/Spring/Spring学习记录.md"
+                "file": "README.md"
               },
               "icon": "lucide-list",
-              "title": "Spring学习记录 的大纲"
+              "title": "README 的大纲"
             }
           },
           {
-            "id": "39ca4db57ccd6e77",
+            "id": "1145ddbf9a52bdf1",
             "type": "leaf",
             "state": {
               "type": "git-view",
@@ -174,8 +174,9 @@
   },
   "active": "02981380a11886ed",
   "lastOpenFiles": [
-    "docs/blogs/Java/Maven/Maven配置指南.md",
+    "docs/README.md",
     "docs/blogs/Java/Mybatis/Mybatis学习记录.md",
+    "docs/blogs/Java/Maven/Maven配置指南.md",
     "docs/blogs/Spring/Spring/Spring学习记录.md",
     "docs/blogs/Spring/SpringMVC/SpringMVC学习记录.md",
     "logback 1.xml",
@@ -196,7 +197,6 @@
     "docs/blogs/Template/Markdown文档模板.md",
     "docs/blogs/Git/Git代理设置.md",
     "docs/blogs/YIueil/个人简历.md",
-    "docs/README.md",
     "README.md",
     "docs/blogs/未分类/Intellij系列产品绿化.md",
     "docs/blogs/未分类/自用常用软件.md",
