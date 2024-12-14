@@ -31,5 +31,3 @@ Error: Process completed with exit code 1.
  - 或许你提交了一个没有头部信息的MarkDown, 或者时间格式不对
 
 > 天黑了，开始独自一人的享受。
-
-123 来自笔记本

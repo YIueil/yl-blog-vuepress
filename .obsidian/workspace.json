@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "docs/blogs/Java/2024年12月14日JAVA学习比价.md",
+                "file": "README.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "2024年12月14日JAVA学习比价"
+              "title": "README"
             }
           }
         ]
@@ -174,9 +174,9 @@
   },
   "active": "02981380a11886ed",
   "lastOpenFiles": [
+    "docs/blogs/Java/2024年12月14日JAVA学习比价.md",
     "docs/blogs/Java/Mybatis/Mybatis学习记录.md",
     "docs/README.md",
-    "docs/blogs/Java/2024年12月14日JAVA学习比价.md",
     "README.md",
     "docs/blogs/Java/Maven/Maven配置指南.md",
     "docs/blogs/Spring/Spring/Spring学习记录.md",
