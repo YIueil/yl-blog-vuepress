@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README.md",
+                "file": "docs/blogs/Java/Maven/Maven配置指南.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "README"
+              "title": "Maven配置指南"
             }
           }
         ]
@@ -77,7 +77,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 299.5
+    "width": 299.5,
+    "collapsed": true
   },
   "right": {
     "id": "9161af131d6eb6d9",
@@ -174,10 +175,10 @@
   },
   "active": "02981380a11886ed",
   "lastOpenFiles": [
+    "README.md",
     "docs/blogs/Java/2024年12月14日JAVA学习比价.md",
     "docs/blogs/Java/Mybatis/Mybatis学习记录.md",
     "docs/README.md",
-    "README.md",
     "docs/blogs/Java/Maven/Maven配置指南.md",
     "docs/blogs/Spring/Spring/Spring学习记录.md",
     "docs/blogs/Spring/SpringMVC/SpringMVC学习记录.md",
