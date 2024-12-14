@@ -6,11 +6,11 @@
     "emojiStyle": "native",
     "iconColor": null,
     "recentlyUsedIcons": [
+      "FabJava",
       "LiBird",
       "LiGitPullRequest",
       "LiGithub",
-      "SiPostgresql",
-      "TiBrandMysql"
+      "SiPostgresql"
     ],
     "recentlyUsedIconsSize": 5,
     "rules": [],
@@ -67,5 +67,6 @@
   "docs/blogs/Git/Github": "LiGithub",
   "docs/blogs/BPMN/Flowable": "LiGitPullRequest",
   "docs/blogs/设计模式": "LiHammer",
-  "docs/blogs/Java/Mybatis": "LiBird"
+  "docs/blogs/Java/Mybatis": "LiBird",
+  "docs/blogs/Java/2024年12月14日JAVA学习比价.md": "FabJava"
 }

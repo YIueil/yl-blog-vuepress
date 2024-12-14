@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README.md",
+                "file": "docs/blogs/Java/2024年12月14日JAVA学习比价.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "README"
+              "title": "2024年12月14日JAVA学习比价"
             }
           }
         ]
@@ -138,10 +138,10 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "README.md"
+                "file": "docs/blogs/Java/2024年12月14日JAVA学习比价.md"
               },
               "icon": "lucide-list",
-              "title": "README 的大纲"
+              "title": "2024年12月14日JAVA学习比价 的大纲"
             }
           },
           {
@@ -174,8 +174,10 @@
   },
   "active": "02981380a11886ed",
   "lastOpenFiles": [
-    "docs/README.md",
     "docs/blogs/Java/Mybatis/Mybatis学习记录.md",
+    "docs/README.md",
+    "docs/blogs/Java/2024年12月14日JAVA学习比价.md",
+    "README.md",
     "docs/blogs/Java/Maven/Maven配置指南.md",
     "docs/blogs/Spring/Spring/Spring学习记录.md",
     "docs/blogs/Spring/SpringMVC/SpringMVC学习记录.md",
@@ -197,7 +199,6 @@
     "docs/blogs/Template/Markdown文档模板.md",
     "docs/blogs/Git/Git代理设置.md",
     "docs/blogs/YIueil/个人简历.md",
-    "README.md",
     "docs/blogs/未分类/Intellij系列产品绿化.md",
     "docs/blogs/未分类/自用常用软件.md",
     "docs/blogs/未分类/ADB驱动删除内置软件.md",
