@@ -249,36 +249,7 @@ categories:
 
 ```xml
 <mirrors>
-     <mirror>
-        <id>alimaven</id>
-        <name>aliyun maven</name>
-        <url>http://maven.aliyun.com/mvn/view</url>
-        <mirrorOf>central</mirrorOf>
-    </mirror>
-    <mirror>
-        <id>jboss-public-repository-group</id>
-        <mirrorOf>central</mirrorOf>
-        <name>JBoss Public Repository Group</name>
-        <url>http://repository.jboss.org/nexus/content/groups/public</url>
-    </mirror>
-    <mirror>
-        <id>ibiblio</id>
-        <mirrorOf>central</mirrorOf>
-        <name>Human Readable Name for this Mirror.</name>
-        <url>https://maven.aliyun.com/mvn/view</url>
-    </mirror>
-    <mirror>
-        <id>central</id>
-        <name>Maven Repository Switchboard</name>
-        <url>http://repo1.maven.org/maven2/</url>
-        <mirrorOf>central</mirrorOf>
-    </mirror>
-    <mirror>
-        <id>repo2</id>
-        <mirrorOf>central</mirrorOf>
-        <name>Human Readable Name for this Mirror.</name>
-        <url>http://repo2.maven.org/maven2/</url>
-    </mirror>
+ 
 </mirrors>
 ```
 
@@ -388,11 +359,75 @@ categories:
         </profile>
 
         <profile>
-            <id>nexus-tencentyun</id>
+            <id>nexus-tencent</id>
             <repositories>
                 <repository>
                     <id>central</id>
                     <url>https://mirrors.tencent.com/nexus/repository/maven-public/</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+        </profile>
+
+        <profile>
+            <id>nexus-163</id>
+            <repositories>
+                <repository>
+                    <id>central</id>
+                    <url>http://mirrors.163.com/maven/repository/maven-public/</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+        </profile>
+
+        <profile>
+            <id>nexus-huawei</id>
+            <repositories>
+                <repository>
+                    <id>central</id>
+                    <url>https://repo.huaweicloud.com/repository/maven/</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+        </profile>
+
+        <profile>
+            <id>apache-central</id>
+            <repositories>
+                <repository>
+                    <id>central</id>
+                    <url>https://repo.maven.apache.org/maven2/</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+        </profile>
+
+        <profile>
+            <id>sonatype-central</id>
+            <repositories>
+                <repository>
+                    <id>central</id>
+                    <url>https://repo.maven.apache.org/maven2/</url>
                     <releases>
                         <enabled>true</enabled>
                     </releases>
