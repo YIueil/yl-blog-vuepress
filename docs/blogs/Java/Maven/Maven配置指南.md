@@ -240,22 +240,76 @@ categories:
 ```
 ### 2.2 设置本地仓库
 
-### 2.3 配置代理
-
-### 2.4 配置镜像服务
-
-
-## 3 收藏的仓库中心
+>通过相对路径或者绝对路径来实现对于本地仓库路径的管理。
 
 ```xml
-<mirrors>
- 
-</mirrors>
+<localRepository>../repository</localRepository>
 ```
 
-## 4 应用中的pom.xml
+### 2.3 配置代理
+> 对于 maven 通过代理进行访问加速, 可以优先采用 mirrors 镜像来加速, 以节省流量。
 
-## 5 目前使用中的setting.xml
+### 2.4 配置镜像服务
+> 在 mirrors 节点下面配置镜像仓库，maven 在获取包时，会采用以下顺序来获取包：本地仓库->pom.xml中定义的repository->setting.xml中定义的repository。
+
+```xml
+  <mirrors>
+    <mirror>
+      <id>nexus-aliyun</id>
+      <mirrorOf>*</mirrorOf>
+      <name>Nexus aliyun</name>
+      <url>https://maven.aliyun.com/repository/public</url>
+    </mirror>
+    <mirror>
+      <id>nexus-tencentyun</id>
+      <mirrorOf>*</mirrorOf>
+      <name>Nexus tencentyun</name>
+      <url>https://mirrors.tencent.com/nexus/repository/maven-public/</url>
+    </mirror> 
+    <mirror>
+      <id>nexus-163</id>
+      <mirrorOf>*</mirrorOf>
+      <name>Nexus 163</name>
+      <url>http://mirrors.163.com/maven/repository/maven-public/</url>
+    </mirror>
+    <mirror>
+      <id>huaweicloud</id>
+      <mirrorOf>*</mirrorOf>
+      <name>Nexus huaweicloud</name>
+      <url>https://repo.huaweicloud.com/repository/maven/</url>
+    </mirror>
+    <mirror>
+      <id>repo</id>
+      <mirrorOf>*</mirrorOf>
+      <name>Apache Maven Central Repository</name>
+      <url>https://repo.maven.apache.org/maven2/</url>
+    </mirror>
+    <mirror>
+      <id>repo1</id>
+      <mirrorOf>*</mirrorOf>
+      <name>Sonatype Nexus Repository</name>
+      <url>https://repo1.maven.org/maven2/</url>
+    </mirror>
+  </mirrors>
+```
+
+
+## 3 应用中的pom.xml
+
+### 配置应用仓库
+通过配置repository即可控制项目中的jar包从什么仓库进行扫描。
+```xml
+	 <repositories>
+        <repository>
+            <id>github-rich-repo</id>
+            <name>YIueil's Maven Repository on Github</name>
+            <url>https://yiueil.github.io/yl-bdf/maven-repo/</url>
+        </repository>
+    </repositories>
+```
+
+
+## 4 目前使用中的setting.xml
 
 **默认使用阿里云Maven镜像**
 ```xml
