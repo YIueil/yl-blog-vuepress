@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "bcbf9874fe7dc52e",
+        "id": "6c5bcde37cc67f4a",
         "type": "tabs",
         "children": [
           {
-            "id": "02981380a11886ed",
+            "id": "53a04f5c3d192839",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "docs/blogs/Java/Maven/Maven配置指南.md",
+                "file": "docs/blogs/Java/Mybatis/Mybatis学习记录.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Maven配置指南"
+              "title": "Mybatis学习记录"
             }
           }
         ]
@@ -172,13 +172,13 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "02981380a11886ed",
+  "active": "53a04f5c3d192839",
   "lastOpenFiles": [
+    "docs/blogs/Java/Maven/Maven配置指南.md",
     "README.md",
     "docs/blogs/Java/2024年12月14日JAVA学习比价.md",
     "docs/blogs/Java/Mybatis/Mybatis学习记录.md",
     "docs/README.md",
-    "docs/blogs/Java/Maven/Maven配置指南.md",
     "docs/blogs/Spring/Spring/Spring学习记录.md",
     "docs/blogs/Spring/SpringMVC/SpringMVC学习记录.md",
     "logback 1.xml",
