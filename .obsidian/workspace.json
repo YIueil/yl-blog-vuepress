@@ -4,24 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "38107e5d3aa3a940",
+        "id": "7a92984ac9f624cc",
         "type": "tabs",
         "children": [
           {
-            "id": "82d34630b21449ff",
+            "id": "e67332211de34a9e",
             "type": "leaf",
             "state": {
-              "type": "canvas",
+              "type": "markdown",
               "state": {
-                "file": "未命名.canvas",
-                "viewState": {
-                  "x": 0,
-                  "y": 0,
-                  "zoom": 0
-                }
+                "file": "docs/blogs/Java/Mybatis/Mybatis学习记录.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-layout-dashboard",
-              "title": "未命名"
+              "icon": "lucide-file",
+              "title": "Mybatis学习记录"
             }
           }
         ]
@@ -175,7 +172,7 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "82d34630b21449ff",
+  "active": "e67332211de34a9e",
   "lastOpenFiles": [
     "未命名.canvas",
     "docs/blogs/Java/Maven/Maven常用命令.md",
