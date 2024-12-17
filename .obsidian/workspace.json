@@ -138,10 +138,10 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "docs/blogs/Spring/Spring/Spring学习记录.md"
+                "file": "docs/blogs/Java/Mybatis/Mybatis学习记录.md"
               },
               "icon": "lucide-list",
-              "title": "Spring学习记录 的大纲"
+              "title": "Mybatis学习记录 的大纲"
             }
           },
           {
@@ -155,7 +155,7 @@
             }
           }
         ],
-        "currentTab": 4
+        "currentTab": 3
       }
     ],
     "direction": "horizontal",
