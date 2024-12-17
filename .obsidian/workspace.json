@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "docs/draft/启动移动应用.md",
+                "file": "README.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "启动移动应用"
+              "title": "README"
             }
           }
         ]
@@ -139,10 +139,10 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "docs/draft/启动移动应用.md"
+                "file": "README.md"
               },
               "icon": "lucide-list",
-              "title": "启动移动应用 的大纲"
+              "title": "README 的大纲"
             }
           },
           {
@@ -175,23 +175,24 @@
   },
   "active": "b3bdda7dd9e85882",
   "lastOpenFiles": [
-    "Pasted image 20241217162549.png",
-    "docs/draft/云南用途管制启动目录.md",
-    "docs/draft/启动网站应用.md",
-    "docs/draft/启动报部应用.md",
     "docs/draft/启动报表服务.md",
-    "docs/draft/启动DMAP应用.md",
+    "docs/draft/云南用途管制启动目录.md",
+    "docs/draft/启动报部应用.md",
+    "docs/draft/启动网站应用.md",
+    "docs/draft/启动移动应用.md",
+    "docs/draft/启动中间件.md",
     "docs/draft/启动DAP应用.md",
     "docs/draft/启动DASC应用.md",
-    "docs/draft/启动中间件.md",
-    "docs/draft/启动移动应用.md",
-    "docs/draft/CrossUI多实例表单绑定实现.md",
+    "docs/draft/启动DMAP应用.md",
     "docs/draft/云南用途管制国产NTKO控件应用.md",
+    "docs/draft/CrossUI多实例表单绑定实现.md",
     "docs/draft/DAP4.3业务应用获取材料报表更新DAP表问题.md",
+    "docs/README.md",
+    "README.md",
+    "Pasted image 20241217162549.png",
     "docs/draft/~$版本发布流程全.docx",
     "docs/draft/移动版本发布流程20240401.docx",
     "docs/draft/移动版本发布流程全.docx",
-    "docs/README.md",
     "docs/blogs/加密解密/国密算法对应关系.md",
     "docs/blogs/前端基础/CSS/Flex布局.md",
     "docs/blogs/设计模式/创建型/单例模式.md",

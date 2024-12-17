@@ -5,7 +5,6 @@
 ## 发布方式
 
 - 通过本地构建结果, 在 github 上创建新的 blog-pages 分支, 然后配置 pages 到 blog-pages 分支的 root 下
-
 - 通过 github-actions ⭐推荐
 
 ## 常见问题
@@ -28,6 +27,6 @@ TypeError: Cannot read properties of undefined (reading 'replace')
     at renderVNode (/home/runner/work/yl-blog-vuepress/yl-blog-vuepress/node_modules/@vue/server-renderer/dist/server-renderer.cjs.prod.js:483:14)
 Error: Process completed with exit code 1.
 ```
- - 或许你提交了一个没有头部信息的MarkDown, 或者时间格式不对
+ - 或许你提交了一个没有头部信息的MarkDown, 或者时间格式不对⚠
 
 > 天黑了，开始独自一人的享受。
