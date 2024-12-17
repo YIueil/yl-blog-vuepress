@@ -1,8 +1,9 @@
 {
   "showInlineTitle": false,
-  "readableLineLength": true,
+  "readableLineLength": false,
   "promptDelete": false,
   "pdfExportSettings": {
+    "includeName": false,
     "pageSize": "Letter",
     "landscape": false,
     "margin": "0",

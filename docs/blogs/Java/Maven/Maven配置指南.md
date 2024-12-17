@@ -1,10 +1,11 @@
 ---
-  date: 2024-12-08 18:33:29
-  pageClass: blue-archive
-  tags:
-    - 未分类
-  categories:
-    - 未归档
+date: 2024-12-08 18:33:29
+pageClass: blue-archive
+tags:
+  - Maven
+categories:
+  - Java
+  - Maven
 ---
 
 # Maven参考指南
@@ -18,7 +19,7 @@
 | IDEA 2022        | Maven 3.8.5 及之前所有版本 |
 | IDEA 2021        | Maven 3.8.1 及之前所有版本 |
 | IDEA 2020        | Maven 3.6.3 及之前所有版本 |
-| IDEA 2018        | Maven 3.6.1 及之前所有版本 |
+
 
 ## 2 Setting配置
 
@@ -239,46 +240,258 @@
 ```
 ### 2.2 设置本地仓库
 
-### 2.3 配置代理
-
-### 2.4 配置镜像服务
-
-
-## 3 收藏的仓库中心
+>通过相对路径或者绝对路径来实现对于本地仓库路径的管理。
 
 ```xml
-<mirrors>
-     <mirror>
-        <id>alimaven</id>
-        <name>aliyun maven</name>
-        <url>http://maven.aliyun.com/mvn/view</url>
-        <mirrorOf>central</mirrorOf>
-    </mirror>
-    <mirror>
-        <id>jboss-public-repository-group</id>
-        <mirrorOf>central</mirrorOf>
-        <name>JBoss Public Repository Group</name>
-        <url>http://repository.jboss.org/nexus/content/groups/public</url>
-    </mirror>
-    <mirror>
-        <id>ibiblio</id>
-        <mirrorOf>central</mirrorOf>
-        <name>Human Readable Name for this Mirror.</name>
-        <url>https://maven.aliyun.com/mvn/view</url>
-    </mirror>
-    <mirror>
-        <id>central</id>
-        <name>Maven Repository Switchboard</name>
-        <url>http://repo1.maven.org/maven2/</url>
-        <mirrorOf>central</mirrorOf>
-    </mirror>
-    <mirror>
-        <id>repo2</id>
-        <mirrorOf>central</mirrorOf>
-        <name>Human Readable Name for this Mirror.</name>
-        <url>http://repo2.maven.org/maven2/</url>
-    </mirror>
-</mirrors>
+<localRepository>../repository</localRepository>
 ```
 
-## 4 应用中的pom.xml
+### 2.3 配置代理
+> 对于 maven 通过代理进行访问加速, 可以优先采用 mirrors 镜像来加速, 以节省流量。
+
+### 2.4 配置镜像服务
+> 在 mirrors 节点下面配置镜像仓库，maven 在获取包时，会采用以下顺序来获取包：本地仓库->pom.xml中定义的repository->setting.xml中定义的repository。
+
+```xml
+  <mirrors>
+    <mirror>
+      <id>nexus-aliyun</id>
+      <mirrorOf>*</mirrorOf>
+      <name>Nexus aliyun</name>
+      <url>https://maven.aliyun.com/repository/public</url>
+    </mirror>
+    <mirror>
+      <id>nexus-tencentyun</id>
+      <mirrorOf>*</mirrorOf>
+      <name>Nexus tencentyun</name>
+      <url>https://mirrors.tencent.com/nexus/repository/maven-public/</url>
+    </mirror> 
+    <mirror>
+      <id>nexus-163</id>
+      <mirrorOf>*</mirrorOf>
+      <name>Nexus 163</name>
+      <url>http://mirrors.163.com/maven/repository/maven-public/</url>
+    </mirror>
+    <mirror>
+      <id>huaweicloud</id>
+      <mirrorOf>*</mirrorOf>
+      <name>Nexus huaweicloud</name>
+      <url>https://repo.huaweicloud.com/repository/maven/</url>
+    </mirror>
+    <mirror>
+      <id>repo</id>
+      <mirrorOf>*</mirrorOf>
+      <name>Apache Maven Central Repository</name>
+      <url>https://repo.maven.apache.org/maven2/</url>
+    </mirror>
+    <mirror>
+      <id>repo1</id>
+      <mirrorOf>*</mirrorOf>
+      <name>Sonatype Nexus Repository</name>
+      <url>https://repo1.maven.org/maven2/</url>
+    </mirror>
+  </mirrors>
+```
+
+
+## 3 应用中的pom.xml
+
+### 配置应用仓库
+通过配置repository即可控制项目中的jar包从什么仓库进行扫描。
+```xml
+	 <repositories>
+        <repository>
+            <id>github-rich-repo</id>
+            <name>YIueil's Maven Repository on Github</name>
+            <url>https://yiueil.github.io/yl-bdf/maven-repo/</url>
+        </repository>
+    </repositories>
+```
+
+
+## 4 目前使用中的setting.xml
+
+**默认使用阿里云Maven镜像**
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+  <localRepository>../repository</localRepository>
+
+  <pluginGroups>
+  </pluginGroups>
+
+  <proxies>
+  </proxies>
+
+  <servers>
+  </servers>
+
+  <mirrors>
+    <mirror>
+      <id>nexus-aliyun</id>
+      <mirrorOf>*</mirrorOf>
+      <name>Nexus aliyun</name>
+      <url>https://maven.aliyun.com/repository/public</url>
+    </mirror>
+    <mirror>
+      <id>nexus-tencentyun</id>
+      <mirrorOf>*</mirrorOf>
+      <name>Nexus tencentyun</name>
+      <url>https://mirrors.tencent.com/nexus/repository/maven-public/</url>
+    </mirror> 
+    <mirror>
+      <id>nexus-163</id>
+      <mirrorOf>*</mirrorOf>
+      <name>Nexus 163</name>
+      <url>http://mirrors.163.com/maven/repository/maven-public/</url>
+    </mirror>
+    <mirror>
+      <id>huaweicloud</id>
+      <mirrorOf>*</mirrorOf>
+      <name>Nexus huaweicloud</name>
+      <url>https://repo.huaweicloud.com/repository/maven/</url>
+    </mirror>
+    <mirror>
+      <id>repo</id>
+      <mirrorOf>*</mirrorOf>
+      <name>Apache Maven Central Repository</name>
+      <url>https://repo.maven.apache.org/maven2/</url>
+    </mirror>
+    <mirror>
+      <id>repo1</id>
+      <mirrorOf>*</mirrorOf>
+      <name>Sonatype Nexus Repository</name>
+      <url>https://repo1.maven.org/maven2/</url>
+    </mirror>
+  </mirrors>
+
+  <profiles>
+  </profiles>
+</settings>
+
+```
+
+**通过profile切换Maven镜像源setting**
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <localRepository>../repository</localRepository>
+
+    <pluginGroups></pluginGroups>
+
+    <proxies>
+    </proxies>
+
+    <servers></servers>
+
+    <profiles>
+        <profile>
+            <id>nexus-aliyun</id>
+            <activation>
+                <activeByDefault>
+                    true
+                </activeByDefault>
+            </activation>
+            <repositories>
+                <repository>
+                    <id>central</id>
+                    <url>https://maven.aliyun.com/repository/public</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+        </profile>
+
+        <profile>
+            <id>nexus-tencent</id>
+            <repositories>
+                <repository>
+                    <id>central</id>
+                    <url>https://mirrors.tencent.com/nexus/repository/maven-public/</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+        </profile>
+
+        <profile>
+            <id>nexus-163</id>
+            <repositories>
+                <repository>
+                    <id>central</id>
+                    <url>http://mirrors.163.com/maven/repository/maven-public/</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+        </profile>
+
+        <profile>
+            <id>nexus-huawei</id>
+            <repositories>
+                <repository>
+                    <id>central</id>
+                    <url>https://repo.huaweicloud.com/repository/maven/</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+        </profile>
+
+        <profile>
+            <id>apache-central</id>
+            <repositories>
+                <repository>
+                    <id>central</id>
+                    <url>https://repo.maven.apache.org/maven2/</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+        </profile>
+
+        <profile>
+            <id>sonatype-central</id>
+            <repositories>
+                <repository>
+                    <id>central</id>
+                    <url>https://repo.maven.apache.org/maven2/</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+        </profile>
+    </profiles>
+</settings>
+
+```

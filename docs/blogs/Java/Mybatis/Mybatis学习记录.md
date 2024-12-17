@@ -665,7 +665,6 @@ lazyLoadingEnabled：全局性的开启懒加载机制，默认为false。
 cacheEnabled：全局的开启缓存，默认为true。
 ### 日志实现
 logImpl：日志的实现，默认将进行自动查找。
-
 ## 4 ORM映射
 ### 单表映射
 ### 多对一映射

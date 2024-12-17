@@ -6,11 +6,11 @@
     "emojiStyle": "native",
     "iconColor": null,
     "recentlyUsedIcons": [
+      "FabJava",
       "LiBird",
       "LiGitPullRequest",
       "LiGithub",
-      "SiPostgresql",
-      "TiBrandMysql"
+      "SiPostgresql"
     ],
     "recentlyUsedIconsSize": 5,
     "rules": [],
