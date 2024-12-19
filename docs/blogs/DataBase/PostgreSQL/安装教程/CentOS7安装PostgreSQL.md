@@ -1,10 +1,10 @@
 ---
-  date: 2023/12/25 11:51
-  pageClass: blue-archive
-  tags:
-    - 未分类
-  categories:
-    - 未归档
+date: 2023/12/25 11:51
+pageClass: blue-archive
+tags:
+  - PostgreSQL
+categories:
+  - DataBase
 ---
 
 # CentOS7安装PostgreSQL
@@ -18,7 +18,6 @@ tar -xvzf postgresql-xxx.tar.gz
 ## 2 前置依赖安装
 ### 在线环境
 ```shell
-# gcc readline zlib
 yum install yum-mlocate-downloadonly
 yum install -y ncurses-devel-5.9-14.20130511.el7_4.x86_64.rpm
 yum install -y readline-devel-6.2-11.el7.x86_64.rpm
