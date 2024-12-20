@@ -19,8 +19,23 @@
               "icon": "git-pull-request",
               "title": "Diff View (workspace.json)"
             }
+          },
+          {
+            "id": "9f3f027d787e44a4",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "docs/blogs/DataBase/PostgreSQL/安装教程/CentOS7安装PostgreSQL.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "CentOS7安装PostgreSQL"
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -137,9 +152,11 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {},
+              "state": {
+                "file": "docs/blogs/DataBase/PostgreSQL/安装教程/CentOS7安装PostgreSQL.md"
+              },
               "icon": "lucide-list",
-              "title": "大纲"
+              "title": "CentOS7安装PostgreSQL 的大纲"
             }
           },
           {
@@ -170,8 +187,9 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "b3bdda7dd9e85882",
+  "active": "9f3f027d787e44a4",
   "lastOpenFiles": [
+    "conflict-files-obsidian-git.md",
     "docs/blogs/加密解密/国密算法对应关系.md",
     "docs/draft/CrossUI多实例表单绑定实现.md",
     "docs/draft/DAP4.3业务应用获取材料报表更新DAP表问题.md",
@@ -208,7 +226,6 @@
     "未命名.canvas",
     "docs/blogs/Java/Maven/Maven常用命令.md",
     "docs/blogs/Java/JDK/Optional学习笔记.md",
-    "docs/blogs/Java/Maven/Maven配置指南.md",
     "logback 1.xml"
   ]
 }

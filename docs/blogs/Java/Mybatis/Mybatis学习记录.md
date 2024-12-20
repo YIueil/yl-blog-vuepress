@@ -319,13 +319,352 @@ LOGBACK| 2024-12-08 23:50:11.718 | main | DEBUG | o.a.i.d.p.PooledDataSource - R
 4. mybatis确实减少了jdbc代码(抽象为为编写实体DAO接口和XML的配置文件)  
 
 ## 2 增删改查实现
+项目准备: 创建一个Maven项目，准备好数据库表，类路径添加`jdbc.properties`和`mybatis-config.xml`。准备好需要CRUD的实体类。
+```sql
+-- auto-generated definition  
+create table t_user  
+(  
+    id        int auto_increment  
+        primary key,    username  varchar(255)         null,  
+    password  varchar(255)         null,  
+    brith_day datetime             null,  
+    is_delete tinyint(1) default 0 null,  
+    gender    char                 null,  
+    salary    decimal(10, 2)       null  
+);
+```
 
-### 2.1 基于xml的增删改查
+```java
+@Data  
+public class User {  
+    private Long id;  
+    private String username;  
+    private String password;  
+    private LocalDateTime brithDay;  
+    private Boolean isDelete;  
+    private Character gender;  
+    private BigDecimal salary;  
+}
+```
 
-### 2.2 基于接口的增删改查
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
 
-## 3 配置详解
+    <properties resource="jdbc.properties"/>
 
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <setting name="logImpl" value="SLF4J"/>
+    </settings>
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+
+        <environment id="test">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+        <mapper resource="cc/yiueil/mapper/UserMapper.xml"/>
+    </mappers>
+
+</configuration>
+```
+
+```properties
+jdbc.driver=com.mysql.jdbc.Driver  
+jdbc.url=jdbc:mysql://localhost:3306/mybatis?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=utf8  
+jdbc.username=root  
+jdbc.password=root
+```
+### 2.1 基于XML实现
+**创建查询的XML**
+> 如果只是基于XML的CRUD，namespace没有特殊的命名要求。
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserMapper">
+    <select id="selectUserById" resultType="cc.yiueil.entity.User">
+        select *
+        from t_user
+        where id = #{id}
+    </select>
+
+    <select id="selectUserList" resultType="cc.yiueil.entity.User">
+        select *
+        from t_user
+    </select>
+
+    <insert id="insertUser" parameterType="cc.yiueil.entity.User">
+        insert into t_user(id, username, password, brith_day)
+        values (#{id}, #{userName}, #{password}, #{brithDay})
+    </insert>
+
+    <update id="updateUser" parameterType="cc.yiueil.entity.User">
+        update t_user
+        set username = #{username},
+            password = #{password}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUserById" parameterType="long">
+        delete
+        from t_user
+        where id = #{id}
+    </delete>
+</mapper>
+```
+
+**创建测试类**
+```java
+package cc.yiueil;
+
+import cc.yiueil.entity.User;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@Slf4j
+public class MainTest {
+    private static final SqlSessionFactory sqlSessionFactory;
+    private SqlSession sqlSession;
+
+    static {
+        sqlSessionFactory = new SqlSessionFactoryBuilder().build(MainTest.class.getClassLoader().getResourceAsStream("mybatis-config.xml"));
+        log.debug("创建了sqlSessionFactory: " + sqlSessionFactory);
+    }
+
+    @Before
+    public void before() {
+        sqlSession = sqlSessionFactory.openSession(true);
+        log.debug("创建了sqlSession: " + sqlSession);
+    }
+
+    @After
+    public void after() {
+        sqlSession.close();
+    }
+
+    @Test
+    public void testInsert() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("username", "新加的");
+        params.put("password", "223344");
+        params.put("brithday", LocalDateTime.now());
+        int insert = sqlSession.insert("insertUser", params);
+        System.out.println("insert = " + insert);
+    }
+
+    @Test
+    public void testModify() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", 5L);
+        params.put("password", "111111");
+        int updateUser = sqlSession.update("updateUser", params);
+        System.out.println("updateUser = " + updateUser);
+    }
+
+    @Test
+    public void testDelete() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", 5L);
+        int delete = sqlSession.delete("deleteUserById", params);
+        System.out.println("delete = " + delete);
+    }
+
+    @Test
+    public void testSelect() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", 1L);
+        User user = sqlSession.selectOne("UserMapper.selectUserById", params);
+        System.out.println("user = " + user);
+    }
+
+    @Test
+    public void testSelectList() {
+        List<Object> selectUserList = sqlSession.selectList("selectUserList");
+        System.out.println("selectUserList = " + selectUserList);
+    }
+}
+```
+### 2.2 基于Mapper
+**定义别名**
+>定义别名以避免在XML映射文件中的Entity类需要全限定命名的问题。
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <properties resource="jdbc.properties"/>
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <setting name="logImpl" value="SLF4J"/>
+    </settings>
+
+	<!--定义别名-->
+    <typeAliases>
+        <typeAlias type="cc.yiueil.entity.User" alias="User"/>
+    </typeAliases>
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+        <mapper resource="cc/yiueil/mapper/UserMapper.xml"/>
+    </mappers>
+
+</configuration>
+```
+
+**创建Mapper接口**
+```java
+@Mapper
+public interface UserMapper {
+    int insertUser(User user);
+
+    int updateUser(User user);
+
+    User selectUserById(Long id);
+
+    List<User> selectUserByUserInfo(User user);
+
+    List<User> selectUserList();
+
+    int deleteUserById(Long id);
+}
+```
+
+**创建XML映射文件**
+> 注意点:
+> 1. namespace必须是Mapper接口的全限定名称。
+> 2. xml文件必须在mybatis的扫描路径中。
+> 3. 需要注意maven的打包策略，如果xml在src路径下面，需要额外配置`build -> resources -> resource`的属性。
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.yiueil.mapper.UserMapper">
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id">
+        insert into t_user(username, password, brith_day, is_delete, gender, salary) values (#{username}, #{password}, #{brithDay}, #{isDelete}, #{gender}, #{salary})
+    </insert>
+
+    <update id="updateUser">
+        update t_user
+        <set>
+            <if test="username">
+                username = #{username},
+            </if>
+            <if test="password">
+                password = #{password},
+            </if>
+            <if test="brithDay">
+                brith_day = #{brithDay},
+            </if>
+            <if test="isDelete">
+                is_delete = #{isDelete},
+            </if>
+            <if test="gender">
+                gender = #{gender},
+            </if>
+            <if test="salary">
+                salary = #{salary},
+            </if>
+        </set>
+        where id = ${id}
+    </update>
+
+    <select id="selectUserById" resultType="User">
+        select id, username, password, brith_day, is_delete, gender, salary from t_user where id = #{id}
+    </select>
+
+    <select id="selectUserByUserInfo" resultType="User">
+        select * from t_user
+        <where>
+            <if test="id">
+                and id = #{id}
+            </if>
+            <if test="username">
+                and username = #{username}
+            </if>
+            <if test="password">
+                and password = #{password}
+            </if>
+            <if test="brithDay">
+                and brith_day = #{brithDay}
+            </if>
+            <if test="isDelete">
+                and is_delete = #{isDelete}
+            </if>
+            <if test="gender">
+                and gender = #{gender}
+            </if>
+            <if test="salary">
+                and salary = #{salary}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectUserList" resultType="User">
+        select * from t_user
+    </select>
+    
+    <delete id="deleteUserById">
+        delete from t_user where id = #{id}
+    </delete>
+</mapper>
+```
+## 3 常用配置详解
+### 驼峰命名转换
+mapUnderscoreToCamelCase：是否开启驼峰命名自动映射，即从经典数据库列名 A_COLUMN 映射到经典 Java 属性名 aColumn, 默认为false。
+> 数据库字段is_delete映射到Java属性isDelete
+
+### 懒加载
+lazyLoadingEnabled：全局性的开启懒加载机制，默认为false。
+### 缓存
+cacheEnabled：全局的开启缓存，默认为true。
+### 日志实现
+logImpl：日志的实现，默认将进行自动查找。
 ## 4 ORM映射
 ### 单表映射
 ### 多对一映射
@@ -333,7 +672,7 @@ LOGBACK| 2024-12-08 23:50:11.718 | main | DEBUG | o.a.i.d.p.PooledDataSource - R
 
 **assoiaction**
 
-**分布查询**
+**分步查询**
 ### 一对多映射
 **collection**
 
@@ -343,12 +682,109 @@ LOGBACK| 2024-12-08 23:50:11.718 | main | DEBUG | o.a.i.d.p.PooledDataSource - R
 > 多对多会分解成两个一对多进行编写实现。
 ## 5 动态SQL
 ### if
-
+用于判断参数值是否存在
+```xml
+    <select id="selectUserByUserInfo" resultType="User">
+        select * from t_user where 1 = 1
+        <if test="id">
+            and id = #{id}
+        </if>
+		<if test="username">
+			and username = #{username}
+		</if>
+		<if test="password">
+			and password = #{password}
+		</if>
+		<if test="birthDay">
+			and birth_day = #{birthDay}
+		</if>
+		<if test="isDelete">
+			and is_delete = #{isDelete}
+		</if>
+		<if test="gender">
+			and gender = #{gender}
+		</if>
+		<if test="salary">
+			and salary = #{salary}
+		</if>
+    </select>
+```
 ### where
+用于生成where关键字，当内部有元素返回时，才会生成 where
+```xml
+<select id="selectUserByUserInfo" resultType="User">
+	select * from t_user
+	<where>
+		<if test="id">
+			and id = #{id}
+		</if>
+		<if test="username">
+			and username = #{username}
+		</if>
+		<if test="password">
+			and password = #{password}
+		</if>
+		<if test="birthDay">
+			and birth_day = #{birthDay}
+		</if>
+		<if test="isDelete">
+			and is_delete = #{isDelete}
+		</if>
+		<if test="gender">
+			and gender = #{gender}
+		</if>
+		<if test="salary">
+			and salary = #{salary}
+		</if>
+	</where>
+</select>
+```
 
 ### set
+动态的删除update sql语句中多余逗号。
+```xml
+<update id="updateUser">  
+    update t_user  
+    <set>  
+        <if test="username != null">  
+            username = #{username},  
+        </if>  
+        <if test="password != null">  
+            password = #{password},  
+        </if>  
+        <if test="birthDay != null">  
+            birth_day = #{birthDay},  
+        </if>  
+        <if test="isDelete != null">  
+            is_delete = #{isDelete},  
+        </if>  
+        <if test="gender != null">  
+            gender = #{gender},  
+        </if>  
+        <if test="salary != null">  
+            salary = #{salary},  
+        </if>  
+    </set>  
+    where id = #{id}  
+</update>
+```
 
 ### foreach
+通过循环拼接一串sql语句。
+```xml
+<delete id="deleteUserByIds">  
+    delete from t_user where id in  
+    <foreach collection="ids" item="id" open="(" close=")" separator=",">  
+        #{id}  
+    </foreach>  
+</delete>
+```
+
+### trim
+定制一个规则来添加或者删除多余的前缀或者后缀内容。
+
+### choose、when、otherwise
+通过判断的方式拼接动态的sql语句。
 
 ## 6 缓存机制
 
