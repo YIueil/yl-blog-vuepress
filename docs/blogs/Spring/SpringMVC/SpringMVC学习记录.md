@@ -15,4 +15,5 @@ categories:
 ## 什么是SpringMVC
 一个基于Spring的Servlet的框架，用于接受服务器请求。
 - 解析客户端参数
-- 解析
+- 调用业务服务
+- 执行返回结果
