@@ -219,6 +219,8 @@ public class MvcConfig extends WebMvcConfigurationSupport {
 }
 ```
 ### 4.4 拦截器
+
+### 4.5 过滤器
 ## 5 参数接收
 1. 如何接收Date等复杂类型
 2. 如何接收List\<User>和Interger\[] ids类型
