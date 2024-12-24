@@ -6,11 +6,11 @@
     "emojiStyle": "native",
     "iconColor": null,
     "recentlyUsedIcons": [
+      "FabWindows",
+      "SiWindows10",
       "FabJava",
       "LiBird",
-      "LiGitPullRequest",
-      "LiGithub",
-      "SiPostgresql"
+      "LiGitPullRequest"
     ],
     "recentlyUsedIconsSize": 5,
     "rules": [],
@@ -67,5 +67,6 @@
   "docs/blogs/Git/Github": "LiGithub",
   "docs/blogs/BPMN/Flowable": "LiGitPullRequest",
   "docs/blogs/设计模式": "LiHammer",
-  "docs/blogs/Java/Mybatis": "LiBird"
+  "docs/blogs/Java/Mybatis": "LiBird",
+  "docs/blogs/Windows": "FabWindows"
 }
