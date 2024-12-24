@@ -174,7 +174,7 @@ public String toResult() {
 >converters的properties参数注入自定义的converter
 
 [[SpringMVC创建自定义类型转换器]]
-### 4.3 静态资源
+### 4.3 静态资源处理器
 > 在不进行额外的配置下，所有的请求都将由`DispatchServlet`进行处理，而这个Servlet不具备处理静态资源的能力，故访问静态资源返回404报错。
 
 **方式一：通过Tomcat提供的DefaultServlet专门处理静态资源**
