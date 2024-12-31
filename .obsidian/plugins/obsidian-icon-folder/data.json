@@ -34,7 +34,6 @@
     "debugMode": false,
     "useInternalPlugins": false
   },
-  "docs/blogs/加密解密": "LiKey",
   "docs/draft": "LiRecycle",
   "docs/blogs/Java/Maven": "SiApachemaven",
   "docs/blogs/Java/JDK": "SiOpenjdk",
@@ -68,5 +67,6 @@
   "docs/blogs/BPMN/Flowable": "LiGitPullRequest",
   "docs/blogs/设计模式": "LiHammer",
   "docs/blogs/Java/Mybatis": "LiBird",
-  "Pic": "TiPhoto"
+  "Pic": "TiPhoto",
+  "docs/blogs/Java/加密解密": "LiKey"
 }
