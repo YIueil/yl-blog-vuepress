@@ -6,11 +6,11 @@
     "emojiStyle": "native",
     "iconColor": null,
     "recentlyUsedIcons": [
+      "OcLog16",
+      "IbInternetBrowser",
       "SiEslint",
       "TiPhoto",
-      "FabWindows",
-      "SiWindows10",
-      "FabJava"
+      "FabWindows"
     ],
     "recentlyUsedIconsSize": 5,
     "rules": [],
@@ -70,5 +70,7 @@
   "docs/blogs/Java/Mybatis": "LiBird",
   "docs/blogs/Windows": "FabWindows",
   "Pic": "TiPhoto",
-  "docs/blogs/前端基础/ESLint": "SiEslint"
+  "docs/blogs/前端基础/ESLint": "SiEslint",
+  "docs/blogs/Java/JavaWeb": "IbInternetBrowser",
+  "docs/blogs/Java/Log": "OcLog16"
 }
