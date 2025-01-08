@@ -6,11 +6,11 @@
     "emojiStyle": "native",
     "iconColor": null,
     "recentlyUsedIcons": [
+      "OcLog16",
+      "IbInternetBrowser",
+      "SiEslint",
       "TiPhoto",
-      "FabJava",
-      "LiBird",
-      "LiGitPullRequest",
-      "LiGithub"
+      "FabWindows"
     ],
     "recentlyUsedIconsSize": 5,
     "rules": [],
@@ -67,6 +67,14 @@
   "docs/blogs/BPMN/Flowable": "LiGitPullRequest",
   "docs/blogs/设计模式": "LiHammer",
   "docs/blogs/Java/Mybatis": "LiBird",
+<<<<<<< HEAD
   "Pic": "TiPhoto",
   "docs/blogs/Java/加密解密": "LiKey"
+=======
+  "docs/blogs/Windows": "FabWindows",
+  "Pic": "TiPhoto",
+  "docs/blogs/前端基础/ESLint": "SiEslint",
+  "docs/blogs/Java/JavaWeb": "IbInternetBrowser",
+  "docs/blogs/Java/Log": "OcLog16"
+>>>>>>> origin/master
 }

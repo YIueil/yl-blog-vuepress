@@ -1,10 +1,10 @@
 ---
-  date: 2024/7/30 17:52
-  pageClass: blue-archive
-  tags:
-    - 未分类
-  categories:
-    - 未归档
+date: 2024/7/30 17:52
+pageClass: blue-archive
+tags:
+  - git
+categories:
+  - git
 ---
 # Git基础学习
 
