@@ -208,4 +208,132 @@ public class ForwardServlet extends HttpServlet {
 ```
 
 ### 3.5 Session和Cookie的应用
-// TODO
+#### Session的应用
+- Session保存在服务器端
+- 默认使用一个名为JSESSIONID的Cookie来定位Session
+
+> 示例: 模拟登陆功能，登陆成功页面显示当前登录的用户，并提供登出功能。
+
+loginServlet
+```java
+@WebServlet(urlPatterns = "/login")
+public class SessionServlet extends HttpServlet {
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String username = req.getParameter("username");
+        String password = req.getParameter("password");
+        if (username.equals(password)) {
+            req.getSession().setAttribute("username", username);
+            resp.sendRedirect(req.getContextPath() + "/main.jsp");
+        }
+    }
+}
+```
+
+logoutServlet
+```java
+@WebServlet(urlPatterns = "/logout")  
+public class LogoutServlet extends HttpServlet {  
+    @Override  
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {  
+        req.getSession().invalidate();  
+        req.getRequestDispatcher("/").forward(req, resp);  
+    }  
+}
+```
+
+index.jsp
+```jsp
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+  <head>
+    <title>Index Login</title>
+  </head>
+  <body>
+    <form action="${pageContext.request.contextPath}/login" method="post">
+      username: <input name="username" />
+      password: <input name="password" />
+      <button type="submit">提交</button>
+    </form>
+  </body>
+</html>
+```
+
+main.jsp
+```jsp
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>  
+<html>  
+<head>  
+    <title>Main</title>  
+</head>  
+<body>  
+  已完成登录, hello <%=session.getAttribute("username")%>  
+  <a href="${pageContext.request.contextPath}/logout">登出</a>  
+</body>  
+</html>
+```
+
+#### Cookie的应用
+- Cookie 存储在客户端，避免存储敏感信息
+- Cookie 中的常用API
+	- `Cookie.setDomain()`设置生效的域名
+	- `Cookie.setPath()`设置生效的路径
+	- `Cookie.setSecure()`若HTTPS网站请求，需要设置为true，否则不进行该 Cookie 携带请求
+	- `Cookie.setMaxAge()`设置超时时间，单位秒
+
+> 示例：使用 `Cookie` 保存客户端语言偏好。
+
+cookieServlet
+```java
+@WebServlet(urlPatterns = "/")
+public class CookieServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String lang = req.getParameter("lang");
+        if (lang != null) {
+            Cookie cookie = new Cookie("lang", lang);
+            // 指定Cookie的生效范围 / 代表当前域名的所有请求
+            cookie.setDomain(req.getServerName());
+            cookie.setPath("/");
+            cookie.setSecure(false);
+            cookie.setMaxAge(3600);
+            // 把cookie添加到响应
+            resp.addCookie(cookie);
+        }
+        resp.sendRedirect(req.getContextPath() + "/main.jsp");
+    }
+}
+```
+
+mian.jsp
+```jsp
+<%
+    Cookie[] cookies = request.getCookies();
+    String lang = "CN";
+    if (cookies != null) {
+        for (Cookie cookie : cookies) {
+            String name = cookie.getName();
+            String value = cookie.getValue();
+
+            // 检查是否是我们想要的 cookie
+            if ("lang".equals(name)) {
+                // 找到了，可以获取 cookie 的值
+                lang = value;
+            }
+        }
+    }
+%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Title</title>
+</head>
+<body>
+    <%="CN".equals(lang) ? "应用已启动!" : "application starting!"%> <br/>
+
+    <a href="${pageContext.request.contextPath}/?lang=CN">中文</a> <br/>
+    <a href="${pageContext.request.contextPath}/?lang=EN">English</a>
+</body>
+</html>
+
+```
