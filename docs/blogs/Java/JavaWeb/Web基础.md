@@ -337,3 +337,10 @@ mian.jsp
 </html>
 
 ```
+
+## 4 Filter的使用
+- Filter需要指定生效的URL。
+- 所有的Filter将串联执行。
+- 执行后必须调用`chain.doFilter(request, response);`，否则请求将停止。
+> 示例：创建多个Servlet，其中User相关的Servlet需要进行已登录认证，然后所有的Servlet的请求和响应都使用UTF8进行编码统一。
+
