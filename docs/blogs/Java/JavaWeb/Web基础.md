@@ -344,3 +344,122 @@ mian.jsp
 - 执行后必须调用`chain.doFilter(request, response);`，否则请求将停止。
 > 示例：创建多个Servlet，其中User相关的Servlet需要进行已登录认证，然后所有的Servlet的请求和响应都使用UTF8进行编码统一。
 
+项目结构
+```bash
++---src
+|   \---main
+|       +---java
+|       |   \---cc
+|       |       \---yiueil
+|       |           +---filter
+|       |           |       AuthFilter.java
+|       |           |       CharacterFilter.java
+|       |           |       
+|       |           \---servlet
+|       |                   LoginServlet.java
+|       |                   UserProfileServlet.java
+|       |                   
+|       \---webapp
+|           |   index.jsp
+|           |
+|           \---WEB-INF
+|                   web.xml
+```
+
+Servlet
+```java
+@WebServlet(urlPatterns = "/login")  
+public class LoginServlet extends HttpServlet {  
+    @Override  
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {  
+        String username = req.getParameter("username");  
+        String password = req.getParameter("password");  
+        if (password.equals(username)) {  
+            req.getSession().setAttribute("username", username);  
+            resp.sendRedirect(req.getContextPath() + "/user/profile");  
+        } else {  
+            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);  
+        }  
+    }  
+}
+
+@WebServlet(urlPatterns = "/user/profile")  
+public class UserProfileServlet extends HttpServlet {  
+    @Override  
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {  
+        resp.setContentType("text/html");  
+        PrintWriter writer = resp.getWriter();  
+        writer.println("hello, " + req.getSession().getAttribute("username"));  
+    }  
+}
+```
+
+Filter
+```java
+public class AuthFilter extends HttpFilter {
+    @Override
+    protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
+        Object username = req.getSession().getAttribute("username");
+        if (username != null) {
+            chain.doFilter(req, res);
+        } else  {
+           res.sendRedirect(req.getContextPath() + "/index.jsp");
+        }
+    }
+}
+
+public class CharacterFilter extends HttpFilter {
+    @Override
+    protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
+        req.setCharacterEncoding("UTF-8");
+        res.setCharacterEncoding("UTF-8");
+        chain.doFilter(req, res);
+    }
+}
+
+```
+
+index.jsp
+```jsp
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>  
+<html>  
+<head>  
+    <title>Login</title>  
+</head>  
+<body>  
+    <form action="${pageContext.request.contextPath}/login" method="post">  
+        username: <input name="username" /><br/>  
+        password: <input name="password" /><br/>  
+        <button type="submit">提交</button>  
+    </form></body>  
+</html>
+```
+
+web.xml
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+    <filter>
+        <filter-name>authFilter</filter-name>
+        <filter-class>cc.yiueil.filter.AuthFilter</filter-class>
+    </filter>
+
+    <filter>
+        <filter-name>characterFilter</filter-name>
+        <filter-class>cc.yiueil.filter.CharacterFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>authFilter</filter-name>
+        <url-pattern>/user/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>characterFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+</web-app>
+```
