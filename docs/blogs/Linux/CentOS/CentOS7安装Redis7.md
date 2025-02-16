@@ -1,10 +1,10 @@
 ---
-  date: 2024/3/8 0:09
-  pageClass: blue-archive
-  tags:
-    - 未分类
-  categories:
-    - 未归档
+date: 2024/3/8 0:09
+pageClass: blue-archive
+tags:
+  - Redis
+categories:
+  - Linux
 ---
 
 # CentOS7安装Redis7

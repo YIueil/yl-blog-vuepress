@@ -1,10 +1,10 @@
 ---
-  date: 2023/11/28 23:45
-  pageClass: blue-archive
-  tags:
-    - 未分类
-  categories:
-    - 未归档
+date: 2023/11/28 23:45
+pageClass: blue-archive
+tags:
+  - Nginx
+categories:
+  - Linux
 ---
 
 # CentOS7安装Nginx
