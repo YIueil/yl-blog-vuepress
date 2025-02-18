@@ -344,3 +344,158 @@ mian.jsp
 - 执行后必须调用`chain.doFilter(request, response);`，否则请求将停止。
 > 示例：创建多个Servlet，其中User相关的Servlet需要进行已登录认证，然后所有的Servlet的请求和响应都使用UTF8进行编码统一。
 
+CharacterFilter
+```java
+public class CharacterFilter extends HttpFilter {
+    @Override
+    protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
+        req.setCharacterEncoding("UTF-8");
+        res.setCharacterEncoding("UTF-8");
+        chain.doFilter(req, res);
+    }
+}
+```
+
+AuthFilter
+```java
+public class AuthFilter extends HttpFilter {
+    @Override
+    protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
+        Object username = req.getSession().getAttribute("username");
+        if (username != null) {
+            chain.doFilter(req, res);
+        } else {
+            res.sendRedirect(req.getContextPath() + "/index.jsp");
+        }
+    }
+}
+```
+
+LoginServlet
+```java
+public class LoginServlet extends HttpServlet {
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String username = req.getParameter("username");
+        String password = req.getParameter("password");
+        if (password.equals(username)) {
+            req.getSession().setAttribute("username", username);
+            resp.sendRedirect(req.getContextPath() + "/user/profile");
+        } else {
+            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        }
+    }
+}
+```
+
+UserProfileServlet
+```java
+public class UserProfileServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("text/html");
+        PrintWriter writer = resp.getWriter();
+        writer.println("hello, " + req.getSession().getAttribute("username"));}
+}
+```
+
+web.xml
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+    <filter>
+        <filter-name>authFilter</filter-name>
+        <filter-class>cc.yiueil.filter.AuthFilter</filter-class>
+    </filter>
+
+    <filter>
+        <filter-name>characterFilter</filter-name>
+        <filter-class>cc.yiueil.filter.CharacterFilter</filter-class>
+    </filter>
+
+    <servlet>
+        <servlet-name>loginServlet</servlet-name>
+        <servlet-class>cc.yiueil.servlet.LoginServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>userProfileServlet</servlet-name>
+        <servlet-class>cc.yiueil.servlet.UserProfileServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>loginServlet</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>userProfileServlet</servlet-name>
+        <url-pattern>/user/profile</url-pattern>
+    </servlet-mapping>
+
+    <filter-mapping>
+        <filter-name>authFilter</filter-name>
+        <url-pattern>/user/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>characterFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+</web-app>
+```
+
+index.jsp
+```jsp
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Login</title>
+</head>
+<body>
+    <form action="${pageContext.request.contextPath}/login" method="post">
+        username: <input name="username" /><br/>
+        password: <input name="password" /><br/>
+        <button type="submit">提交</button>
+    </form>
+</body>
+</html>
+```
+
+> 尝试先访问`/user/profile`，会被AuthFilter过滤重定向到登录页。登录成功后再访问`/user/profile`则可以正常返回结果。
+
+## 5 Listener的使用
+`Listener`监听器的作用就是监听某些事件，常见的监听器有：
+- ServletContextListener
+- HttpSessionListener
+- ServletRequestListener
+- ServletRequestAttributeListener
+- ServletContextAttributeListener
+经常会使用到的监听器是`ServletContextListener`，Spring的容器创建就是基于这个监听器的。
+```java
+@Slf4j
+@WebListener
+public class AppListener implements ServletContextListener {
+    @Override
+    public void contextInitialized(ServletContextEvent sce) {
+        // 应用初始化的操作, 可以在这里执行容器创建, 连接池等资源创建等
+        log.debug("msg: {}", "contextInitialized");
+    }
+
+    @Override
+    public void contextDestroyed(ServletContextEvent sce) {
+        // 上下文销毁的监听, 可以用于资源释放
+        log.debug("msg: {}", "contextDestroyed");
+        try {
+            Thread.sleep(3000L);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+
+```
+
