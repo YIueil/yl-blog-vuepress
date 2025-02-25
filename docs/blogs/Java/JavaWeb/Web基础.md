@@ -499,3 +499,544 @@ public class AppListener implements ServletContextListener {
 
 ```
 
+## 6 高级MVC开发模式
+> 传统的开发方式下，一个 servlet 中只能够处理一个请求，大量的业务就需要大量的 servlet。这里通过定制一个`dispatcherServlet`实现统一的请求入口，然后获取控制器 Controller 中的方法来处理具体的业务逻辑。
+
+项目结构：
+```sh
+07-MVC
+\---src
+    \---main
+        +---java
+        |   +---annotation
+        |   |       Controller.java
+        |   |       GetMapping.java
+        |   |       PostMapping.java
+        |   |
+        |   +---controller
+        |   |       LoginController.java
+        |   |       UserController.java
+        |   |
+        |   +---engine
+        |   |       ViewEngine.java
+        |   |
+        |   +---entity
+        |   |       UserEntity.java
+        |   |
+        |   +---result
+        |   |       ModelAndView.java
+        |   |
+        |   \---servlet
+        |       |   DispatcherServlet.java
+        |       |
+        |       \---dispatcher
+        |               GetDispatcher.java
+        |               PostDispatcher.java
+        |
+        \---webapp
+            \---WEB-INF
+                |   web.xml
+                |
+                \---templates
+                        base.html
+                        error-msg.html
+                        login.html
+                        user-profile.html
+```
+
+pom.xml
+```xml
+<dependencies>
+        <dependency>
+            <groupId>cc.yiueil</groupId>
+            <artifactId>00-javaweb-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.17.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.17.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.pebbletemplates</groupId>
+            <artifactId>pebble</artifactId>
+            <version>3.2.3</version>
+        </dependency>
+    </dependencies>
+```
+
+annotation：这个目录下创建控制器注解和请求注解
+```java
+package annotation;  
+  
+import java.lang.annotation.ElementType;  
+import java.lang.annotation.Retention;  
+import java.lang.annotation.RetentionPolicy;  
+import java.lang.annotation.Target;  
+  
+@Retention(RetentionPolicy.RUNTIME)  
+@Target(ElementType.TYPE)  
+public @interface Controller {  
+  
+}
+  
+@Retention(RetentionPolicy.RUNTIME)  
+@Target(ElementType.METHOD)  
+public @interface GetMapping {  
+    String value() default "";  
+}
+
+@Retention(RetentionPolicy.RUNTIME)  
+@Target(ElementType.METHOD)  
+public @interface PostMapping {  
+    String value() default "";  
+}
+```
+
+controller：这个目录下存放具体的控制器
+```java
+@Controller  
+public class LoginController {  
+    @GetMapping("/")  
+    public ModelAndView index(HttpServletRequest request, HttpServletResponse response) {  
+        HttpSession session = request.getSession();  
+        if (session.getAttribute("user") != null) {  
+            Map<String, Object> result = new HashMap<>();  
+            Object attribute = session.getAttribute("user");  
+            result.put("user", attribute);  
+            return new ModelAndView(result, "user-profile.html");  
+        }  
+        // 未登录，跳转到登录页:  
+        return new ModelAndView("login.html");  
+    }  
+  
+    @PostMapping("/login")  
+    public ModelAndView login(  
+            UserEntity userEntity,  
+            HttpServletRequest request,  
+            HttpServletResponse response) {  
+        Map<String, Object> result = new HashMap<>();  
+        if (userEntity.getPassword().equals(userEntity.getName())) {  
+            HttpSession session = request.getSession();  
+            session.setAttribute("user", userEntity);  
+            result.put("user", userEntity);  
+            return new ModelAndView(result, "user-profile.html");  
+        }  
+        result.put("status", "fail");  
+        result.put("errorMsg", "账号或密码错误");  
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);  
+        return new ModelAndView(result, "error-msg.html");  
+    }  
+}
+
+@Controller  
+public class UserController {  
+    @GetMapping("/user/profile")  
+    public ModelAndView profile(HttpServletResponse response, HttpSession session) {  
+        UserEntity userEntity = (UserEntity) session.getAttribute("user");  
+        if (userEntity == null) {  
+            // 未登录，跳转到登录页:  
+            return new ModelAndView("redirect:/");  
+        }  
+        Map<String, Object> userMap = new HashMap<>();  
+        userMap.put("user", userEntity);  
+        return new ModelAndView(userMap, "user-profile.html");
+    }  
+}
+```
+
+entity和model下放实体对象：
+```java
+@Data  
+public class UserEntity implements Serializable {  
+    private int id;  
+    private String name;  
+    private String password;  
+}
+
+@Getter
+@Setter
+public class ModelAndView {
+    private Map<String, Object> model;
+    private String view;
+
+    public ModelAndView(String view) {
+        this.view = view;
+    }
+
+    public ModelAndView(Map<String, Object> model, String view) {
+        this.model = model;
+        this.view = view;
+    }
+}
+```
+
+servlet：这个包下放最关键的`dispatcherServlet`
+```java
+// 所有的请求都由这个Servlet接收
+@WebServlet(urlPatterns = "/*")
+public class DispatcherServlet extends HttpServlet {
+    private final Map<String, GetDispatcher> getMappings = new HashMap<>();
+    private final Map<String, PostDispatcher> postMappings = new HashMap<>();
+
+    private ViewEngine viewEngine;
+
+    @Override
+    public void init() {
+        try {
+            // 扫描控制器中的 Dispatcher
+            scanControllerDispatcher();
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException |
+                 ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        this.viewEngine = new ViewEngine(getServletContext());
+    }
+
+    private void scanControllerDispatcher() throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, ClassNotFoundException {
+        String packageName = "controller";
+        // 获取包下的所有类
+        List<Class<?>> classes = getClassesInPackage(packageName);
+
+        // 反射创建实例
+        for (Class<?> clazz : classes) {
+            if (!clazz.isAnnotationPresent(Controller.class)) {
+                continue;
+            }
+            Object instance = clazz.getDeclaredConstructor().newInstance();
+            Method[] declaredMethods = clazz.getDeclaredMethods();
+            ObjectMapper objectMapper = new ObjectMapper();
+            for (Method method : declaredMethods) {
+                if (method.isAnnotationPresent(GetMapping.class)) {
+                    GetDispatcher dispatcher = new GetDispatcher();
+                    GetMapping getMapping = method.getAnnotation(GetMapping.class);
+                    String path = getMapping.value();
+                    dispatcher.setMethod(method);
+                    dispatcher.setInstance(instance);
+                    dispatcher.setParameterClasses(method.getParameterTypes());
+                    dispatcher.setParameterNames(Arrays.stream(method.getParameters()).map(Parameter::getName).toArray(String[]::new));
+                    this.getMappings.put(path, dispatcher);
+                } else if (method.isAnnotationPresent(PostMapping.class)) {
+                    PostDispatcher dispatcher = new PostDispatcher();
+                    PostMapping postMapping = method.getAnnotation(PostMapping.class);
+                    String path = postMapping.value();
+                    dispatcher.setMethod(method);
+                    dispatcher.setInstance(instance);
+                    dispatcher.setParameterClasses(method.getParameterTypes());
+                    dispatcher.setObjectMapper(objectMapper);
+                    this.postMappings.put(path, dispatcher);
+                }
+            }
+        }
+    }
+
+    private List<Class<?>> getClassesInPackage(String packageName) throws ClassNotFoundException {
+        List<Class<?>> classes = new ArrayList<>();
+        // 将包名转换为路径
+        String path = packageName.replace('.', '/');
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        URL resource = classLoader.getResource(path);
+
+        if (resource == null) {
+            throw new IllegalArgumentException("Package not found: " + packageName);
+        }
+
+        File directory = new File(resource.getFile());
+        if (directory.exists()) {
+            // 扫描目录下的所有文件
+            for (File file : directory.listFiles()) {
+                if (file.isFile() && file.getName().endsWith(".class")) {
+                    // 去掉文件后缀，获取类名
+                    String className = packageName + '.' + file.getName().substring(0, file.getName().length() - 6);
+                    // 加载类
+                    Class<?> clazz = Class.forName(className);
+                    classes.add(clazz);
+                }
+            }
+        } else {
+            throw new IllegalArgumentException("Directory not found: " + directory.getAbsolutePath());
+        }
+
+        return classes;
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("text/html");
+        resp.setCharacterEncoding("UTF-8");
+        String path = req.getRequestURI().substring(req.getContextPath().length());
+        // 根据路径查找GetDispatcher:
+        GetDispatcher dispatcher = this.getMappings.get(path);
+        if (dispatcher == null) {
+            // 未找到返回404:
+            resp.sendError(404);
+            return;
+        }
+        // 调用Controller方法获得返回值:
+        ModelAndView modelAndView;
+        try {
+            modelAndView = dispatcher.invoke(req, resp);
+        } catch (InvocationTargetException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+        // 允许返回null:
+        if (modelAndView == null) {
+            return;
+        }
+        // 处理重定向
+        String view = modelAndView.getView();
+        if (view.startsWith("redirect:")) {
+            resp.sendRedirect(req.getContextPath() + view.substring("redirect:".length()));
+        } else {
+            // 将模板引擎渲染的内容写入响应:
+            PrintWriter pw = resp.getWriter();
+            this.viewEngine.render(modelAndView, pw);
+            pw.flush();
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("text/html");
+        resp.setCharacterEncoding("UTF-8");
+        String path = req.getRequestURI().substring(req.getContextPath().length());
+        PostDispatcher postDispatcher = this.postMappings.get(path);
+        if (postDispatcher == null) {
+            resp.sendError(404);
+            return;
+        }
+        // 调用Controller方法获得返回值:
+        ModelAndView modelAndView;
+        try {
+            modelAndView = postDispatcher.invoke(req, resp);
+        } catch (InvocationTargetException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+        // 允许返回null:
+        if (modelAndView == null) {
+            return;
+        }
+
+        // 处理重定向
+        String view = modelAndView.getView();
+        if (view.startsWith("redirect:")) {
+            resp.sendRedirect(req.getContextPath() + view.substring("redirect:".length()));
+        } else {
+            // 将模板引擎渲染的内容写入响应:
+            PrintWriter pw = resp.getWriter();
+            this.viewEngine.render(modelAndView, pw);
+            pw.flush();
+        }
+    }
+}
+```
+
+```java
+@Getter
+@Setter
+public class GetDispatcher {
+    // Controller实例
+    private Object instance;
+    // Controller方法
+    private Method method;
+    // 方法参数名称
+    private String[] parameterNames;
+    // 方法参数类型
+    private Class<?>[] parameterClasses;
+
+    public ModelAndView invoke(HttpServletRequest request, HttpServletResponse response) throws InvocationTargetException, IllegalAccessException {
+        Object[] arguments = new Object[parameterClasses.length];
+        for (int i = 0; i < parameterClasses.length; i++) {
+            String parameterName = parameterNames[i];
+            Class<?> parameterClass = parameterClasses[i];
+            if (parameterClass == HttpServletRequest.class) {
+                arguments[i] = request;
+            } else if (parameterClass == HttpServletResponse.class) {
+                arguments[i] = response;
+            } else if (parameterClass == HttpSession.class) {
+                arguments[i] = request.getSession();
+            } else if (parameterClass == int.class) {
+                arguments[i] = Integer.valueOf(getOrDefault(request, parameterName, "0"));
+            } else if (parameterClass == long.class) {
+                arguments[i] = Long.valueOf(getOrDefault(request, parameterName, "0"));
+            } else if (parameterClass == boolean.class) {
+                arguments[i] = Boolean.valueOf(getOrDefault(request, parameterName, "false"));
+            } else if (parameterClass == String.class) {
+                arguments[i] = getOrDefault(request, parameterName, "");
+            } else {
+                throw new RuntimeException("Missing handler for type: " + parameterClass);
+            }
+        }
+        return (ModelAndView) this.method.invoke(this.instance, arguments);
+    }
+
+    private String getOrDefault(HttpServletRequest request, String name, String defaultValue) {
+        String s = request.getParameter(name);
+        return s == null ? defaultValue : s;
+    }
+}
+
+@Getter
+@Setter
+public class PostDispatcher {
+    // Controller实例
+    private Object instance;
+    // Controller方法
+    private Method method;
+    // 方法参数类型
+    private Class<?>[] parameterClasses;
+    // JSON映射
+    private ObjectMapper objectMapper;
+
+    public ModelAndView invoke(HttpServletRequest request, HttpServletResponse response) throws IOException, InvocationTargetException, IllegalAccessException {
+        Object[] arguments = new Object[parameterClasses.length];
+        for (int i = 0; i < parameterClasses.length; i++) {
+            Class<?> parameterClass = parameterClasses[i];
+            if (parameterClass == HttpServletRequest.class) {
+                arguments[i] = request;
+            } else if (parameterClass == HttpServletResponse.class) {
+                arguments[i] = response;
+            } else if (parameterClass == HttpSession.class) {
+                arguments[i] = request.getSession();
+            } else {
+                // 读取JSON并解析为JavaBean:
+                BufferedReader reader = request.getReader();
+                arguments[i] = this.objectMapper.readValue(reader, parameterClass);
+            }
+        }
+        return (ModelAndView) this.method.invoke(instance, arguments);
+    }
+}
+```
+
+templates：这个目录下放页面的模板文件，这里采用的`pebble`模板引擎，简单实现登录，登录成功，用户信息页面。
+
+base.html
+```html
+<html>
+<head>
+    <title>{% block title %}My Website{% endblock %}</title>
+</head>
+<body>
+<div id="content">
+    {% block content %}{% endblock %}
+</div>
+<div id="footer">
+    {% block footer %}
+    Copyright 2018
+    {% endblock %}
+</div>
+</body>
+</html>
+```
+
+login.html
+```html
+{% extends "base.html" %}
+
+{% block title %} Home {% endblock %}
+
+{% block content %}
+<h1> login </h1>
+
+<form id="loginForm">
+    username: <input name="name"/>
+    password: <input name="password"/>
+    <input type="submit" value="提交">
+</form>
+<div id="error-container"></div>
+<script>
+    // 拦截表单提交事件
+    function handleSubmit(event) {
+        event.preventDefault(); // 阻止表单默认提交行为
+
+        // 获取表单数据
+        const formData = {
+            name: document.querySelector('input[name="name"]').value,
+            password: document.querySelector('input[name="password"]').value
+        };
+
+        // 发送 JSON 数据
+        fetch('login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json' // 设置请求头为 JSON
+            },
+            body: JSON.stringify(formData) // 将表单数据转换为 JSON 字符串
+        })
+            .then(response => {
+                // 保存响应对象的状态
+                const isResponseOk = response.ok;
+                return response.text().then(data => {
+                    return {isResponseOk, data};
+                });
+            })
+            .then(({isResponseOk, data}) => {
+                if (isResponseOk) {
+                    console.log('Success:', data);
+                    // 在这里处理响应数据
+                    document.getElementsByTagName('body')[0].innerHTML = data;
+                } else {
+                    // 处理错误响应
+                    console.error('Error:', data);
+                    document.getElementById('error-container').innerHTML = data;
+                }
+            })
+            .catch(error => {
+                // 处理网络错误或其他异常
+                console.error('Network Error:', error);
+                document.getElementById('error-container').innerHTML = '网络错误，请稍后再试。';
+            });
+    }
+
+    // 绑定表单提交事件
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('loginForm').addEventListener('submit', handleSubmit);
+    });
+</script>
+
+{% endblock %}
+```
+
+error-msg.html
+```html
+<h3 style="color: red"> {{ errorMsg }} </h3>
+```
+
+user-profile.html
+```html
+{% extends "base.html" %}
+
+{% block title %} Home {% endblock %}
+
+{% block content %}
+<h1> UserProfile </h1>
+<p> My name is {{ user.name }}.</p>
+<p> My pwd is {{ user.password }}.</p>
+{% endblock %}
+```
+
+项目后续的开发只需要在controller目录下创建控制器，使用注解标注即可实现新的业务逻辑。
+**测试：**
+1. 先访问`/user/profile`页面，没有登录，跳转到登录页面
+2. 输出不相同的账号密码，页面渲染错误提示
+3. 输出相同的账号密码，登录成功，页面跳转到`/user/profile`
