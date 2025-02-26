@@ -30,7 +30,7 @@ spring属于轻量级框架:
   - 读取额外properties文件定义:UserService=cn.yiueil.UserServiceImpl替换全限命名  
 
   
-## 2 Spring IOC 
+## 2 Spring IoC 
 ### 2.1 创建一个Spring工厂
 
 ### 2.2 属性注入Injection
@@ -107,6 +107,17 @@ public class PokemonBeanPostProcessor implements BeanPostProcessor {
 ```java
 <bean id="pokemon" class="cn.yiueil.entity.Pokemon" destroy-method="myDestroy">
 ```
+
+### 2.5 IoC总结
+IoC容器（控制反转）主要的作用是控制反转。
+1. 什么是容器？
+	提供一系列组件运行的必要基础环境的平台，如tomcat是servlet的运行环境，docker是linux系统运行的运行环境。
+2. 控制反转的好处？
+	1. 组件调用方不关心组件的初始化、销毁等生命周期管理。如依赖database的组件不需要关系具体的database的实例创建，注入即可用。
+	2. 共享组件变得简单，共享组件只需要从容器中获取即可。
+	3. 便于测试，测试某个组件时只需要注入必要组件即可。
+
+
 ## 3 Spring AOP   
 
 ### 3.1 面向切面编程概念
