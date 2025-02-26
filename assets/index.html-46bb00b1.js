@@ -1,0 +1,1 @@
+const a=JSON.parse('{"key":"v-68a91c8b","path":"/categories/Java/SSO/CAS/1/","title":"","lang":"en-US","frontmatter":{"layout":"Categories"},"headers":[],"git":{},"filePathRelative":null}');export{a as data};
