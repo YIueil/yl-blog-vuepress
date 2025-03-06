@@ -118,3 +118,45 @@ public class No01Application {
 ```
 
 最后页面访问`/`和`/hello`即可看到效果。
+
+## 2 SpringBoot 多环境配置
+项目开发的过程中存在多种环境, SpringBoot能够支持这种多环境配置的情况。
+- spring.profiles.active: 配置当前启用的环境
+- spring.profiles.group: 分组配置
+项目结构:
+```sh
+|   pom.xml
+|
+\---src
+    \---main
+        +---java
+        |   \---cc
+        |       \---yiueil
+        |               No02Application.java
+        |
+        \---resources
+            |   application.yml
+            |
+            \---config
+                    application-dev-db.yml
+                    application-dev.yml
+                    application-local-db.yml
+                    application-local.yml
+
+```
+
+示例配置, 支持`local`和`dev`配置的切换:
+```yaml
+spring:
+  application:
+    name: ${spring.profiles.active}-no-02
+  profiles:
+    active: dev
+    group:
+      local: local, local-db
+      dev: dev, dev-db
+server:
+  port: 9000
+```
+
+## 3 
