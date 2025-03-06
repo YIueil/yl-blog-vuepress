@@ -16,9 +16,13 @@ categories:
 > -DskipTests 跳过测试阶段
 > -Dmaven.test.skip 和测试类的编译和跳过测试阶段
 
+### 清理并安装到本地仓库
+部分项目启动需要先install, 这时候可以执行`mvn clean install -Dmaven.test.skip`。
+
 ## 高级命令
 
 ### 将 Jar 包发布到本地仓库
+将一些特殊的jar包直接install到本地仓库。
 >-Dfile 指定文件
 >-DgroupId 指定groupId
 >-DartifactId 指定artifactId
