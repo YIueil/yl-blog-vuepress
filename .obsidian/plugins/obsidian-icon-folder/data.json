@@ -6,11 +6,11 @@
     "emojiStyle": "native",
     "iconColor": null,
     "recentlyUsedIcons": [
+      "FiTool",
+      "FiShield",
+      "LiPen",
       "⭐",
-      "SiSpringboot",
-      "FabWindows",
-      "SiWindows10",
-      "CoChat"
+      "SiSpringboot"
     ],
     "recentlyUsedIconsSize": 5,
     "rules": [],
@@ -71,5 +71,8 @@
   "docs/blogs/Java/加密解密": "LiKey",
   "docs/blogs/Java/JavaWeb": "BoBxlPinterestAlt",
   "docs/blogs/AI": "CoChat",
-  "docs/blogs/Windows": "FabWindows"
+  "docs/blogs/Windows": "FabWindows",
+  "docs/blogs/Java/Log": "LiPen",
+  "docs/blogs/Java/SSO": "FiShield",
+  "docs/blogs/Java/Util": "FiTool"
 }
