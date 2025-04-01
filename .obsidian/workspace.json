@@ -4,17 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "5bb5f9b102711d2d",
+        "id": "53a5adaacf131e18",
         "type": "tabs",
         "children": [
           {
-            "id": "901c146950cfd8e3",
+            "id": "40d6bdf6de4b67f8",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "docs/blogs/DataBase/数据库相关技术/数据库连接池总结.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "新标签页"
+              "title": "数据库连接池总结"
             }
           }
         ]
@@ -170,8 +174,16 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "364f0fd5dd62cf11",
+  "active": "40d6bdf6de4b67f8",
   "lastOpenFiles": [
+    "docs/draft/账号发布流程.md",
+    "docs/blogs/DataBase/数据库相关技术/数据库连接池总结.md",
+    "docs/blogs/DataBase/数据库相关技术",
+    "docs/draft/CentOS日常运维命令.md",
+    "docs/draft/CrossUI多实例表单绑定实现.md",
+    "docs/draft/DAP4.3业务应用获取材料报表更新DAP表问题.md",
+    "docs/blogs/YIueil/个人简历.md",
+    "docs/blogs/Java/JavaWeb/Web基础.md",
     "docs/blogs/Git/Github/将本地项目推送到已有的GitHub仓库.md",
     "docs/blogs/Git/Github/通过SSH和GitHub交互.md",
     "docs/blogs/AI/DeepSeek/DeepSeek接入记录.md",
@@ -179,7 +191,6 @@
     "docs/blogs/AI/DeepSeek",
     "docs/blogs/Spring/SpringBoot/SpringBoot学习记录.md",
     "docs/blogs/Java/Log/Slf4j应用.md",
-    "docs/blogs/YIueil/个人简历.md",
     "docs/blogs/Java/JDK/正则表达式学习记录.md",
     "docs/blogs/Spring/SpringBoot/SpringBoot-扩展",
     "docs/blogs/Spring/SpringBoot",
@@ -193,14 +204,8 @@
     "docs/blogs/Git/Git代理设置.md",
     "docs/blogs/Git/Git基础学习.md",
     "docs/blogs/Git/代码提交备注规范.md",
-    "docs/blogs/Java/JavaWeb/Web基础.md",
     "docs/blogs/Spring/SpringMVC/SpringMVC学习记录.md",
     "docs/blogs/未分类/基于Frp的内网穿透运用.md",
-    "docs/blogs/AI/语言模型入门.md",
-    "README.md",
-    "conflict-files-obsidian-git.md",
-    "Web基础.md",
-    "docs/blogs/Linux/CentOS/CentOS7安装Nginx.md",
     "docs/blogs/Linux/Ubuntu",
     "docs/blogs/Linux/CentOS",
     "Pic/1738981721894.png",
@@ -210,7 +215,6 @@
     "docs/blogs/Java/Log",
     "docs/blogs/Java/JavaWeb",
     "Pic/Pasted image 20241225193345.png",
-    "docs/blogs/前端基础/ESLint",
     "Pic/Pasted image 20241225220527.png",
     "Pic/Pasted image 20241225201849.png",
     "Pic/Pasted image 20241225200628.png",
