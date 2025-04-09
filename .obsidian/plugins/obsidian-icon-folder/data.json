@@ -6,11 +6,11 @@
     "emojiStyle": "native",
     "iconColor": null,
     "recentlyUsedIcons": [
+      "TiNetwork",
       "FiTool",
       "FiShield",
       "LiPen",
-      "⭐",
-      "SiSpringboot"
+      "⭐"
     ],
     "recentlyUsedIconsSize": 5,
     "rules": [],
@@ -74,5 +74,6 @@
   "docs/blogs/Windows": "FabWindows",
   "docs/blogs/Java/Log": "LiPen",
   "docs/blogs/Java/SSO": "FiShield",
-  "docs/blogs/Java/Util": "FiTool"
+  "docs/blogs/Java/Util": "FiTool",
+  "docs/blogs/网络工程": "TiNetwork"
 }
