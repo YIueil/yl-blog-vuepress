@@ -6,11 +6,11 @@
     "emojiStyle": "native",
     "iconColor": null,
     "recentlyUsedIcons": [
+      "SiEslint",
       "TiNetwork",
       "FiTool",
       "FiShield",
-      "LiPen",
-      "⭐"
+      "LiPen"
     ],
     "recentlyUsedIconsSize": 5,
     "rules": [],
@@ -75,5 +75,6 @@
   "docs/blogs/Java/Log": "LiPen",
   "docs/blogs/Java/SSO": "FiShield",
   "docs/blogs/Java/Util": "FiTool",
-  "docs/blogs/网络工程": "TiNetwork"
+  "docs/blogs/网络工程": "TiNetwork",
+  "docs/blogs/前端基础/ESLint": "SiEslint"
 }

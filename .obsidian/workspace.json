@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "docs/blogs/网络工程/CSRF跨域请求伪造.md",
+                "file": "docs/blogs/前端基础/ESLint/ESLint自用规则集合.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "CSRF跨域请求伪造"
+              "title": "ESLint自用规则集合"
             }
           }
         ]
@@ -53,7 +53,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "flow",
+                "query": "flex",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -174,14 +174,17 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "bd1cefee4e7132ac",
+  "active": "364f0fd5dd62cf11",
   "lastOpenFiles": [
+    "docs/blogs/未分类/基于Frp的内网穿透运用.md",
+    "docs/blogs/未分类/自用常用软件.md",
+    "docs/blogs/前端基础/CSS/Flex布局.md",
+    "docs/blogs/YIueil/个人简历.md",
     "docs/blogs/网络工程/CSRF跨域请求伪造.md",
     "docs/blogs/Spring/SpringBoot/SpringBoot-扩展/SpringSecurity和JWT入门应用.md",
     "docs/blogs/网络工程",
     "docs/blogs/Spring/SpringBoot/SpringBoot-扩展/SpringBoot使用Actuator.md",
     "Pic/ApplicationLoginFailHandler.java",
-    "docs/blogs/前端基础/CSS/Flex布局.md",
     "docs/blogs/AI/语言模型入门.md",
     "docs/blogs/AI/DeepSeek/DeepSeek接入记录.md",
     "docs/blogs/DataBase/数据库相关技术/数据库连接池总结.md",
@@ -190,7 +193,6 @@
     "docs/draft/CentOS日常运维命令.md",
     "docs/draft/CrossUI多实例表单绑定实现.md",
     "docs/draft/DAP4.3业务应用获取材料报表更新DAP表问题.md",
-    "docs/blogs/YIueil/个人简历.md",
     "docs/blogs/Java/JavaWeb/Web基础.md",
     "docs/blogs/Git/Github/将本地项目推送到已有的GitHub仓库.md",
     "docs/blogs/Git/Github/通过SSH和GitHub交互.md",
@@ -206,8 +208,6 @@
     "docs/blogs/Spring/Spring/Spring学习记录.md",
     "docs/blogs/Spring/Spring/Spring学习记录-扩展/基于AspectJ注解实现Spring动态代理.md",
     "docs/blogs/Spring/Spring/Spring学习记录-扩展/整合篇/Spring整合Mybatis.md",
-    "docs/blogs/Git/Git常用命令.md",
-    "docs/blogs/Git/Git代理设置.md",
     "docs/blogs/Linux/Ubuntu",
     "docs/blogs/Linux/CentOS",
     "Pic/1738981721894.png",
