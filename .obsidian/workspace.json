@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "docs/blogs/前端基础/ESLint/ESLint自用规则集合.md",
+                "file": "docs/blogs/Java/JavaWeb/JavaWeb-扩展/JavaWeb应用使用自签名证书迁移到HTTPS.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "ESLint自用规则集合"
+              "title": "JavaWeb应用使用自签名证书迁移到HTTPS"
             }
           }
         ]
@@ -53,7 +53,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "flex",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -174,8 +174,14 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "364f0fd5dd62cf11",
+  "active": "bd1cefee4e7132ac",
   "lastOpenFiles": [
+    "docs/blogs/Git/Github/通过SSH和GitHub交互.md",
+    "docs/blogs/Git/Github/将本地项目推送到已有的GitHub仓库.md",
+    "docs/blogs/Java/JavaWeb/JavaWeb-扩展/JavaWeb应用使用自签名证书迁移到HTTPS.md",
+    "docs/blogs/Java/JavaWeb/Web基础.md",
+    "docs/blogs/Java/JavaWeb/JavaWeb-扩展",
+    "docs/blogs/前端基础/ESLint/ESLint自用规则集合.md",
     "docs/blogs/未分类/基于Frp的内网穿透运用.md",
     "docs/blogs/未分类/自用常用软件.md",
     "docs/blogs/前端基础/CSS/Flex布局.md",
@@ -193,9 +199,6 @@
     "docs/draft/CentOS日常运维命令.md",
     "docs/draft/CrossUI多实例表单绑定实现.md",
     "docs/draft/DAP4.3业务应用获取材料报表更新DAP表问题.md",
-    "docs/blogs/Java/JavaWeb/Web基础.md",
-    "docs/blogs/Git/Github/将本地项目推送到已有的GitHub仓库.md",
-    "docs/blogs/Git/Github/通过SSH和GitHub交互.md",
     "docs/blogs/AI/DeepSeek",
     "docs/blogs/Spring/SpringBoot/SpringBoot学习记录.md",
     "docs/blogs/Java/Log/Slf4j应用.md",
@@ -206,14 +209,11 @@
     "docs/blogs/Java/Maven/Maven配置指南.md",
     "docs/blogs/Java/Maven/Nexus/通过命令行发布war或jar到nexus.md",
     "docs/blogs/Spring/Spring/Spring学习记录.md",
-    "docs/blogs/Spring/Spring/Spring学习记录-扩展/基于AspectJ注解实现Spring动态代理.md",
-    "docs/blogs/Spring/Spring/Spring学习记录-扩展/整合篇/Spring整合Mybatis.md",
     "docs/blogs/Linux/Ubuntu",
     "docs/blogs/Linux/CentOS",
     "Pic/1738981721894.png",
     "Pic/Pasted image 20250208102344.png",
     "docs/blogs/AI",
-    "docs/blogs/Java/加密解密",
     "Pic/Pasted image 20241225193345.png",
     "Pic/Pasted image 20241225220527.png",
     "Pic/Pasted image 20241225201849.png",
