@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "docs/blogs/Linux/Ubuntu/Ubuntu24的SSH配置.md",
+                "file": "docs/blogs/Linux/实战操作/Linux下进行目录同步操作.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Ubuntu24的SSH配置"
+              "title": "Linux下进行目录同步操作"
             }
           }
         ]
@@ -177,10 +177,13 @@
   "active": "b2c4c10a2dc76c5e",
   "lastOpenFiles": [
     "docs/blogs/Linux/概念知识/SSH密钥对.md",
-    "docs/blogs/Linux/Ubuntu/Ubuntu24的SSH配置.md",
-    "docs/blogs/Linux/Ubuntu/Ubuntu24安装Vsftpd.md",
-    "docs/blogs/Linux/实战操作/Linux修改yum源.md",
     "docs/blogs/Linux/实战操作/Linux下进行目录同步操作.md",
+    "docs/blogs/Linux/实战操作/Linux修改yum源.md",
+    "docs/blogs/Linux/Ubuntu/Ubuntu24安装Vsftpd.md",
+    "docs/blogs/Linux/Ubuntu/Ubuntu24的SSH配置.md",
+    "docs/blogs/Linux/CentOS/CentOS7安装Nginx.md",
+    "docs/blogs/Linux/CentOS/CentOS7中安装Vsftpd.md",
+    "docs/blogs/Linux/CentOS/CentOS7安装Redis7.md",
     "docs/blogs/Git/Github/通过SSH和GitHub交互.md",
     "docs/blogs/Linux/未命名.md",
     "docs/blogs/Linux/概念知识",
@@ -204,10 +207,7 @@
     "Pic/ApplicationLoginFailHandler.java",
     "docs/blogs/AI/语言模型入门.md",
     "docs/blogs/AI/DeepSeek/DeepSeek接入记录.md",
-    "docs/blogs/DataBase/数据库相关技术/数据库连接池总结.md",
-    "docs/draft/账号发布流程.md",
     "docs/blogs/DataBase/数据库相关技术",
-    "docs/draft/CentOS日常运维命令.md",
     "docs/blogs/AI/DeepSeek",
     "docs/blogs/Spring/SpringBoot/SpringBoot-扩展",
     "docs/blogs/Spring/SpringBoot",
