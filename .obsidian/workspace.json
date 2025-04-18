@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "7c0b23414bc88975",
+        "id": "d0e9b6d94ee32d45",
         "type": "tabs",
         "children": [
           {
-            "id": "bd1cefee4e7132ac",
+            "id": "b2c4c10a2dc76c5e",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "docs/blogs/网络工程/重放攻击.md",
+                "file": "docs/blogs/Linux/Ubuntu/Ubuntu24的SSH配置.md",
                 "mode": "source",
-                "source": true
+                "source": false
               },
               "icon": "lucide-file",
-              "title": "重放攻击"
+              "title": "Ubuntu24的SSH配置"
             }
           }
         ]
@@ -174,21 +174,29 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "bd1cefee4e7132ac",
+  "active": "b2c4c10a2dc76c5e",
   "lastOpenFiles": [
-    "docs/blogs/网络工程/CSRF跨域请求伪造.md",
+    "docs/blogs/Linux/概念知识/SSH密钥对.md",
+    "docs/blogs/Linux/Ubuntu/Ubuntu24的SSH配置.md",
+    "docs/blogs/Linux/Ubuntu/Ubuntu24安装Vsftpd.md",
+    "docs/blogs/Linux/实战操作/Linux修改yum源.md",
+    "docs/blogs/Linux/实战操作/Linux下进行目录同步操作.md",
+    "docs/blogs/Git/Github/通过SSH和GitHub交互.md",
+    "docs/blogs/Linux/未命名.md",
+    "docs/blogs/Linux/概念知识",
+    "docs/blogs/Linux/实战操作",
+    "docs/blogs/前端基础/CSS/Flex布局.md",
     "docs/blogs/网络工程/重放攻击.md",
+    "docs/blogs/网络工程/CSRF跨域请求伪造.md",
     "docs/blogs/Java/加密解密/加解密总结.md",
     "docs/blogs/Java/加密解密/国密算法对应关系.md",
     "docs/blogs/Java/JavaWeb/JavaWeb-扩展/JavaWeb应用使用自签名证书迁移到HTTPS.md",
-    "docs/blogs/Git/Github/通过SSH和GitHub交互.md",
     "docs/blogs/Git/Github/将本地项目推送到已有的GitHub仓库.md",
     "docs/blogs/Java/JavaWeb/Web基础.md",
     "docs/blogs/Java/JavaWeb/JavaWeb-扩展",
     "docs/blogs/前端基础/ESLint/ESLint自用规则集合.md",
     "docs/blogs/未分类/基于Frp的内网穿透运用.md",
     "docs/blogs/未分类/自用常用软件.md",
-    "docs/blogs/前端基础/CSS/Flex布局.md",
     "docs/blogs/YIueil/个人简历.md",
     "docs/blogs/Spring/SpringBoot/SpringBoot-扩展/SpringSecurity和JWT入门应用.md",
     "docs/blogs/网络工程",
@@ -200,20 +208,12 @@
     "docs/draft/账号发布流程.md",
     "docs/blogs/DataBase/数据库相关技术",
     "docs/draft/CentOS日常运维命令.md",
-    "docs/draft/CrossUI多实例表单绑定实现.md",
-    "docs/draft/DAP4.3业务应用获取材料报表更新DAP表问题.md",
     "docs/blogs/AI/DeepSeek",
-    "docs/blogs/Spring/SpringBoot/SpringBoot学习记录.md",
-    "docs/blogs/Java/Log/Slf4j应用.md",
-    "docs/blogs/Java/JDK/正则表达式学习记录.md",
     "docs/blogs/Spring/SpringBoot/SpringBoot-扩展",
     "docs/blogs/Spring/SpringBoot",
-    "docs/blogs/Java/Maven/Maven常用命令.md",
     "docs/blogs/Linux/Ubuntu",
-    "docs/blogs/Linux/CentOS",
     "Pic/1738981721894.png",
     "Pic/Pasted image 20250208102344.png",
-    "docs/blogs/AI",
     "Pic/Pasted image 20241225193345.png",
     "Pic/Pasted image 20241225220527.png",
     "Pic/Pasted image 20241225201849.png",
