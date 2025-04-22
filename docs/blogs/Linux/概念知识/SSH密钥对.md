@@ -56,6 +56,15 @@ The key's randomart image is:
 ```
 
 ## 3 服务器存储信任的密钥公钥
+### 方法1：客户端直接通过命令上传到服务端
+>把本地的ssh公钥文件安装到远程主机对应的账户下
+
+```sh
+# ssh-copy-id [-i [identity_file]] [user@]machine
+ssh-copy-id -i ~/.ssh/id_rsa.pub user@server
+```
+
+### 方法2：进入服务端，直接修改服务端的公钥内容
 >修改~/.ssh/authorized_keys文件，将公钥加入到这个文件中。每行一个以适配多个设备的公钥。
 
 ```bash
