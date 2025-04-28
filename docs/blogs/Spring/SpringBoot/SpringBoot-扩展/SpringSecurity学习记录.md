@@ -36,7 +36,7 @@ AnonymousAuthenticationFilter,
 ExceptionTranslationFilter,
 AuthorizationFilter
 ```
-![17457392345501745739234513.png](https://gitee.com/bee-eater/bee-eater/raw/master/pic/17457392345501745739234513.png)
+![image.png](https://s2.loli.net/2025/04/28/uOEZnlxkHwm2Q8v.png)
 
 #### 过滤器解读
 >以下过滤器将按照顺序执行，带有\*的过滤器为重要内容，进行源码解读。
