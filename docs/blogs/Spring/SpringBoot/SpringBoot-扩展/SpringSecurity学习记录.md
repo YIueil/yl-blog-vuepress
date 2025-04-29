@@ -469,11 +469,306 @@ public class SecurityConfig {
 - 使用`jwt`进行会话管理。
 - 集成`redis`以及`Mybatis`。
 - 未认证或授权的异常处理，使用`ResultVO`实现返回。
-#### 3.3.1 自定义结果返回逻辑
-对于登录授权成功和失败的两个Filter进行自定义逻辑。
-#### 3.3.2 
-### 3.4 登出处理
+整体项目结构：
+```sh
++---src
+|   +---main
+|   |   +---java
+|   |   |   \---cc
+|   |   |       \---yiueil
+|   |   |           |   JwtApplication.java
+|   |   |           |
+|   |   |           +---config
+|   |   |           |       RedisConfiguration.java
+|   |   |           |       SecurityConfiguration.java
+|   |   |           |
+|   |   |           +---controller
+|   |   |           |       LoggedController.java
+|   |   |           |
+|   |   |           +---filter
+|   |   |           |       JwtFilter.java
+|   |   |           |
+|   |   |           +---handler
+|   |   |           |       CustomAccessDeniedHandler.java
+|   |   |           |       CustomAuthenticationEntryPoint.java
+|   |   |           |
+|   |   |           +---mapper
+|   |   |           |       UserMapper.java
+|   |   |           |
+|   |   |           +---model
+|   |   |           |   +---dto
+|   |   |           |   |       UserDTO.java
+|   |   |           |   |       UserLoginDTO.java
+|   |   |           |   |
+|   |   |           |   +---entity
+|   |   |           |   |       UserEntity.java
+|   |   |           |   |       UserPrincipalEntity.java
+|   |   |           |   |
+|   |   |           |   \---vo
+|   |   |           |           ResultVO.java
+|   |   |           |
+|   |   |           +---service
+|   |   |           |       UserService.java
+|   |   |           |
+|   |   |           \---utils
+|   |   |                   JsonUtils.java
+|   |   |                   JwtUtils.java
+|   |   |
+|   |   \---resources
+|   |       |   application.yml
+|   |       |
+|   |       \---mapper-xml
+|   |               UserMapper.xml
+|   |
+|   \---test
+|       \---java
+|           \---cc
+|               \---yiueil
+|                       JwtApplicationTest.java
+```
+#### 3.3.1 添加SpringSecurity配置类
+默认的请求逻辑是前后端不分离的，请求的响应方式springsecurity会响应在生成的page中，而现阶段前后端分离是主流，因此需要改造结果返回方式，使用json进行数据交互。
+- 默认的所有的请求都进行授权拦截，排除登录地址。
+- 添加`jwtFilter`过滤器，实现对于已经授权部分的认证。
+- 禁用`session`。
+- 禁用`csrf`。
+- 禁用`DefaultLoginPageGeneratingFilter`和`DefaultLogoutPageGeneratingFilter`两个过滤器。
+- 禁用表单提交行为的过滤器`BasicAuthenticationFilter`。
+- 自定义异常的处理器，针对未认证或者未授权的接口进行异常处理。
+```java
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtFilter jwtFilter) throws Exception {
+        return http
+                .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                        .requestMatchers("/customLogin").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .addFilterBefore(jwtFilter, AuthorizationFilter.class)
+                .sessionManagement(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
+                .logout(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .exceptionHandling(exceptionHandlingConfigurer ->
+                        exceptionHandlingConfigurer
+                                .accessDeniedHandler(accessDeniedHandler)
+                                .authenticationEntryPoint(customAuthenticationEntryPoint)
+                )
+                .build();
+    }
+}
+```
+#### 3.3.2 登录处理
+登录的时候使用`UserLoginDTO`来进行数据接收，由`UserService`负责具体的认证逻辑。
+>调用链：LoggedController->UserService->AuthenticationManager->ProviderManager->Provider->UserDetailsService->UserDAO
 
+LoggedController
+```java
+@RestController
+public class LoggedController {
+
+    private static final Logger log = LoggerFactory.getLogger(LoggedController.class);
+
+    @Autowired
+    UserService userService;
+
+    @PostMapping(value = "/customLogin")
+    public ResultVO<String> customLogin(@RequestBody UserLoginDTO userLoginDTO) {
+        try {
+            String id_token = userService.authorize(userLoginDTO);
+            return ResultVO.authSuccess(id_token);
+        } catch (Exception e) {
+            log.debug("msg: {}", e.getMessage());
+            return ResultVO.authFail(e.getMessage());
+        }
+    }
+}
+```
+UserService
+```java
+@Service
+public class UserService {
+
+    @Autowired
+    AuthenticationManager authenticationManager;
+
+    @Autowired
+    RedisTemplate<String, Object> redisTemplate;
+
+    public String authorize(UserLoginDTO userLoginDTO) {
+        String uname = userLoginDTO.getUname();
+        String pwd = userLoginDTO.getPwd();
+        // 封装一个授权请求对象, 交由authenticationManager进行授权
+        UsernamePasswordAuthenticationToken authRequest = UsernamePasswordAuthenticationToken.unauthenticated(uname, pwd);
+        // 这里的authenticate就是实际的授权结果
+        Authentication authenticate = authenticationManager.authenticate(authRequest);
+        SecurityContextHolder.getContext().setAuthentication(authenticate);
+        UserPrincipalEntity userPrincipal = (UserPrincipalEntity) authenticate.getPrincipal();
+        UserEntity userEntity = userPrincipal.getUserEntity();
+        String subject = "user:" + userEntity.getId();
+        int expireMillisecond = 5 * 60 * 1000;
+        redisTemplate.opsForValue().set(subject, userEntity, expireMillisecond, TimeUnit.MILLISECONDS);
+        return JwtUtils.generateIdToken(subject, expireMillisecond);
+    }
+}
+```
+AuthenticationManager，位于配置类中定义Bean：
+```java
+    @Bean
+    public AuthenticationManager authenticationManager() {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setUserDetailsService(username -> {
+            UserEntity userEntity = userMapper.getUserByUsername(username);
+            if (userEntity == null) {
+                throw new UsernameNotFoundException(username);
+            }
+            UserPrincipalEntity userPrincipalEntity = new UserPrincipalEntity();
+            userPrincipalEntity.setUserEntity(userEntity);
+            return userPrincipalEntity;
+        });
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        return new ProviderManager(daoAuthenticationProvider);
+    }
+```
+#### 3.3.3 JWT认证处理
+对于已经登录请求，会携带JWT的认证Token，由自定义的`JwtFilter`进行认证。
+```java
+@Component
+public class JwtFilter extends OncePerRequestFilter {
+
+    @Autowired
+    RedisTemplate<String, Object> redisTemplate;
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        if (request.getRequestURI().startsWith("/customLogin")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        String authorization = request.getHeader("Authorization");
+        if (authorization != null && authorization.startsWith("Bearer ")) {
+            String token = authorization.substring(7);
+            String subject;
+            try {
+                DecodedJWT decodedJWT = JwtUtils.decodedJWT(token);
+                subject = decodedJWT.getSubject();
+            } catch (Exception e) {
+                throw new AuthorizationDeniedException("认证已过期");
+            }
+            UserEntity userEntity = ((UserEntity) redisTemplate.opsForValue().get(subject));
+            if (userEntity == null) {
+                throw new AuthorizationDeniedException("认证已过期");
+            }
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userEntity, null, Collections.emptyList());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            doFilter(request, response, filterChain);
+        }
+    }
+}
+```
+
+自定义的`JwtFilter`需要添加到过滤器链中
+```java
+@Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtFilter jwtFilter) throws Exception {
+        return http
+                .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                        .requestMatchers("/customLogin").permitAll()
+                        .anyRequest().authenticated()
+                )
+                // JwtFilter加入到过滤器链中, 指定位置在授权之前。
+                .addFilterBefore(jwtFilter, AuthorizationFilter.class)
+                .sessionManagement(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
+                .logout(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .exceptionHandling(exceptionHandlingConfigurer ->
+                        exceptionHandlingConfigurer
+                                .accessDeniedHandler(accessDeniedHandler)
+                                .authenticationEntryPoint(customAuthenticationEntryPoint)
+                )
+                .build();
+    }
+```
+#### 3.3.4 登出处理
+对于前后端分离的模式下，登出操作主要的处理是吊销`JWT`的`Token`。
+```java
+	// Controller代码
+    @PostMapping(value = "/customLogout")
+    public ResultVO<String> customLogout() {
+        try {
+            userService.logout();
+            return ResultVO.success("登出成功");
+        } catch (Exception e) {
+            return ResultVO.fail(e.getLocalizedMessage());
+        }
+    }
+
+	// UserService.logout()
+    public void logout() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserEntity userEntity = (UserEntity) authentication.getPrincipal();
+        redisTemplate.opsForValue().getAndDelete("user:" + userEntity.getId());
+    }
+```
+#### 3.3.5 异常处理
+`Security`提供的默认的`ExceptionTranslationFilter`，其内部会对过滤器链中引发的异常进行解析转换，然后调用默认的`ExceptionHandler`进行处理。
+默认的行为： ![](https://s3.bmp.ovh/imgs/2025/04/29/f0ee5ad08c9cd3ee.png)
+
+自定义Handler：
+```java
+// 自定义认证异常
+@Component  
+public class CustomAccessDeniedHandler implements AccessDeniedHandler {  
+  
+    @Override  
+    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {  
+        response.setContentType("application/json;charset=utf-8");  
+        response.setStatus(HttpServletResponse.SC_FORBIDDEN);  
+        PrintWriter writer = response.getWriter();  
+        writer.write(JsonUtils.getInstance().writeValueAsString(ResultVO.fail(accessDeniedException.getMessage())));  
+    }  
+}
+
+// 自定义授权异常
+@Component
+public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
+
+    @Override
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+        response.setContentType("application/json;charset=utf-8");
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        PrintWriter writer = response.getWriter();
+        writer.write(JsonUtils.getInstance().writeValueAsString(ResultVO.fail(authException.getMessage())));
+    }
+}
+```
+
+添加的自定义Handler需要添加到`ExceptionTranslationFilter`中
+```java
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtFilter jwtFilter) throws Exception {
+        return http
+                .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                        .requestMatchers("/customLogin").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .addFilterBefore(jwtFilter, AuthorizationFilter.class)
+                .sessionManagement(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
+                .logout(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
+                // 异常处理器配置添加自定义的异常处理器
+                .exceptionHandling(exceptionHandlingConfigurer ->
+                        exceptionHandlingConfigurer
+                                .accessDeniedHandler(accessDeniedHandler)
+                                .authenticationEntryPoint(customAuthenticationEntryPoint)
+                )
+                .build();
+    }
+```
 ## 4 Security授权
 ### 4.1 仅角色的权限校验
 
