@@ -93,20 +93,385 @@ AuthorizationFilter
 		chain.doFilter(request, response);
 	}
 ```
+##### UsernamePasswordAuthenticationFilter*
+该过滤器判断当前接口是否是认证地址，是则使用`request`参数中的账号和密码调用`AuthenticationManager`进行校验。
+
+AbstractAuthenticationProcessingFilter
+```java
+	private void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
+		// 这里校验当前请求是否是认证请求, 默认是/login
+		if (!requiresAuthentication(request, response)) {
+			chain.doFilter(request, response);
+			return;
+		}
+		try {
+			// attemptAuthentication由UsernamePasswordAuthenticationFilter实现
+			Authentication authenticationResult = attemptAuthentication(request, response);
+			if (authenticationResult == null) {
+				// return immediately as subclass has indicated that it hasn't completed
+				return;
+			}
+			this.sessionStrategy.onAuthentication(authenticationResult, request, response);
+			// Authentication success
+			if (this.continueChainBeforeSuccessfulAuthentication) {
+				chain.doFilter(request, response);
+			}
+			successfulAuthentication(request, response, chain, authenticationResult);
+		}
+		catch (InternalAuthenticationServiceException failed) {
+			this.logger.error("An internal error occurred while trying to authenticate the user.", failed);
+			unsuccessfulAuthentication(request, response, failed);
+		}
+		catch (AuthenticationException ex) {
+			// Authentication failed
+			unsuccessfulAuthentication(request, response, ex);
+		}
+	}
+```
+
+UsernamePasswordAuthenticationFilter
+```java
+	@Override
+	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
+			throws AuthenticationException {
+		if (this.postOnly && !request.getMethod().equals("POST")) {
+			throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
+		}
+		String username = obtainUsername(request);
+		username = (username != null) ? username.trim() : "";
+		String password = obtainPassword(request);
+		password = (password != null) ? password : "";
+		UsernamePasswordAuthenticationToken authRequest = UsernamePasswordAuthenticationToken.unauthenticated(username,
+				password);
+		setDetails(request, authRequest);
+		return this.getAuthenticationManager().authenticate(authRequest);
+	}
+```
+##### DefaultResourcesFilter
+这个过滤器实现springsecurity放行自己的一个默认样式，感觉不是很重要的一个过滤器。
+![image.png](https://s2.loli.net/2025/04/28/5enmcMLKoaz3XlY.png)
+
+##### DefaultLoginPageGeneratingFilter
+该过滤器生成默认的登录页，并且会处理登录成功后的重定向逻辑。
+##### DefaultLogoutPageGeneratingFilter
+该过滤器生成默认的登出页，并且会处理登出后的重定向逻辑。
+##### BasicAuthenticationFilter*
+该过滤器获取请求的用户授权信息。如从请求头，从请求体，从OIDC，OneTimeToken内获取等多种方式，似乎默认是BasicAuthenticationFilter实现，一个示例的请求头是：`Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==`
+```java
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
+		try {
+			// 获取请求的用户授权信息
+			Authentication authRequest = this.authenticationConverter.convert(request);
+			if (authRequest == null) {
+				this.logger.trace("Did not process authentication request since failed to find "
+						+ "username and password in Basic Authorization header");
+				chain.doFilter(request, response);
+				return;
+			}
+			String username = authRequest.getName();
+			this.logger.trace(LogMessage.format("Found username '%s' in Basic Authorization header", username));
+			if (authenticationIsRequired(username)) {
+				Authentication authResult = this.authenticationManager.authenticate(authRequest);
+				SecurityContext context = this.securityContextHolderStrategy.createEmptyContext();
+				context.setAuthentication(authResult);
+				// 将认证信息放入到了Holder中
+				this.securityContextHolderStrategy.setContext(context);
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug(LogMessage.format("Set SecurityContextHolder to %s", authResult));
+				}
+				this.rememberMeServices.loginSuccess(request, response, authResult);
+				this.securityContextRepository.saveContext(context, request, response);
+				onSuccessfulAuthentication(request, response, authResult);
+			}
+		}
+		catch (AuthenticationException ex) {
+			this.securityContextHolderStrategy.clearContext();
+			this.logger.debug("Failed to process authentication request", ex);
+			this.rememberMeServices.loginFail(request, response);
+			onUnsuccessfulAuthentication(request, response, ex);
+			if (this.ignoreFailure) {
+				chain.doFilter(request, response);
+			}
+			else {
+				this.authenticationEntryPoint.commence(request, response, ex);
+			}
+			return;
+		}
+
+		chain.doFilter(request, response);
+	}
+```
+##### RequestCacheAwareFilter
+该过滤器实现了某种请求缓存。
+##### SecurityContextHolderAwareRequestFilter*
+该过滤器的作用存疑，不过应该是重要的。感觉是实现了上下文策略注入。
+##### AnonymousAuthenticationFilter
+该过滤器的作用是获取上下文信息，如果不存在则注入一个匿名的上下文信息。
+##### ExceptionTranslationFilter
+该过滤器的对请求过程中可能发生的认证一场和鉴权异常进行捕获分析，将错误信息和重定向地址添加到`request`和`response`中。
+##### AuthorizationFilter*
+授权过滤器，使用`authorizationManager`进行授权。这个授权似乎是基于切面实现的。
+```java
+	@Override
+	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain)
+			throws ServletException, IOException {
+
+		HttpServletRequest request = (HttpServletRequest) servletRequest;
+		HttpServletResponse response = (HttpServletResponse) servletResponse;
+
+		if (this.observeOncePerRequest && isApplied(request)) {
+			chain.doFilter(request, response);
+			return;
+		}
+
+		if (skipDispatch(request)) {
+			chain.doFilter(request, response);
+			return;
+		}
+
+		String alreadyFilteredAttributeName = getAlreadyFilteredAttributeName();
+		request.setAttribute(alreadyFilteredAttributeName, Boolean.TRUE);
+		try {
+			AuthorizationResult result = this.authorizationManager.authorize(this::getAuthentication, request);
+			this.eventPublisher.publishAuthorizationEvent(this::getAuthentication, request, result);
+			// 判断最终授权情况, 没有授权抛出一个授权异常, 然后中断请求。
+			if (result != null && !result.isGranted()) {
+				throw new AuthorizationDeniedException("Access Denied", result);
+			}
+			chain.doFilter(request, response);
+		}
+		finally {
+			request.removeAttribute(alreadyFilteredAttributeName);
+		}
+	}
+```
 
 ### 2.2 禁用过滤器
 >禁用 csrf 过滤器
-### 2.3 跳过过滤器
 
+通过`HttpSecurity`的对应方法获取到对应过滤器的`disable`方法进行禁用。
+```java
+@Configuration
+public class SpringSecurityConfig {
+
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http
+                .authorizeHttpRequests((requests) ->
+                        requests.anyRequest().authenticated()
+                )
+                // 进行disable方法的调用
+                .csrf(AbstractHttpConfigurer::disable)
+                .formLogin(withDefaults())
+                .httpBasic(withDefaults()).build();
+    }
+}
+```
 ### 2.3 添加过滤器
+```java
+@Configuration
+public class SpringSecurityConfig {
+    @Autowired
+    GuestFilter guestFilter;
+
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http
+                // 禁用默认的匿名账号
+                .anonymous(AbstractHttpConfigurer::disable)
+                // 手动添加一个游客filter到最后认证之前
+                .addFilterBefore(guestFilter, AuthorizationFilter.class)
+                .authorizeHttpRequests((requests) ->
+                        requests.anyRequest().authenticated()
+                )
+                .csrf(AbstractHttpConfigurer::disable)
+                .formLogin(withDefaults())
+                .httpBasic(withDefaults()).build();
+    }
+}
+```
 
 ## 3 用户认证流程
 ### 3.1 默认的用户认证流程
+- UsernamePasswordAuthenticationFilter 调用 AuthenticationManager 的 authenticate()。
+- AuthenticationManager 找到对应的AuthenticationProvider，对应的 AuthenticationProvider 调用handler()。
+- 默认的 AbstractUserDetailsAuthenticationProvider 使用 **UserDetailsService** 的 **loadUserByUsername()** 进行用户查询。
+![image.png](https://s2.loli.net/2025/04/28/Cb4UxqGr9L5wyOo.png)
+- 默认的用户从 InMemoryUserDetailsManager（基于内存的用户管理）实现。
+![image.png](https://s2.loli.net/2025/04/28/WhlCxjJV6NouYPB.png)
+- 获取到用户最终完成认证后，加入凭证到 SpringSecurityHolder 中
+![image.png](https://s2.loli.net/2025/04/28/3farWxIoEmU29z1.png)
+### 3.2 自定义用户认证流程
+经过对于默认的认证流程，查看`SpringSecurity`中的`UserDetailsServiceAutoConfiguration`类，配置类中部分关键代码：
+```java
+@AutoConfiguration
+@ConditionalOnClass(AuthenticationManager.class)
+@Conditional(MissingAlternativeOrUserPropertiesConfigured.class)
+@ConditionalOnBean(ObjectPostProcessor.class)
+@ConditionalOnMissingBean(value = { AuthenticationManager.class, AuthenticationProvider.class, UserDetailsService.class,
+		AuthenticationManagerResolver.class }, type = "org.springframework.security.oauth2.jwt.JwtDecoder")
+@ConditionalOnWebApplication(type = Type.SERVLET)
+public class UserDetailsServiceAutoConfiguration {
 
-### 3.2 改造为数据库查询的用户认证流程
+	private static final String NOOP_PASSWORD_PREFIX = "{noop}";
 
-### 3.3 改造JWT的认证流程
->前后端分离模式，不需要使用session，可以禁用。`http.sessionManagement(session -> session.disable())`
+	private static final Pattern PASSWORD_ALGORITHM_PATTERN = Pattern.compile("^\\{.+}.*$");
+
+	private static final Log logger = LogFactory.getLog(UserDetailsServiceAutoConfiguration.class);
+
+	@Bean
+	public InMemoryUserDetailsManager inMemoryUserDetailsManager(SecurityProperties properties,
+			ObjectProvider<PasswordEncoder> passwordEncoder) {
+		SecurityProperties.User user = properties.getUser();
+		List<String> roles = user.getRoles();
+		return new InMemoryUserDetailsManager(User.withUsername(user.getName())
+			.password(getOrDeducePassword(user, passwordEncoder.getIfAvailable()))
+			.roles(StringUtils.toStringArray(roles))
+			.build());
+	}
+}
+```
+从这个类中可以看出，我们可以通过在容器中自定义这四种类来实现自定义用户认证流程
+- AuthenticationManager
+- AuthenticationProvider
+- UserDetailsService
+- AuthenticationManagerResolver
+#### 3.2.1 自定义UserDetailsService实现
+- 在容器中添加 UserDetailsService 的具体实现即可。
+- 此种方式修改设计的内容较少，只需要专注用户的查询逻辑即可，实现简单。
+```java
+@Service
+public class UserService implements UserDetailsService {
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        if ("YIueil".equals(username)) {
+            return User.builder()
+                    .username("YIueil")
+                    .password("{noop}123456")
+                    .roles("USER")
+                    .build();
+        }
+        throw new UsernameNotFoundException(String.format("%s: not found", username));
+    }
+}
+```
+#### 3.2.2 自定义AuthenticationProvider
+项目结构：
+```sh
++---src
+|   \---main
+|       +---java
+|       |   \---cc
+|       |       \---yiueil
+|       |           |   AuthenticationProviderApplication.java
+|       |           |
+|       |           +---authenticationprovider
+|       |           |       CustomAuthenticationProvider.java
+|       |           |
+|       |           +---controller
+|       |           |       LoggedController.java
+|       |           |
+|       |           +---entity
+|       |           |       UserEntity.java
+|       |           |
+|       |           \---service
+|       |                   UserService.java
+|       |
+|       \---resources
+|               application.yml
+```
+
+CustomAuthenticationProvider
+```java
+@Component
+public class CustomAuthenticationProvider implements AuthenticationProvider {
+    @Autowired
+    UserService userService;
+
+    @Override
+    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+        String username = authentication.getName();
+        String password = authentication.getCredentials().toString();
+        UserEntity userEntity = userService.getUserByUsernameAndPassword(username, password);
+        // 这里偷懒使用的明文Encoder进行匹配
+        if (NoOpPasswordEncoder.getInstance().matches(password, userEntity.getPassword())) {
+            return new UsernamePasswordAuthenticationToken(
+                    username,
+                    password,
+                    Collections.emptyList()
+            );
+        } else {
+            throw new BadCredentialsException("Authentication failed");
+        }
+    }
+
+    // 判断当前的provider是否支持认证
+    @Override
+    public boolean supports(Class<?> authentication) {
+        return authentication.equals(UsernamePasswordAuthenticationToken.class);
+    }
+}
+```
+
+LoggedController
+```java
+@RestController  
+public class LoggedController {  
+    @GetMapping("/")  
+    public ResponseEntity<String> hello() {  
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();  
+        return ResponseEntity.ok(String.format("Hello %s!", authentication.getName()));  
+    }  
+}
+```
+#### 3.2.3 基于AuthenticationManager实现
+- 配置自定义的`AuthenticationManager`的Bean。
+- 使用自定义的`AuthenticationManager`。
+```java
+@Configuration
+public class SecurityConfig {
+
+    /**
+     * 1 自定义 AuthenticationManager, 注入需要的 provider。
+     * @param userService
+     * @return
+     */
+    @Bean
+    public AuthenticationManager authenticationManager(UserService userService) {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(NoOpPasswordEncoder.getInstance());
+        provider.setUserDetailsService(userService);
+        return new ProviderManager(provider);
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
+        return http
+                // 2 使用自定义的authenticationManager
+                .authenticationManager(authenticationManager)
+                .authorizeHttpRequests(authorizeRequests ->
+                        authorizeRequests.anyRequest().authenticated()
+                )
+                .formLogin(Customizer.withDefaults())
+                .httpBasic(Customizer.withDefaults())
+                .build();
+    }
+}
+```
+### 3.3 前后端分离认证流程
+改造内容如下：
+- 默认情况下，响应由`DefaultLoginPageGeneratingFilter`生成，修改使用通用`ResultVO`实现`JSON`格式返回。
+- 前后端分离下，对`Session`禁用。
+- 自定义认证流程，禁用`UsernamePasswordAuthentiactionFilter`不使用内置的`/login`接口进行认证，自己定义接口实现认证。
+- 自定义登出流程，使用`/logout`接口进行登出。
+- 使用`jwt`进行会话管理。
+- 集成`redis`以及`Mybatis`。
+- 未认证或授权的异常处理，使用`ResultVO`实现返回。
+#### 3.3.1 自定义结果返回逻辑
+对于登录授权成功和失败的两个Filter进行自定义逻辑。
+#### 3.3.2 
 ### 3.4 登出处理
 
 ## 4 Security授权
