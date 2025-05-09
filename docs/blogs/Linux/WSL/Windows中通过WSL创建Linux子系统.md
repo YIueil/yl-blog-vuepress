@@ -10,6 +10,10 @@ categories:
 # Windows中通过WSL创建Linux子系统
 
 ## 1 启用WSL
+```sh
+# 大陆提前开启代理提速
+wsl.exe --install
+```
 
 ## 2 安装内核
 ```sh
@@ -29,4 +33,14 @@ wsl --list
 ```sh
 yiueil@YIUEIL-B760I:/mnt$ ls
 c  d  e  wsl  wslg
+```
+
+## 4 网络配置
+> 参考：[使用 WSL 访问网络应用程序 | Microsoft Learn](https://learn.microsoft.com/zh-cn/windows/wsl/networking)
+
+- 默认都是使用的NAT模式，这种模式下局域网其他设备访问本机的wsl文件时不方便。
+- 使用镜像网络，可以wsl和主机相同的网络。其他局域网设备访问就可以通过宿主机ip进行访问了。
+```ini
+[wsl2]
+networkingMode=bridged
 ```
