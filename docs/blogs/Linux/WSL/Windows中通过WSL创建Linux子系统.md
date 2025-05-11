@@ -42,5 +42,5 @@ c  d  e  wsl  wslg
 - 使用镜像网络，可以wsl和主机相同的网络。其他局域网设备访问就可以通过宿主机ip进行访问了。
 ```ini
 [wsl2]
-networkingMode=bridged
+networkingMode=mirrored
 ```
