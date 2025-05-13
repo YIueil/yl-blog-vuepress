@@ -1,10 +1,11 @@
 ---
-  date: 2025-05-11 18:59:33
-  pageClass: blue-archive
-  tags:
-    - 未分类
-  categories:
-    - 未归档
+date: 2025-05-11 18:59:33
+pageClass: blue-archive
+tags:
+  - OpenWrt
+  - 路由器
+categories:
+  - 网络工程
 ---
 
 # OpenWRT的入门指南
