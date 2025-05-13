@@ -8,7 +8,8 @@
 ---
 
 # OpenWRT的入门指南
->折腾最终目标：科学上网，广告拦截，内网穿透，NAS，轻网站服务，远程Wol设备唤醒。
+>折腾最终目标：科学上网，广告拦截，内网穿透，NAS，轻网站服务，远程Wol设备唤醒，网络控制。
+>可以考虑的功能：多线多播，家长控制。
 
 ## 1 什么是OpenWRT
 OpenWrt 不是一个单一且不可更改的固件，而是提供了一个完全可写的文件系统及软件包管理。这使您可以不使用供应商提供的应用程序选择和配置，而是通过使用软件包来定制设备以适应任何应用程序。对于开发人员来说，OpenWrt 是一个构建应用程序的框架，无需在其周围构建完整的固件; 对于普通用户来说，这意味着拥有了完全定制的能力，能以意想不到的方式使用该设备。
@@ -52,7 +53,7 @@ make menuconfig
 make download -j8
 
 # 进行构建（第一次构建建议单线程）
-PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin make -j1
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin make V=s -j1
 ```
 
 二次编译：
