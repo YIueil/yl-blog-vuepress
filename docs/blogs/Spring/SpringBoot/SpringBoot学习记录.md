@@ -119,7 +119,20 @@ public class No01Application {
 
 最后页面访问`/`和`/hello`即可看到效果。
 
-## 2 SpringBoot 多环境配置
+## 2 SpringBoot 配置
+### 2.1 配置引入
+为了防止主yml过大，可以通过 `spring.config.import`引入，支持引入多个子配置文件。
+```yml
+spring:  
+  config:  
+    import:  
+      - classpath:properties/redis.properties  
+      - classpath:properties/mq.properties
+```
+
+### 2.2 多环境配置
+>本配置方式适用于SpringBoot的2.4版本之后，其之前的版本的配置方式略有不同。
+
 项目开发的过程中存在多种环境, SpringBoot能够支持这种多环境配置的情况。
 - spring.profiles.active: 配置当前启用的环境
 - spring.profiles.group: 分组配置
@@ -158,5 +171,362 @@ spring:
 server:
   port: 9000
 ```
+### 2.3 属性注入方式
+#### @Value
+使用`@Value`能够将属性绑定到Bean的属性中。首先定义一个properties文件
+```properties
+redis.ip=127.0.0.1
+redis.port=6379
+redis.pwd=Fk12345.
+```
 
-## 3 
+对于的Bean中进行配置：
+>需要注意必须是容器管理的Bean才能否进行属性注入。
+```java
+@Configuration  
+public class RedisConfig {  
+    @Value(value = "${redis.ip}")  
+    private String ip;  
+  
+    @Value(value = "${redis.port}")  
+    private int port;  
+  
+    @Value(value = "${redis.pwd}")  
+    private String pwd;
+
+	// 省略get/set方法
+}
+```
+#### @ConfigurationProperties
+除了使用`@Value`进行单个的属性注入，还可以使用`@ConfigurationProperties`一次性将所有的属性注入到Bean，首先还是定义一个properties文件：
+```properties
+redis.ip=127.0.0.1  
+redis.port=6379  
+redis.pwd=Fk12345.
+```
+
+然后在对应的Bean中配置：
+>核心是@ConfigurationProperties注解来标识这个Bean需要注入配置属性，注解属性中`prefix`用于定义配置的前缀。
+```java
+@Configuration
+@ConfigurationProperties(prefix = "redis")
+public class RedisConfig {
+    private String ip;
+
+    private int port;
+
+    private String pwd;
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public String getPwd() {
+        return pwd;
+    }
+
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
+    }
+
+    @Override
+    public String toString() {
+        return "RedisConfig{" +
+                "ip='" + ip + '\'' +
+                ", port=" + port +
+                ", pwd='" + pwd + '\'' +
+                '}';
+    }
+}
+```
+
+#### 复杂属性的绑定
+>除了基础的字符串、布尔值、数值等的数据的绑定，还可能存在复杂对象的绑定。 如：List、Set、Map、Date，配置文件如下
+
+```yml
+app:  
+  user:  
+    username: zhangSan  
+    password: 123456  
+    birthday: 2025-05-17  
+    linkList:  
+      - baidu.com  
+      - bing.com  
+      - google.com  
+    addressSet:  
+      - 北京  
+      - 上海  
+      - 广州  
+      - 北京  
+    privileges:  
+      - name:  
+          新增  
+        value:  
+          true  
+      - name:  
+          删除  
+        value:  
+          false
+```
+
+
+```java
+@Configuration
+@ConfigurationProperties(prefix = "app.user")
+public class User {
+    private String username;
+    private String password;
+    private Date birthday;
+    private List<String> linkList;
+    private Set<String> addressSet;
+    private List<Map<String, Object>> privileges;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
+    public List<String> getLinkList() {
+        return linkList;
+    }
+
+    public void setLinkList(List<String> linkList) {
+        this.linkList = linkList;
+    }
+
+    public Set<String> getAddressSet() {
+        return addressSet;
+    }
+
+    public void setAddressSet(Set<String> addressSet) {
+        this.addressSet = addressSet;
+    }
+
+    public List<Map<String, Object>> getPrivileges() {
+        return privileges;
+    }
+
+    public void setPrivileges(List<Map<String, Object>> privileges) {
+        this.privileges = privileges;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", birthday=" + birthday +
+                ", linkList=" + linkList +
+                ", addressSet=" + addressSet +
+                ", privileges=" + privileges +
+                '}';
+    }
+}
+```
+
+
+#### 配置属性注入到第三方Bean
+对于第三方的bean，可以通过配置类@Bean结合`@ConfigurationPropertie`实现属性注入。
+```java
+@Configuration  
+public class ApplicationConfiguration {  
+    @Bean  
+    @ConfigurationProperties(prefix = "app.user")  
+    public UserEntity userEntity() {  
+        return new UserEntity();  
+    }  
+}
+```
+
+#### 手动指定配置来源
+通过@PropertySource可以指定配置属性来源，实现从非application.yml或application.properties中获取属性：
+>已发现的问题，这种方式指定的时候，不支持指定yml类型的配置文件。
+```java
+@Configuration  
+// 指定数据来源  
+@PropertySource(value = "classpath:properties/user.properties", encoding = "UTF-8")  
+@ConfigurationProperties(prefix = "app.user")  
+public class User {  
+    private String username;  
+    private String password;  
+    private Date birthday;  
+    private List<String> linkList;  
+    private Set<String> addressSet;  
+    private List<Map<String, Object>> privileges;  
+  
+    public String getUsername() {  
+        return username;  
+    }  
+  
+    public void setUsername(String username) {  
+        this.username = username;  
+    }  
+  
+    public String getPassword() {  
+        return password;  
+    }  
+  
+    public void setPassword(String password) {  
+        this.password = password;  
+    }  
+  
+    public Date getBirthday() {  
+        return birthday;  
+    }  
+  
+    public void setBirthday(Date birthday) {  
+        this.birthday = birthday;  
+    }  
+  
+    public List<String> getLinkList() {  
+        return linkList;  
+    }  
+  
+    public void setLinkList(List<String> linkList) {  
+        this.linkList = linkList;  
+    }  
+  
+    public Set<String> getAddressSet() {  
+        return addressSet;  
+    }  
+  
+    public void setAddressSet(Set<String> addressSet) {  
+        this.addressSet = addressSet;  
+    }  
+  
+    public List<Map<String, Object>> getPrivileges() {  
+        return privileges;  
+    }  
+  
+    public void setPrivileges(List<Map<String, Object>> privileges) {  
+        this.privileges = privileges;  
+    }  
+  
+    @Override  
+    public String toString() {  
+        return "User{" +  
+                "username='" + username + '\'' +  
+                ", password='" + password + '\'' +  
+                ", birthday=" + birthday +  
+                ", linkList=" + linkList +  
+                ", addressSet=" + addressSet +  
+                ", privileges=" + privileges +  
+                '}';  
+    }  
+}
+```
+#### 其他细节
+使用这个注解可以批量的扫描`@ConfigurationPropertiesScan`配置类，避免每个配置类都单独的添加`@Component`等标识本类为配置类。也可以直接在主类中通过`@EnableConfigurationProperties`声明需要开启配置的类。
+```java
+@SpringBootApplication  
+// 以下两个注解选其一  
+@ConfigurationPropertiesScan(basePackages = "cc.yiueil.config")  
+@EnableConfigurationProperties({RedisConfig.class})  
+public class No02Application {  
+    public static void main(String[] args) {  
+        SpringApplication.run(No02Application.class, args);  
+    }  
+}
+```
+
+### 2.4 Environment获取环境属性
+Spring提供了`Environment`对象来获取当前应用的环境信息：
+```java
+@Autowired  
+Environment environment;  
+  
+@Test  
+public void test2() {  
+    // 获取生效配置信息  
+    System.out.println(Arrays.toString(environment.getActiveProfiles()));  
+    // 获取环境变量  
+    System.out.println(environment.getProperty("JAVA_HOME"));  
+    // 获取配置属性  
+    System.out.println(environment.getProperty("spring.application.name"));  
+}
+```
+
+### 2.5 兼容Spring项目
+如果需要兼容老的Spring项目，使用`@ImportResource`注解导入老项目的配置文件。
+
+applicationContext.xml
+```xml
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">  
+    <bean id="user2" class="cc.yiueil.entity.UserEntity">  
+        <property name="username" value="lisi"/>  
+        <property name="password" value="222222"/>  
+    </bean></beans>
+```
+
+```java
+// SpringBoot主类
+@ImportResource(locations = "classpath:applicationContext.xml")  
+@SpringBootApplication  
+public class ApplicationBoot10 {  
+    public static void main(String[] args) {  
+        SpringApplication.run(ApplicationBoot10.class, args);  
+    }  
+}
+
+// 测试
+@SpringBootTest  
+class ApplicationBoot10Test {  
+    @Autowired  
+    @Qualifier("user2")  
+    UserEntity userEntity2;  
+  
+    @Test  
+    public void test() {  
+        System.out.println(userEntity2.toString());  
+    }  
+}
+```
+## 3 SpringBoot 核心功能
+### 3.1 自动配置实现原理
+### 3.2 自定义Starter开发
+## 4 SpringBoot 数据访问
+### 4.1 事务管理
+### 4.2 集成Mybatis
+### 4.3 集成JPA
+
+### 4.4 NoSQL
+#### Redis
+
+#### Elasticsearch集成
+
+#### MongoDB集成
+## 5 SpringBoot 高级特性
