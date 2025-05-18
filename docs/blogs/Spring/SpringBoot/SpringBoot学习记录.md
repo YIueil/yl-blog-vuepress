@@ -133,6 +133,31 @@ spring:
 ### 2.2 多环境配置
 >本配置方式适用于SpringBoot的2.4版本之后，其之前的版本的配置方式略有不同。
 
+#### 非分组配置
+- 通过`spring.profiles.active`配置当前生效的环境。
+- 其他yml中使用`spring.config.activate.on-profile`配置的生效的环境。
+```yml
+spring:  
+  profiles:  
+    # 当前生效环境  
+    active: local
+# 以下是单独定义Profile的生效环境  
+---  
+spring:  
+  config:  
+    activate:  
+      on-profile: local  
+env: local  
+  
+---  
+spring:  
+  config:  
+    activate:  
+      on-profile: dev  
+env: dev
+```
+
+#### 分组配置
 项目开发的过程中存在多种环境, SpringBoot能够支持这种多环境配置的情况。
 - spring.profiles.active: 配置当前启用的环境
 - spring.profiles.group: 分组配置
@@ -281,7 +306,7 @@ app:
           false
 ```
 
-
+指定前缀，属性名称对应配置的主体内容。
 ```java
 @Configuration
 @ConfigurationProperties(prefix = "app.user")
@@ -354,7 +379,6 @@ public class User {
     }
 }
 ```
-
 
 #### 配置属性注入到第三方Bean
 对于第三方的bean，可以通过配置类@Bean结合`@ConfigurationPropertie`实现属性注入。
@@ -517,8 +541,19 @@ class ApplicationBoot10Test {
 ```
 ## 3 SpringBoot 核心功能
 ### 3.1 自动配置实现原理
+1. Main使用主类作为参数执行SpringApplication.run()。 
+2. 获取主类的@SpringBootAutoConfiguration注解，其中包含了@EnableAutoConfig注解。
+3. @EnableAutoConfiguration注解通过@Import了AutoConfigurationImportSelector这个Bean到容器中。
+4. AutoConfigurationImportSelector执行process方法
+	- 从MATA-INF下的`org.springframework.boot.autoconfigure.AutoConfiguration.imports`加载到所有候选自动配置类。
+	- 过滤需要排除的配置类。
+	- 根据`@Conditional**`注解过滤实际生效的配置类。
+	- 拿到最终的配置类，如`DispatherServletAutoConfiguration`。
+5. 最终的配置类中又包含子配置类，通过`@EnableConfigurationProperties`注解加载对应的属性配置类`**Properties`到容器中，这些属性类都带有`@ConfigurationProperties`注解，通过从application.yml获取配置，结合一系列的默认值进行属性类的赋值。
+6. 使用属性配置类，创建最终的Bean。
 ### 3.2 自定义Starter开发
 ## 4 SpringBoot 数据访问
+在原来的Spring中，我们需要手动的添加事务管理器对数据源进行事务的管理。在SpringBoot中，提供了默认的事务管理器，会根据当前
 ### 4.1 事务管理
 ### 4.2 集成Mybatis
 ### 4.3 集成JPA
@@ -529,4 +564,27 @@ class ApplicationBoot10Test {
 #### Elasticsearch集成
 
 #### MongoDB集成
-## 5 SpringBoot 高级特性
+## 5 SpringBoot Web开发
+### 5.1 Web的自动配置流程
+#### 相关的自动配置类
+
+#### 
+
+### 5.2 替换为手动配置
+#### 完全使用默认配置
+
+#### 完全接管配置
+
+#### 默认配置上额外定制
+编写配置类，实现`WebMvcConfigurer`。
+
+### 5.3 异常处理
+#### 局部异常处理
+
+#### 全局异常处理
+
+#### SpringBoot异常处理流程
+### 5.4 国际化
+
+### 5.5 定制web容器
+## 6 SpringBoot 高级特性
