@@ -552,10 +552,186 @@ class ApplicationBoot10Test {
 5. 最终的配置类中又包含子配置类，通过`@EnableConfigurationProperties`注解加载对应的属性配置类`**Properties`到容器中，这些属性类都带有`@ConfigurationProperties`注解，通过从application.yml获取配置，结合一系列的默认值进行属性类的赋值。
 6. 使用属性配置类，创建最终的Bean。
 ### 3.2 自定义Starter开发
+starter->autoconfigure
+1. 创建starter父项目。
+2. 创建autoconfigure子项目，父项目指定starter。
+3. autoconfigure中添加自动配置类，根据具体情况选择组件的注入。
+4. autoconfigure中添加META-INF，下面放一个spring.factores文件，内容涵盖的自己配置的组件。
+5. 具体的项目中使用starter即可。
+核心代码：
+```java
+@ConfigurationProperties(prefix = "yiueil.hello")  
+public class HelloProperties {  
+    private String prefix = "你好";  
+  
+    private String suffix = "再见";  
+  
+    public String getPrefix() {  
+        return prefix;  
+    }  
+  
+    public void setPrefix(String prefix) {  
+        this.prefix = prefix;  
+    }  
+  
+    public String getSuffix() {  
+        return suffix;  
+    }  
+  
+    public void setSuffix(String suffix) {  
+        this.suffix = suffix;  
+    }  
+}
+```
+```java
+@Configuration  
+@EnableConfigurationProperties(HelloProperties.class)  
+public class HelloAutoConfiguration {  
+  
+    @Bean  
+    @ConditionalOnMissingBean(HelloService.class)  
+    public HelloService helloService() {  
+        return new HelloService();  
+    }  
+}
+```
+```factories
+org.springframework.boot.autoconfigure.AutoConfiguration=\  
+cc.yiueil.configuration.HelloAutoConfiguration
+```
+
 ## 4 SpringBoot 数据访问
-在原来的Spring中，我们需要手动的添加事务管理器对数据源进行事务的管理。在SpringBoot中，提供了默认的事务管理器，会根据当前
-### 4.1 事务管理
+在原来的Spring中，我们需要手动的添加事务管理器对数据源进行事务的管理。在SpringBoot中，提供了默认的事务管理器，会根据当前的项目依赖来自动配置最合适的事务管理器。
+- Mybatis、Spring Data JDBC、Spring Data JPA和Hibernate：DataSourceTransactionManager
+- 使用JTA（Java Transaction API）全局事务：JtaTransactionManager
+### 4.1 集成JDBC Template并进行事务管理
+手动的事务管理可以采用`PlatformTransactionManager`或者是`TransactionTemplate`实现。
+- 获取事务定义，事务定义需要配置事务的传播属性，隔离属性，是否只读等配置。
+- 合理的地方进行回滚操作或者提交操作。
+```xml
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
+    </dependencies>
+```
+```java
+@SpringBootTest  
+public class No14ApplicationTest {  
+    @Autowired  
+    JdbcTemplate jdbcTemplate;  
+  
+    @Autowired  
+    TransactionTemplate transactionTemplate;  
+  
+    @Autowired  
+    PlatformTransactionManager transactionManager;  
+  
+    @Test  
+    public void testQuery() {  
+        String sql = "select * from t_user";  
+        List<Map<String, Object>> maps = jdbcTemplate.queryForList(sql);  
+        System.out.println(maps);  
+    }  
+  
+    @Test  
+    public void testInsert() {  
+        String query = "select * from t_user";  
+        String insert = "insert into t_user values(nextval('s_user'), '李四', '111111', 1000)";  
+        jdbcTemplate.update(insert);  
+        List<Map<String, Object>> maps = jdbcTemplate.queryForList(query);  
+        System.out.println(maps);  
+    }  
+  
+    @Test  
+    // 使用注解  
+    @Transactional  
+    public void testDealTransaction() {  
+        String sql = "select * from t_user";  
+        List<Map<String, Object>> maps = jdbcTemplate.queryForList(sql);  
+        System.out.println(maps);  
+        String deal1 = "update t_user set salary = salary - 500 where id = 1";  
+        jdbcTemplate.update(deal1);  
+        // 模拟报错 说明目前没有事务  
+        if (true) {  
+            throw new RuntimeException();  
+        }  
+        String deal2 = "update t_user set salary = salary + 500 where id = 2";  
+        jdbcTemplate.update(deal2);  
+        List<Map<String, Object>> maps2 = jdbcTemplate.queryForList(sql);  
+        System.out.println(maps2);  
+    }  
+  
+    @Test  
+    public void testDeal() {  
+        transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);  
+        List<Map<String, Object>> r = transactionTemplate.execute(status -> {  
+            List<Map<String, Object>> result;  
+            String sql = "select * from t_user";  
+            try {  
+                List<Map<String, Object>> maps = jdbcTemplate.queryForList(sql);  
+                System.out.println(maps);  
+                String deal1 = "update t_user set salary = salary - 500 where id = 1";  
+                jdbcTemplate.update(deal1);  
+                // 模拟报错 说明目前没有事务  
+                if (true) {  
+                    throw new RuntimeException();  
+                }  
+            } catch (Exception e) {  
+                e.printStackTrace();  
+                status.setRollbackOnly();  
+            } finally {  
+                String deal2 = "update t_user set salary = salary + 500 where id = 2";  
+                jdbcTemplate.update(deal2);  
+                result = jdbcTemplate.queryForList(sql);  
+            }  
+            return result;  
+        });  
+        System.out.println(r);  
+    }  
+  
+    @Test  
+    public void testDealTransactionManager() {  
+        String sql = "select * from t_user";  
+        List<Map<String, Object>> maps = jdbcTemplate.queryForList(sql);  
+        System.out.println(maps);  
+        DefaultTransactionDefinition definition = new DefaultTransactionDefinition();  
+        definition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);  
+        definition.setReadOnly(false);  
+        definition.setIsolationLevel(TransactionDefinition.ISOLATION_READ_COMMITTED);  
+        TransactionStatus status = transactionManager.getTransaction(definition);  
+        try {  
+            String deal1 = "update t_user set salary = salary - 500 where id = 1";  
+            jdbcTemplate.update(deal1);  
+            // 模拟报错 说明目前没有事务  
+            if (true) {  
+                throw new RuntimeException();  
+            }  
+            String deal2 = "update t_user set salary = salary + 500 where id = 2";  
+            jdbcTemplate.update(deal2);  
+            List<Map<String, Object>> maps2 = jdbcTemplate.queryForList(sql);  
+            System.out.println(maps2);  
+            transactionManager.commit(status);  
+        } catch (Exception e) {  
+            transactionManager.rollback(status);  
+        }  
+  
+    }  
+}
+```
 ### 4.2 集成Mybatis
+
 ### 4.3 集成JPA
 
 ### 4.4 NoSQL
