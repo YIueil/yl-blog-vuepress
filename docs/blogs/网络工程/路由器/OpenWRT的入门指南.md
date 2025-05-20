@@ -31,6 +31,7 @@ OpenWrt 不是一个单一且不可更改的固件，而是提供了一个完全
 /home/yiueil-wsl/openwrt/target/linux/mediatek/dts/mt7981b-cudy-tr3000-v1.dtsi
 ```
 ## 4 基于源码编译固件
+### 4.1 基于openwrt编译
 >官方地址：https://github.com/openwrt/openwrt
 - 需要一个Linux环境，我这里使用的是基于Windows的WSL子系统的Ubuntu24.04 LTS。我这里以编译cudy tr3000的固件为例：
 首次编译：
@@ -69,6 +70,57 @@ make V=s -j$(nproc)
 ```
 
 如需修改配置
+```sh
+rm -rf .config
+make menuconfig
+make V=s -j$(nproc)
+```
+### 4.2 基于LEDE编译
+>仓库地址：https://github.com/coolsnowwolf/lede
+- 给Phicomm K3 编译一个固件。
+首次编译：
+```sh
+# 1 安装依赖
+sudo apt update -y
+sudo apt full-upgrade -y
+sudo apt install -y ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
+bzip2 ccache clang cmake cpio curl device-tree-compiler flex gawk gcc-multilib g++-multilib gettext \
+genisoimage git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libfuse-dev libglib2.0-dev \
+libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libpython3-dev \
+libreadline-dev libssl-dev libtool llvm lrzsz msmtp ninja-build p7zip p7zip-full patch pkgconf \
+python3 python3-pyelftools python3-setuptools qemu-utils rsync scons squashfs-tools subversion \
+swig texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev
+
+# 2 拉取代码更新下载和配置
+git clone https://github.com/coolsnowwolf/lede
+cd lede
+./scripts/feeds update -a
+./scripts/feeds install -a
+make menuconfig
+
+# 3 下载 dl 库，编译固件 （-j 后面是线程数，第一次编译推荐用单线程）
+make download -j8
+make V=s -j1
+```
+
+Phicomm K3的核心配置：
+- **Target System**: `Broadcom BCM47xx/53xx (ARMv7)`
+- **Target Profile**: `PHICOMM K3`
+- **基础功能**：勾选`LuCI → Collections → luci`（Web管理界面）。
+- 可选功能：SSH (`openssh-server`)、广告过滤 (`adblock`)、文件共享 (`samba4-server`)。
+
+二次编译：
+```sh
+cd lede
+git pull
+./scripts/feeds update -a
+./scripts/feeds install -a
+make defconfig
+make download -j8
+make V=s -j$(nproc)
+```
+
+重新配置：
 ```sh
 rm -rf .config
 make menuconfig
