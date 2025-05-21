@@ -602,7 +602,8 @@ cc.yiueil.configuration.HelloAutoConfiguration
 
 ## 4 SpringBoot 数据访问
 在原来的Spring中，我们需要手动的添加事务管理器对数据源进行事务的管理。在SpringBoot中，提供了默认的事务管理器，会根据当前的项目依赖来自动配置最合适的事务管理器。
-- Mybatis、Spring Data JDBC、Spring Data JPA和Hibernate：DataSourceTransactionManager
+- Mybatis、Spring Data JDBC：DataSourceTransactionManager
+- Spring Data JPA和Hibernate：JpaTransactionManager
 - 使用JTA（Java Transaction API）全局事务：JtaTransactionManager
 ### 4.1 集成JDBC Template并进行事务管理
 手动的事务管理可以采用`PlatformTransactionManager`或者是`TransactionTemplate`实现。
