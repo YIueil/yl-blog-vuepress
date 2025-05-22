@@ -732,8 +732,208 @@ public class No14ApplicationTest {
 }
 ```
 ### 4.2 集成Mybatis
+1. 集成mybatis-starter依赖。
+2. 配置添加mapper-location和别名配置。
+```yml
+mybatis:  
+  mapper-locations: classpath:mapper-xml/*.xml  
+  type-aliases-package: cc.yiueil.entity  
+spring:  
+  datasource:  
+    driver-class-name: org.postgresql.Driver  
+    url: jdbc:postgresql://yiueil.local:5432/db_test1?currentSchema=schema_fir  
+    username: postgres  
+    password: Fk12345.
+```
+3. 创建entity和mapper接口，以及xml映射文件。
+```java
+public class UserEntity {
+    private Integer id;
 
+    private String username;
+
+    private String password;
+
+    private Integer salary;
+    // 略getter setter
+}
+
+public interface UserMapper {  
+    List<UserEntity> findUserList();  
+  
+    int insertUser(UserEntity user);  
+}
+```
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="cc.yiueil.mapper.UserMapper">  
+    <insert id="insertUser" parameterType="userEntity">  
+        insert into t_user values (nextval('s_user'), #{username}, #{password}, #{salary})  
+    </insert>  
+  
+    <select id="findUserList" resultType="userEntity">  
+        select * from t_user  
+    </select>  
+</mapper>
+```
+4. 测试类中进行测试。
 ### 4.3 集成JPA
+#### 单数据源
+1. 引入`spring-boot-data-jpa`依赖。
+2. application.yaml中配置数据源和jpa配置，如自动生成表，展示sql，数据库方言等。
+3. 创建entity实体，以及其对应的repository。
+4. 创建测试类进行测试。
+#### 多数据源
+1. 引入`spring-boot-data-jpa`依赖。
+2. application.yaml中配置数据源和jpa配置，如自动生成表，展示sql，数据库方言等。
+```yml
+spring:
+  datasource:
+    one:
+      driver-class-name: org.postgresql.Driver
+      url: jdbc:postgresql://localhost:5432/db_test1
+      username: postgres
+      password: Fk12345.
+    two:
+      driver-class-name: org.postgresql.Driver
+      url: jdbc:postgresql://localhost:5432/db_test2
+      username: postgres
+      password: Fk12345.
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+```
+3. 创建各个数据源的配置类
+```java
+@Configuration
+@EnableTransactionManagement
+@EnableJpaRepositories(
+        entityManagerFactoryRef="oneEntityManagerFactoryBean",
+        transactionManagerRef="oneTransactionManager",
+        basePackages= { "cc.yiueil.repository.one" }) //设置Repository所在位置
+public class OneDatasourceConfiguration {
+
+    @Autowired
+    private JpaProperties jpaProperties;
+
+    @Autowired
+    private HibernateProperties hibernateProperties;
+
+    private Map<String, Object> getVendorProperties() {
+        return hibernateProperties.determineHibernateProperties(jpaProperties.getProperties(), new HibernateSettings());
+    }
+
+    @Bean
+    @ConfigurationProperties(prefix = "spring.datasource.one")
+    public DataSourceProperties oneDataSourceProperties() {
+        return new DataSourceProperties();
+    }
+
+    @Bean
+    @Primary
+    public DataSource oneDataSource() {
+        return oneDataSourceProperties().initializeDataSourceBuilder().build();
+    }
+
+    @Bean
+    @Primary
+    public LocalContainerEntityManagerFactoryBean oneEntityManagerFactoryBean(@Qualifier("oneDataSource") DataSource oneDataSource, EntityManagerFactoryBuilder builder) {
+        return builder
+                .dataSource(oneDataSource)
+                .packages("cc.yiueil.entity.db1") //设置实体类所在位置
+                .persistenceUnit("primaryPersistenceUnit")
+                .properties(getVendorProperties())
+                .build();
+    }
+
+    @Bean
+    @Primary
+    public EntityManager oneEntityManager(LocalContainerEntityManagerFactoryBean oneEntityManagerFactoryBean) {
+        EntityManagerFactory entityManagerFactory = oneEntityManagerFactoryBean.getObject();
+        if (entityManagerFactory == null) {
+            throw new IllegalStateException("There is no EntityManagerFactory instance available");
+        }
+        return entityManagerFactory.createEntityManager();
+    }
+
+    @Bean
+    @Primary
+    public PlatformTransactionManager oneTransactionManager(LocalContainerEntityManagerFactoryBean oneEntityManagerFactoryBean) {
+        EntityManagerFactory entityManagerFactory = oneEntityManagerFactoryBean.getObject();
+        if (entityManagerFactory == null) {
+            throw new IllegalStateException("There is no EntityManagerFactory instance available");
+        }
+        return new JpaTransactionManager(entityManagerFactory);
+    }
+}
+
+@Configuration
+@EnableTransactionManagement
+@EnableJpaRepositories(
+        entityManagerFactoryRef="twoEntityManagerFactoryBean",
+        transactionManagerRef="twoTransactionManager",
+        basePackages= { "cc.yiueil.repository.two" }) //设置Repository所在位置
+public class TowDatasourceConfiguration {
+
+    @Autowired
+    JpaProperties jpaProperties;
+
+    @Autowired
+    HibernateProperties hibernateProperties;
+
+    private Map<String, Object> getVendorProperties() {
+        return hibernateProperties.determineHibernateProperties(jpaProperties.getProperties(), new HibernateSettings());
+    }
+
+    @Bean
+    @ConfigurationProperties(prefix = "spring.datasource.two")
+    public DataSourceProperties twoDataSourceProperties() {
+        return new DataSourceProperties();
+    }
+
+    @Bean
+    public DataSource twoDataSource(DataSourceProperties twoDataSourceProperties) {
+        return twoDataSourceProperties.initializeDataSourceBuilder().build();
+    }
+
+    @Bean
+    public LocalContainerEntityManagerFactoryBean twoEntityManagerFactoryBean(@Qualifier("twoDataSource") DataSource twoDataSource, EntityManagerFactoryBuilder builder) {
+        return builder
+                .dataSource(twoDataSource)
+                .packages("cc.yiueil.entity.db2") //设置实体类所在位置
+                .persistenceUnit("secondaryPersistenceUnit")
+                .properties(getVendorProperties())
+                .build();
+    }
+
+    @Bean
+    public EntityManager twoEntityManager(@Qualifier("twoEntityManagerFactoryBean") LocalContainerEntityManagerFactoryBean twoEntityManagerFactoryBean) {
+        EntityManagerFactory entityManagerFactory = twoEntityManagerFactoryBean.getObject();
+        if (entityManagerFactory == null) {
+            throw new IllegalStateException("There is no EntityManagerFactory instance available");
+        }
+        return entityManagerFactory.createEntityManager();
+    }
+
+    @Bean
+    public PlatformTransactionManager twoTransactionManager(@Qualifier("twoEntityManagerFactoryBean") LocalContainerEntityManagerFactoryBean twoEntityManagerFactoryBean) {
+        EntityManagerFactory entityManagerFactory = twoEntityManagerFactoryBean.getObject();
+        if (entityManagerFactory == null) {
+            throw new IllegalStateException("There is no EntityManagerFactory instance available");
+        }
+        return new JpaTransactionManager(entityManagerFactory);
+    }
+}
+
+```
+4. 创建各自的entity实体类和repository类。
+5. 测试类中进行测试。
+#### 使用JTA多数据源进行事务管理
 
 ### 4.4 NoSQL
 #### Redis
