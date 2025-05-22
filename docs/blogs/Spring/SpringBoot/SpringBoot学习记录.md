@@ -733,7 +733,7 @@ public class No14ApplicationTest {
 ```
 ### 4.2 集成Mybatis
 1. 集成mybatis-starter依赖。
-2. 配置添加mapper-location和别名配置。
+2. 配置添加mapper-location和别名配置，主类添加@MapperScan注解扫描Mapper接口。
 ```yml
 mybatis:  
   mapper-locations: classpath:mapper-xml/*.xml  
