@@ -935,7 +935,9 @@ public class TowDatasourceConfiguration {
 5. 测试类中进行测试。
 #### 使用JTA多数据源进行事务管理
 
-### 4.4 NoSQL
+### 4.4 同时集成Mybatis和JPA
+我很喜欢jpa中的实体自动生成ddl更新数据库的功能。但是jpa在多表联合查询的时候使用繁琐且不易优化，进行java对象的映射过于折腾。这块我又希望使用mybatis来实现复杂对象的查询和映射，就有了同时集成两个框架的想法。JPA做单表查询，然后Mybatis做复杂联合查询和复杂对象映射。
+### 4.5 NoSQL
 #### Redis
 
 #### Elasticsearch集成
