@@ -936,8 +936,46 @@ public class TowDatasourceConfiguration {
 #### 使用JTA多数据源进行事务管理
 
 ### 4.4 同时集成Mybatis和JPA
-我很喜欢jpa中的实体自动生成ddl更新数据库的功能。但是jpa在多表联合查询的时候使用繁琐且不易优化，进行java对象的映射过于折腾。这块我又希望使用mybatis来实现复杂对象的查询和映射，就有了同时集成两个框架的想法。JPA做单表查询，然后Mybatis做复杂联合查询和复杂对象映射。
-### 4.5 NoSQL
+个人喜欢jpa中的实体自动生成ddl更新数据库的功能。但是jpa在多表联合查询的时候使用繁琐且不易优化，进行java对象的映射过于折腾。这块我又希望使用mybatis来实现复杂对象的查询和映射，就有了同时集成两个框架的想法。JPA做单表查询，然后Mybatis做复杂联合查询和复杂对象映射。
+#### 配置文件
+```yml
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/db_test1
+    username: postgres
+    password: Fk12345.
+mybatis:
+  type-aliases-package: cc.yiueil.model.dto
+  configuration:
+    map-underscore-to-camel-case: true
+logging:
+  level:
+    root: debug
+```
+#### 集成JPA实现
+添加对应的实体类，Repository类。
+#### 集成Mybatis
+添加Mapper接口，XML映射文件。
+#### 指定数据库事务
+创建配置类指定事务源。
+```java
+@Configuration
+public class TransactionConfiguration {
+    @Bean
+    public PlatformTransactionManager transactionManager(DataSource dataSource) {
+        return new DataSourceTransactionManager(dataSource);
+    }
+}
+```
+
+### 4.5 使用JTA实现多数据源事务管理
+JTA是Java Transaction API，JTA事务比JDBC事务更强大。一个JTA事务可以有多个参与者，而一个JDBC事务则被限定在一个单一的数据库连接。所以，当我们在同时操作多个数据库的时候，使用JTA事务就可以弥补JDBC事务的不足，需要注意使用JTA会带来更大的性能开销。
+### 4.6 NoSQL
 #### Redis
 
 #### Elasticsearch集成
