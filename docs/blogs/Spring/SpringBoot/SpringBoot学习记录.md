@@ -975,8 +975,253 @@ public class TransactionConfiguration {
 
 ### 4.5 使用JTA实现多数据源事务管理
 JTA是Java Transaction API，JTA事务比JDBC事务更强大。一个JTA事务可以有多个参与者，而一个JDBC事务则被限定在一个单一的数据库连接。所以，当我们在同时操作多个数据库的时候，使用JTA事务就可以弥补JDBC事务的不足，需要注意使用JTA会带来更大的性能开销。
+#### 项目总体结构
+```
+|   pom.xml
+|   
+\---src
+    +---main
+    |   +---java
+    |   |   \---cc
+    |   |       \---yiueil
+    |   |           |   No21Application.java
+    |   |           |
+    |   |           +---configuration
+    |   |           |       JtaTransactionConfiguration.java
+    |   |           |       PrimaryDatasourceConfiguration.java
+    |   |           |       SecondDatasourceConfiguration.java
+    |   |           |
+    |   |           +---entity
+    |   |           |   +---db1
+    |   |           |   |       OneUserEntity.java
+    |   |           |   |
+    |   |           |   \---db2
+    |   |           |           TwoCustomerEntity.java
+    |   |           |
+    |   |           +---repository
+    |   |           |   +---db1
+    |   |           |   |       OneUserEntityRepository.java
+    |   |           |   |
+    |   |           |   \---db2
+    |   |           |           TwoCustomerEntityRepository.java
+    |   |           |
+    |   |           \---service
+    |   |                   CommonService.java
+    |   |
+    |   \---resources
+    |           application.yml
+    |
+    \---test
+        \---java
+            \---cc
+                \---yiueil
+                        No21ApplicationTest.java
+```
+
+#### 项目依赖
+pom.xml
+```xml
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <!-- JTA多数据源事务依赖 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jta-atomikos</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
+    </dependencies>
+```
+
+#### 配置文件
+>重点是jta的配置以及双数据源的配置，并且为了方便排查事务相关逻辑，加入了事务相关的的日志配置。
+```yml
+server:  
+  port: 8080  
+spring:  
+  jpa:  
+    show-sql: true  
+    generate-ddl: true  
+  jta:  
+    enabled: true  
+    atomikos:  
+      connectionfactory:  
+        min-pool-size: 5  
+        max-pool-size: 20  
+      datasource:  
+        min-pool-size: 5  
+        max-pool-size: 20  
+  datasource:  
+    primary:  
+      xa-data-source-class-name: org.postgresql.xa.PGXADataSource  
+      xa-properties:  
+        url: jdbc:postgresql://localhost:5432/db_test1  
+        user: postgres  
+        password: Fk12345.  
+      unique-resource-name: db_test1  
+    secondary:  
+      xa-data-source-class-name: org.postgresql.xa.PGXADataSource  
+      xa-properties:  
+        url: jdbc:postgresql://localhost:5432/db_test2  
+        user: postgres  
+        password: Fk12345.  
+      unique-resource-name: db_test2  
+logging:  
+  level:  
+    # Atomikos 核心日志  
+    com.atomikos: DEBUG  
+    # 事务管理器日志  
+    com.atomikos.icatch: DEBUG  
+    com.atomikos.datasource: DEBUG  
+    # JDBC 连接池日志  
+    com.atomikos.jdbc: DEBUG  
+    # XA 资源日志  
+    org.postgresql.xa: DEBUG  
+    # Spring 事务日志  
+    org.springframework.transaction: DEBUG  
+    # JPA/Hibernate 日志  
+    org.hibernate.engine.transaction: DEBUG  
+    org.hibernate.resource.transaction: DEBUG  
+    # 数据源日志  
+    org.springframework.jdbc.datasource: DEBUG  
+    # JTA 平台日志  
+    org.hibernate.engine.transaction.jta.platform.internal: DEBUG
+```
+#### 核心配置类
+>包含数据源配置类和JTA的事务配置类。
+```java
+@Configuration
+public class JtaTransactionConfiguration {
+    @Bean
+    public JtaTransactionManager jtaTransactionManager() {
+        UserTransactionManager userTransactionManager = new UserTransactionManager();
+        UserTransaction userTransaction = new UserTransactionImp();
+        return new JtaTransactionManager(userTransaction, userTransactionManager);
+    }
+}
+
+@Configuration
+@EnableTransactionManagement
+@EnableJpaRepositories(
+        entityManagerFactoryRef="primaryEntityManagerFactoryBean",
+        transactionManagerRef = "jtaTransactionManager",
+        basePackages= { "cc.yiueil.repository.db1" }) //设置Repository所在位置
+public class PrimaryDatasourceConfiguration {
+
+    @Primary
+    @Bean(name = "primaryDataSource")
+    @ConfigurationProperties(prefix = "spring.datasource.primary")
+    public DataSource primaryDataSource() {
+        return new AtomikosDataSourceBean();
+    }
+
+    @Primary
+    @Bean(name = "primaryEntityManagerFactoryBean")
+    public LocalContainerEntityManagerFactoryBean primaryEntityManagerFactoryBean(
+            EntityManagerFactoryBuilder builder,
+            @Qualifier("primaryDataSource") DataSource dataSource) {
+        return builder
+                .dataSource(dataSource)
+                .packages("cc.yiueil.entity.db1")
+                .persistenceUnit("primaryPersistenceUnit")
+                .properties(jpaProperties())
+                .jta(true)
+                .build();
+    }
+
+    private Map<String, Object> jpaProperties() {
+        Map<String, Object> props = new HashMap<>();
+        props.put("hibernate.transaction.jta.platform", AtomikosJtaPlatform.class.getName());
+        props.put("javax.persistence.transactionType", "JTA");
+        return props;
+    }
+}
+
+@Configuration
+@EnableTransactionManagement
+@EnableJpaRepositories(
+        entityManagerFactoryRef = "secondEntityManagerFactoryBean",
+        transactionManagerRef = "jtaTransactionManager",
+        basePackages = "cc.yiueil.repository.db2"
+)
+public class SecondDatasourceConfiguration {
+
+    @Bean(name = "secondaryDataSource")
+    @ConfigurationProperties(prefix = "spring.datasource.secondary")
+    public DataSource secondaryDataSource() {
+        return new AtomikosDataSourceBean();
+    }
+
+    @Bean(name = "secondEntityManagerFactoryBean")
+    public LocalContainerEntityManagerFactoryBean secondEntityManagerFactoryBean(
+            EntityManagerFactoryBuilder builder,
+            @Qualifier("secondaryDataSource") DataSource dataSource) {
+        return builder
+                .dataSource(dataSource)
+                .packages("cc.yiueil.entity.db2")
+                .persistenceUnit("secondaryPersistenceUnit")
+                .properties(jpaProperties())
+                .jta(true)
+                .build();
+    }
+
+    private Map<String, Object> jpaProperties() {
+        Map<String, Object> props = new HashMap<>();
+        props.put("hibernate.transaction.jta.platform", AtomikosJtaPlatform.class.getName());
+        props.put("javax.persistence.transactionType", "JTA");
+        return props;
+    }
+}
+```
+
+#### 测试服务
+>同时两个数据源进行修改操作，当发生异常的时候，进行两个数据源的回滚。
+```java
+@Service  
+public class CommonService {  
+  
+    @Autowired  
+    OneUserEntityRepository userEntityRepository;  
+  
+    @Autowired  
+    TwoCustomerEntityRepository customerEntityRepository;  
+  
+    @Transactional  
+    public void inertTowTableData(Integer num) {  
+        OneUserEntity entity = new OneUserEntity();  
+        entity.setUserName("test1");  
+        userEntityRepository.save(entity);  
+        TwoCustomerEntity entity1 = new TwoCustomerEntity();  
+        entity1.setFirstName("test1");  
+        entity1.setLastName("test2");  
+        customerEntityRepository.save(entity1);  
+        // 发生0除的时候, 回滚多数据源事务  
+        System.out.println(1 / num);  
+    }  
+}
+```
 ### 4.6 NoSQL
-#### Redis
+NoSQL通常是对SQL的扩展，例如缓存服务器，全文检索，文件存储服务器等进行扩展。
+#### 集中式缓存Redis
+>Spring 原生提供了很多基于内存的缓存机制，如EhCache，这些基于内存的缓存在分布式应用中使用不了，因为各个节点的缓存独立，则缓存失去了作用。就需要使用集中式的缓存了。
+##### 项目结构
 
 #### Elasticsearch集成
 
