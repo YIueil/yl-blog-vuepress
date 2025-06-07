@@ -1221,11 +1221,107 @@ public class CommonService {
 NoSQL通常是对SQL的扩展，例如缓存服务器，全文检索，文件存储服务器等进行扩展。
 #### 集中式缓存Redis
 >Spring 原生提供了很多基于内存的缓存机制，如EhCache，这些基于内存的缓存在分布式应用中使用不了，因为各个节点的缓存独立，则缓存失去了作用。就需要使用集中式的缓存了。
-##### 项目结构
+##### Redis入门程序
+项目依赖
+```xml
+<dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-json</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+    </dependencies>
+```
+
+应用配置
+```yml
+spring:  
+  redis:  
+    password: 通用密码  
+    port: 65431  
+    host: 47.109.40.4
+```
+
+配置类
+```java
+@Configuration
+public class RedisConfiguration {
+    @Bean
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(connectionFactory);
+
+        // Key使用String序列化
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        // Hash的key也使用String序列化
+        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+
+        // 配置Jackson ObjectMapper
+        ObjectMapper om = new ObjectMapper();
+        om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+        om.activateDefaultTyping(om.getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.NON_FINAL);
+
+        // Value使用JSON序列化
+        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer(om));
+        // Hash的value也使用JSON序列化
+        redisTemplate.setHashValueSerializer(new GenericJackson2JsonRedisSerializer(om));
+
+        // 必须调用 afterPropertiesSet() 确保所有属性设置完成
+        redisTemplate.afterPropertiesSet();
+        return redisTemplate;
+    }
+}
+```
+
+测试类
+```java
+@SpringBootTest
+public class No22ApplicationTest {
+    @Autowired
+    RedisTemplate<String, Object> redisTemplate;
+
+    @Test
+    public void test1() {
+        RedisConnection connection = redisTemplate.getConnectionFactory().getConnection();
+        String response = connection.ping();
+        System.out.println("response: " + response);
+    }
+
+    @Test
+    public void test2() {
+        UserEntity userEntity = new UserEntity(1L, "张三", "123456");
+        redisTemplate.opsForValue().set("k1", userEntity);
+        redisTemplate.opsForList().leftPush("arr1", "arr2", "arr3");
+        redisTemplate.opsForSet().add("set1", "set1", "set2", "set3", "set3");
+        redisTemplate.opsForHash().put("hash1", "hash1", "hash2");
+    }
+
+    @Test
+    public void test3() {
+        UserEntity userEntity = (UserEntity) redisTemplate.opsForValue().get("k1");
+        System.out.println(userEntity);
+    }
+}
+```
 
 #### Elasticsearch集成
-
+用到再学
 #### MongoDB集成
+用到再学
 ## 5 SpringBoot Web开发
 ### 5.1 Web的自动配置流程
 #### 相关的自动配置类
