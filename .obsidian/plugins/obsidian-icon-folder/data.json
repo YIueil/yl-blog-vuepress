@@ -67,7 +67,6 @@
   "docs/blogs/BPMN/Flowable": "LiGitPullRequest",
   "docs/blogs/设计模式": "LiHammer",
   "docs/blogs/Java/Mybatis": "LiBird",
-  "Pic": "TiPhoto",
   "docs/blogs/Java/加密解密": "LiKey",
   "docs/blogs/Java/JavaWeb": "BoBxlPinterestAlt",
   "docs/blogs/AI": "CoChat",
@@ -79,5 +78,6 @@
   "docs/blogs/前端基础/ESLint": "SiEslint",
   "docs/blogs/Linux/CentOS": "RiCentosLine",
   "docs/blogs/Linux/Ubuntu": "RiUbuntuLine",
-  "docs/blogs/Spring/SpringCloud": "SiCloudera"
+  "docs/blogs/Spring/SpringCloud": "SiCloudera",
+  "pic": "TiPhoto"
 }

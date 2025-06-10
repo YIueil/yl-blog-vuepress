@@ -19,18 +19,7 @@ categories:
 	- 熔断器：Sentinel
 	- 分布式事务：Seata
 版本搭配：
-
-| Spring Cloud Alibaba 版本 (主要)                      | 兼容的 Spring Boot 版本 (主要) | 备注                                          |
-| ------------------------------------------------- | ----------------------- | ------------------------------------------- |
-| **2022.0.x (对应 Spring Cloud 2022.0.x /2023.0.x)** | **3.0.x**               | 这是最新的主要版本系列，官方推荐搭配使用。                       |
-| **2021.0.x (对应 Spring Cloud 2021.0.x)**           | **2.7.x**               | 这是之前的 LTS (长期支持) 版本系列，相对稳定。                 |
-| **2021.0.x (对应 Spring Cloud 2021.0.x)**           | **2.6.x**               | 在 2.7.x 之前，2.6.x 也是一个较常用的版本，兼容性也较好。         |
-| **2020.0.x (对应 Spring Cloud 2020.0.x)**           | **2.4.x**               | 这个版本系列相对较老，但仍是许多旧项目的选择。                     |
-| **2.2.x (对应 Spring Cloud 2020.0.x)**              | **2.4.x**               | 与 2020.0.x 系列类似，但可能是早期发布的版本。                |
-| **2.2.x (对应 Spring Cloud Hoxton)**                | **2.3.x**               | Hoxton 是一个广泛使用的版本，与 Spring Boot 2.3.x 配合较好。 |
-| **2.2.x (对应 Spring Cloud Hoxton)**                | **2.2.x**               | 与 2.3.x 类似，但兼容性可能稍差。                        |
-| **2.1.x (对应 Spring Cloud Greenwich / Finchley)**  | **2.1.x / 2.2.x**       | 这些是更早的版本，主要用于维护旧项目。                         |
-| **2.0.x (对应 Spring Cloud Edgware / Dalston)**     | **2.0.x / 2.1.x**       | 非常早期的版本，已基本停止维护，不推荐在新项目中使用。                 |
+https://github.com/alibaba/spring-cloud-alibaba/wiki/%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E
 
 ## 2 组件学习
 ### 2.1 注册中心
@@ -205,11 +194,200 @@ public class ProductApplicationTest {
 2. 返回可用的服务方访问地址和端口。
 3. 消费方通过访问的地址和端口发起远程过程调用。
 #### 负载均衡的方式来发起远程过程调用
-// TODO
+##### 基于LoadbalancerClient选择
+添加loadbalancer场景。
+```xml
+<!--loadbalancer负载均衡-->  
+<dependency>  
+    <groupId>org.springframework.cloud</groupId>  
+    <artifactId>spring-cloud-starter-loadbalancer</artifactId>  
+</dependency>
+```
+
+使用LoadbalancerClient客户端选择客户端：
+```java
+@SpringBootTest  
+public class OrderApplicationTest {  
+  
+    @Autowired  
+    LoadBalancerClient loadBalancerClient;  
+  
+    @Test  
+    public void test1() {  
+        for (int i = 0; i < 10; i++) {  
+            ServiceInstance choose = loadBalancerClient.choose("service-product");  
+            System.out.println("choose: " + choose.getUri());  
+        }  
+    }  
+}
+```
+##### 基于负载均衡的RestTemplate组件
+```java
+@Configuration  
+public class RestTemplateConfiguration {  
+  
+    @LoadBalanced  
+    @Bean    public RestTemplate restTemplate() {  
+        return new RestTemplate();  
+    }  
+}
+```
+```java
+@SpringBootTest  
+public class OrderApplicationTest {  
+  
+    @Autowired  
+    LoadBalancerClient loadBalancerClient;  
+  
+    @Autowired  
+    RestTemplate restTemplate;  
+  
+    @Test  
+    public void test1() {  
+        for (int i = 0; i < 10; i++) {  
+            ServiceInstance choose = loadBalancerClient.choose("service-product");  
+            System.out.println("choose: " + choose.getUri());  
+        }  
+    }  
+  
+    @Test  
+    public void test2() {  
+	    // 通过负载均衡注解标注的restTemplate通过服务名service-product实现负载均衡调用
+        ProductEntity ProductEntity = restTemplate.getForObject("http://service-product/getProduct?id=1", ProductEntity.class);  
+        System.out.println("ProductEntity: " + ProductEntity);  
+    }  
+}
+```
+
+#### 注册中心挂了，还能否进行微服务调用
+- 如果是第一次调用，拿不到目标服务地址，则调用不通。
+- 如果是第二次或者n次，直接通过缓存读取目标服务地址，可用调用通。
 ### 2.2 配置中心
 配置中心实现了不下线的配置更新。
-- @Value和@RefushScope
-- @ConfigProperties
-- @NacosConfigManager编程实现
+#### 初步使用配置中心
+加入nacos作为配置中心的依赖：
+```xml
+<!--nacos作为配置中心-->  
+<dependency>  
+    <groupId>com.alibaba.cloud</groupId>  
+    <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>  
+</dependency>
+```
+
+nacos中完成对于配置的添加：
+![jfxos5.png](https://files.catbox.moe/jfxos5.png)
+
+编写代码使用相关配置：
+>这里使用了@Value和@RefushScope两个注解，@Value不解释，@RefushScope用于自动刷新配置中心的配置, 以便于在不重启的情况下, 从配置中心更新数据。
+```java
+// 此注解 用于自动刷新配置中心的配置, 以便于在不重启的情况下, 从配置中心更新数据
+@RefreshScope
+@RestController
+public class OrderController {
+
+    private final OrderService orderService;
+
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
+    }
+
+    @Value(value = "${order.timeout}")
+    private String timeout;
+
+    @Value(value = "${order.auto-confirm}")
+    private String confirm;
 
 
+    @GetMapping(value = "/createOrder")
+    public OrderEntity createOrder(@RequestParam Long userId, @RequestParam Long productId) {
+        return orderService.createOrder(productId, userId);
+    }
+
+    @GetMapping(value = "/getConfig")
+    public String getConfig(){
+        return String.format("%s, %s", confirm, timeout);
+    }
+
+}
+```
+
+#### @ConfigurationProperties无感刷新
+>如果需要将配置绑定到Properties对象，可用@ConfigurationProperties，并且该方式可以实现无感刷新。即不需要额外使用@RefreshScope注解。
+```java
+@Data  
+@ConfigurationProperties(prefix = "order")  
+public class OrderProperties {  
+    private String timeout;  
+  
+    private String autoConfirm;  
+}
+```
+```java
+@RestController  
+@EnableConfigurationProperties(OrderProperties.class)  
+public class OrderController {  
+  
+    private final OrderService orderService;  
+  
+    public OrderController(OrderService orderService) {  
+        this.orderService = orderService;  
+    }  
+    
+    @Autowired  
+    private OrderProperties orderProperties;  
+    
+    @GetMapping(value = "/getConfigByProperties")  
+    public String getConfigByProperties(){  
+        return orderProperties.toString();  
+    }  
+  
+}
+```
+
+#### @NacosConfigManager编程实现监听配置变化
+>可以通过@NacosConfigManager对象来对配置变化进行响应操作。
+```java
+@EnableDiscoveryClient
+@SpringBootApplication
+public class OrderApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(OrderApplication.class, args);
+    }
+
+	// ApplicationRunner会随着SpringBoot启动而注册
+    @Bean
+    ApplicationRunner applicationRunner(NacosConfigManager nacosConfigManager) {
+        return args -> {
+            ConfigService configService = nacosConfigManager.getConfigService();
+            configService.addListener("service-order.properties", "DEFAULT_GROUP", new Listener() {
+                @Override
+                public Executor getExecutor() {
+		            // 返回一个线程池
+                    return Executors.newFixedThreadPool(4);
+                }
+
+                @Override
+                public void receiveConfigInfo(String configString) {
+		            // 具体的消息变化的代码
+                    System.out.println("邮件通知");
+                    System.out.println(configString);
+                }
+            });
+        };
+    }
+}
+```
+#### 题目：项目中的application.properties和配置中心的application.properties谁的优先级更高？
+从设计角度来说，外部配置优先于内部配置，所以配置中心的application.properties优先级更高。然后合并两部分配置，存入环境变量Environment中。如果同时导入多个配置文件，先声明的配置为高优先级配置。
+- 先导入优先
+- 外部配置优先
+
+#### Nacos中多环境配置
+>如何在配置中心中，定义多个环境：开发、测试、生产？
+
+图形定义：
+- 通过项目中启动环境，来匹配对应的配置中心命名空间，最后决定要生效的配置组。
+	- nacos名称空间->服务环境
+	- nacos分组->微服务模块
+	- nacos数据集->微服务配置
+![5hp69p.png](https://files.catbox.moe/5hp69p.png)
