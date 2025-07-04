@@ -78,6 +78,10 @@ cd /usr/local/bin
 # redis-cli连接测试
 [root@iZ2vcf1lidtliymh8xfkzlZ bin]# redis-cli -p 65431 ping
 PONG
+# redis-cli连接指定密码
+[root@iZ2vcf1lidtliymh8xfkzlZ bin]# redis-cli -p 6856 -a "Gtx@349jk7" ping
+PONG
+
 ```
 
 ### 外部工具连接测试

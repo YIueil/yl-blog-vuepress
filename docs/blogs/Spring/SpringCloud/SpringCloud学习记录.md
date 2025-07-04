@@ -37,15 +37,6 @@ docker run --name nacos-standalone-derby -e MODE=standalone -e NACOS_AUTH_TOKEN=
 ```bash
 |   pom.xml
 |
-+---.idea
-|       .gitignore
-|       compiler.xml
-|       encodings.xml
-|       jarRepositories.xml
-|       misc.xml
-|       vcs.xml
-|       workspace.xml
-|
 \---services
     |   pom.xml
     |
