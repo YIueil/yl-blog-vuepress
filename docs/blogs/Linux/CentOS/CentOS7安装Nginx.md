@@ -77,4 +77,4 @@ tar -zxvf nginx-1.24.0.tar.gz
 make & make install
 ```
 
-> 安装完成后, 进入sbin目录 ./nginx 执行启动即可
+> 安装完成后, 进入sbin目录 `./nginx` 执行启动即可
