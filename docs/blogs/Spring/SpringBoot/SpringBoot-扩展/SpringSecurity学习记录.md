@@ -776,6 +776,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
 ## 5 Security的OAuth2支持
 ### 5.1 OAuth2的介绍
+[OAuth 2.0 的四种方式 - 阮一峰的网络日志](https://www.ruanyifeng.com/blog/2019/04/oauth-grant-types.html)
 
 ### 5.2 通过OAuth2协议接入GitHub平台
 
