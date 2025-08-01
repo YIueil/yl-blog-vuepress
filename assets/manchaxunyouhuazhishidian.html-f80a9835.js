@@ -1,0 +1,1 @@
+import{_ as a,o as n,c as t,a as e,b as c}from"./app-7377b0fe.js";const o={},s=e("h1",{id:"慢查询优化知识点",tabindex:"-1"},[e("a",{class:"header-anchor",href:"#慢查询优化知识点","aria-hidden":"true"},"#"),c(" 慢查询优化知识点")],-1),h=[s];function r(i,_){return n(),t("div",null,h)}const u=a(o,[["render",r],["__file","manchaxunyouhuazhishidian.html.vue"]]);export{u as default};
