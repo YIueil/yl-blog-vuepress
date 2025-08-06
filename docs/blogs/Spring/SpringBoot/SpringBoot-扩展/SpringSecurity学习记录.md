@@ -777,9 +777,48 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 ## 5 Security的OAuth2支持
 ### 5.1 OAuth2的介绍
 [OAuth 2.0 的四种方式 - 阮一峰的网络日志](https://www.ruanyifeng.com/blog/2019/04/oauth-grant-types.html)
+#### 授权码模式
+1. 授权服务器提供登录页，参数携带client_id和redirect_uri两个参数，这两个参数指明客户端id和重定向地址。
+2. 用户输入账号密码，登录成功后，跳转到redirect_uri，并携带授权码code。
+3. 客户端通过授权码，结合client_id，client_secret进行授权，获取到具体的Access Token。
+4. 客户端使用Access Token获取受保护的资源。
+#### ~~密码模式~~
+>于OAuth2.1中建议废弃
+1. 
+#### ~~简易模式~~
+>于OAuth2.1中建议废弃
+#### 客户端模式
+### 5.2 通过OAuth2协议接入GitHub平台，结合SpringSecurity实现社交登录
+可以通过引入启动器依赖，基于SpringSecurity快速实现的OAuth2协议的支持。
+```xml
+spring-boot-starter-oauth2-client
+```
 
-### 5.2 通过OAuth2协议接入GitHub平台
+### 5.3 通过OAuth2协议接入GitEE平台，使用Postman模拟。
+> 无需魔法。[Gitee OAuth 文档](https://gitee.com/api/v5/oauth_doc#/)
 
+通过Postman模拟授权码授权流程
+#### 获取授权码
+1. 浏览器访问：
+2. 登录GitEE后点击授权。
+3. 拿到返回的code：http://localhost:8080/login/oauth2/gitee?code=**ef2fecd7f6a59fc507c38106baf59efb999bc588d2010935571bf58539e43e2e**
+#### 通过授权码获取Token
+1. 通过post请求拿到Token：https://gitee.com/oauth/token?grant_type=authorization_code&code=ef2fecd7f6a59fc507c38106baf59efb999bc588d2010935571bf58539e43e2e&client_id=f8767fd46c395f39c4cf3d688a2f685abac96d793ca7af24416d919ff432e911&redirect_uri=http://localhost:8080/login/oauth2/gitee&client_secret=9995f9a39614e35d975473b897f95028a1ddb56bfc2384a4d65314270abefb04
+2. 返回结果：
+![ltC5UDcHrY6QfEK.png](https://s2.loli.net/2025/08/06/ltC5UDcHrY6QfEK.png)
+```json
+{
+    "access_token": "5b8d1c69f2c900344abec92ed49c4660",
+    "token_type": "bearer",
+    "expires_in": 86400,
+    "refresh_token": "1cd56063e9e7d41b3755fa1b28159914346a05e72519d6b4ad8d5a00a420d88c",
+    "scope": "user_info projects emails",
+    "created_at": 1754491114
+}
+```
+#### 通过Token获取用户信息
+1. 通过get携带Token请求：https://gitee.com/api/v5/user
+![GMorRcWAzdY3Nha.png](https://s2.loli.net/2025/08/06/GMorRcWAzdY3Nha.png)
 ## 6 SpringAuthorizationServer（SAS认证服务中心）
 ### 6.1 极简实现
 
