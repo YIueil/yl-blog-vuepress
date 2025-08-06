@@ -1,0 +1,1 @@
+import{_ as t,o as a,c as s,a as e,b as n}from"./app-7fcc157f.js";const r={},i=e("h1",{id:"spring整合mybatis",tabindex:"-1"},[e("a",{class:"header-anchor",href:"#spring整合mybatis","aria-hidden":"true"},"#"),n(" Spring整合Mybatis")],-1),c=[i];function o(_,h){return a(),s("div",null,c)}const l=t(r,[["render",o],["__file","SpringzhengheMybatis.html.vue"]]);export{l as default};
