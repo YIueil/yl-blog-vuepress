@@ -8,6 +8,7 @@ categories:
 ---
 
 # Tomcat9 自定义JVM参数
+编辑`./bin/catalina.sh`，头部添加：
 ```bash
 JAVA_OPTS="-Xms1024m -Xmx2048m -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=512m"
 ```
