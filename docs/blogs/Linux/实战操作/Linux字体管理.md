@@ -1,10 +1,11 @@
 ---
-  date: 2025-09-11 11:05:14
-  pageClass: blue-archive
-  tags:
-    - 未分类
-  categories:
-    - 未归档
+date: 2025-09-11 11:05:14
+pageClass: blue-archive
+tags:
+  - 服务器
+  - 字体
+categories:
+  - Linux
 ---
 
 # Linux 字体管理
