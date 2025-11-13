@@ -65,6 +65,9 @@ daemonize no 改为 daemonize yes
 
 # 端口修改
 port 6379 改为 port 16379
+
+# 可选, 设置密码
+requirepass 'youpassword'
 ```
 
 ```shell
