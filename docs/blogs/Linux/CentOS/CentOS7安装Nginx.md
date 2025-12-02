@@ -71,6 +71,12 @@ tar -zxvf nginx-1.24.0.tar.gz
 --with-stream_ssl_module
 ```
 
+```sh
+# 一个参考
+./configure --with-threads --with-file-aio --with-http_ssl_module --with-http_v2_module --with-http_realip_module --with-http_addition_module --with-http_xslt_module --with-http_geoip_module --with-http_sub_module --with-http_dav_module --with-http_flv_module --with-http_mp4_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_auth_request_module --with-http_secure_link_module --with-http_degradation_module --with-http_slice_module --with-http_stub_status_module --with-http_perl_module --with-stream --with-stream_ssl_module --with-stream_realip_module --with-stream_geoip_module --with-stream_ssl_preread_module --with-compat --with-pcrecd /
+```
+```
+
 ## 执行安装命令
 
 ```shell
@@ -78,3 +84,13 @@ make & make install
 ```
 
 > 安装完成后, 进入sbin目录 `./nginx` 执行启动即可
+
+
+yum离线下载rpm包
+
+```sh
+yum install --downloadonly --downloaddir=. perl-ExtUtils-Embed
+
+# 进入到对应目录, 执行安装
+sudo yum localinstall *.rpm
+```
