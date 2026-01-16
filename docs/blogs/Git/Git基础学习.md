@@ -11,6 +11,22 @@ categories:
 ## 1 介绍
 Git是一个免费、开源的分布式版本控制系统，用于快速高效地处理项目的各种版本管理任务。
 
+> 如何查看当前仓库的配置。
+```sh
+# 查看全局配置
+git config --global --list
+
+# 查看本地仓库配置
+git config --local --list
+
+# 查看所有配置（包括系统、全局、本地）
+git config --list
+
+# 查看特定配置项
+git config user.name
+git config user.email
+```
+
 ## 2 版本回退和前进
 ### 2.1 回退到指定版本
 `git reset --hard [版本编号]`

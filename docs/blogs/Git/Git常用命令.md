@@ -28,3 +28,9 @@ git reset --soft HEAD~3
 git commit -m "合并后的提交信息"
 ```
 
+### 1.2 查询近期的提交内容
+```sh
+# --oneline: 单行显示. --no-merges: 排除合并请求
+git log --since="2026-01-12" --author="YIueil" --oneline --no-merges
+```
+

@@ -15,3 +15,4 @@ yarn install --registry=http://1.202.165.39:22282/repository/npm-public/
 # 缓存清除
 http://127.0.0.1:7150/DapREST/app/dictionary/removeCache?name=%E7%BC%96%E8%BE%91%E7%9B%AE%E5%BD%95%E6%9D%83%E9%99%90&isAll=false
 ```
+
