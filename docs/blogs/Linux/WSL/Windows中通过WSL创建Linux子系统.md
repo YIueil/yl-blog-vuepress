@@ -37,10 +37,13 @@ c  d  e  wsl  wslg
 
 ## 4 网络配置
 > 参考：[使用 WSL 访问网络应用程序 | Microsoft Learn](https://learn.microsoft.com/zh-cn/windows/wsl/networking)
+> ⚠ 执行之后，需要执行命令`wsl --shutdown`后重启 wsl 终端。
 
 - 默认都是使用的NAT模式，这种模式下局域网其他设备访问本机的wsl文件时不方便。
 - 使用镜像网络，可以wsl和主机相同的网络。其他局域网设备访问就可以通过宿主机ip进行访问了。
+- 现在可以直接在 `开始` -> `WSL Setting` -> `网络` 进行设置了，不需要直接修改配置文件了。
 ```ini
 [wsl2]
 networkingMode=mirrored
 ```
+
