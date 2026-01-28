@@ -1,0 +1,1 @@
+const a=JSON.parse('{"key":"v-05f16b18","path":"/categories/Java/JavaWeb/JavaWeb-kuozhan/1/","title":"","lang":"en-US","frontmatter":{"layout":"Categories"},"headers":[],"git":{},"filePathRelative":null}');export{a as data};

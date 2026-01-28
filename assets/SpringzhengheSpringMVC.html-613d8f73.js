@@ -1,0 +1,1 @@
+import{_ as n,o as r,c as s,b as e,d as t}from"./app-be491351.js";const c={},i=e("h1",{id:"spring整合springmvc",tabindex:"-1"},[e("a",{class:"header-anchor",href:"#spring整合springmvc","aria-hidden":"true"},"#"),t(" Spring整合SpringMVC")],-1),a=[i];function o(_,d){return r(),s("div",null,a)}const p=n(c,[["render",o],["__file","SpringzhengheSpringMVC.html.vue"]]);export{p as default};

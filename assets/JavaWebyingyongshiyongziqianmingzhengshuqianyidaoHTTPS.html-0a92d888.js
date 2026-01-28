@@ -1,0 +1,49 @@
+import{_ as a,o as n,c as s,a as e}from"./app-be491351.js";const t={},p=e(`<h1 id="javaweb应用使用自签名证书迁移到https" tabindex="-1"><a class="header-anchor" href="#javaweb应用使用自签名证书迁移到https" aria-hidden="true">#</a> JavaWeb应用使用自签名证书迁移到HTTPS</h1><blockquote><p>项目使用的技术栈为Spring JavaWeb + Nginx + tomcat。</p></blockquote><h2 id="_1-证书生成" tabindex="-1"><a class="header-anchor" href="#_1-证书生成" aria-hidden="true">#</a> 1 证书生成</h2><blockquote><p>使用Java环境下的<code>keytool</code>生成密钥。</p></blockquote><h2 id="_1-1-生成密钥文件" tabindex="-1"><a class="header-anchor" href="#_1-1-生成密钥文件" aria-hidden="true">#</a> 1.1 生成密钥文件</h2><div class="language-bash line-numbers-mode" data-ext="sh"><pre class="language-bash"><code><span class="token comment"># 交互式的生成密钥文件</span>
+keytool <span class="token parameter variable">-genkeypair</span> <span class="token parameter variable">-alias</span> localhost <span class="token parameter variable">-keyalg</span> RSA <span class="token parameter variable">-keysize</span> <span class="token number">2048</span> <span class="token parameter variable">-validity</span> <span class="token number">365</span> <span class="token parameter variable">-keystore</span> keystore.jks
+
+输入密钥库口令:
+
+再次输入新口令:
+
+您的名字与姓氏是什么?
+  <span class="token punctuation">[</span>Unknown<span class="token punctuation">]</span>:  yiueil.cc
+您的组织单位名称是什么?
+  <span class="token punctuation">[</span>Unknown<span class="token punctuation">]</span>:
+您的组织名称是什么?
+  <span class="token punctuation">[</span>Unknown<span class="token punctuation">]</span>:
+您所在的城市或区域名称是什么?
+  <span class="token punctuation">[</span>Unknown<span class="token punctuation">]</span>:
+您所在的省/市/自治区名称是什么?
+  <span class="token punctuation">[</span>Unknown<span class="token punctuation">]</span>:  CN
+该单位的双字母国家/地区代码是什么?
+  <span class="token punctuation">[</span>Unknown<span class="token punctuation">]</span>:  CN
+<span class="token assign-left variable">CN</span><span class="token operator">=</span>yiueil.cc, <span class="token assign-left variable">OU</span><span class="token operator">=</span>Unknown, <span class="token assign-left variable">O</span><span class="token operator">=</span>Unknown, <span class="token assign-left variable">L</span><span class="token operator">=</span>Unknown, <span class="token assign-left variable">ST</span><span class="token operator">=</span>CN, <span class="token assign-left variable">C</span><span class="token operator">=</span>CN是否正确?
+  <span class="token punctuation">[</span>否<span class="token punctuation">]</span>:  y
+
+输入 <span class="token operator">&lt;</span>localhost<span class="token operator">&gt;</span> 的密钥口令
+        <span class="token punctuation">(</span>如果和密钥库口令相同, 按回车<span class="token punctuation">)</span>:
+
+<span class="token comment"># 可以使用建议的命令将密钥算法格式迁移到行业标准，以被广泛支持（如 OpenSSL、Windows、浏览器</span>
+Warning:
+JKS 密钥库使用专用格式。建议使用 <span class="token string">&quot;keytool -importkeystore -srckeystore keystore.jks -destkeystore keystore.jks -deststoretype pkcs12&quot;</span> 迁移到行业标准格式 PKCS12。
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h2 id="_1-2-导出证书" tabindex="-1"><a class="header-anchor" href="#_1-2-导出证书" aria-hidden="true">#</a> 1.2 导出证书</h2><div class="language-bash line-numbers-mode" data-ext="sh"><pre class="language-bash"><code><span class="token comment"># 查看所有生成的证书 需要输入密钥库的密码</span>
+keytool <span class="token parameter variable">-list</span> <span class="token parameter variable">-v</span> <span class="token parameter variable">-keystore</span> keystore.jks
+
+<span class="token comment"># 导出证书</span>
+keytool <span class="token parameter variable">-exportcert</span> <span class="token parameter variable">-alias</span> localhost <span class="token parameter variable">-keystore</span> keystore.jks <span class="token parameter variable">-file</span> certificate.crt
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h2 id="_1-3-客户端安装证书" tabindex="-1"><a class="header-anchor" href="#_1-3-客户端安装证书" aria-hidden="true">#</a> 1.3 客户端安装证书</h2><h2 id="_2-web容器配置" tabindex="-1"><a class="header-anchor" href="#_2-web容器配置" aria-hidden="true">#</a> 2 Web容器配置</h2><h3 id="_2-1-tomcat配置" tabindex="-1"><a class="header-anchor" href="#_2-1-tomcat配置" aria-hidden="true">#</a> 2.1 Tomcat配置</h3><blockquote><p>Tomcat 中开放SSL的监听，配置证书所在的路径以及证书<code>Key</code>的密钥。配置完成后重启进入通过该端口即可看到效果。</p></blockquote><div class="language-xml line-numbers-mode" data-ext="xml"><pre class="language-xml"><code>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>Connector</span> <span class="token attr-name">port</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>18443<span class="token punctuation">&quot;</span></span>
+               <span class="token attr-name">protocol</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>org.apache.coyote.http11.Http11NioProtocol<span class="token punctuation">&quot;</span></span>
+               <span class="token attr-name">maxThreads</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>150<span class="token punctuation">&quot;</span></span>
+               <span class="token attr-name">SSLEnabled</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>true<span class="token punctuation">&quot;</span></span>
+               <span class="token attr-name">scheme</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>https<span class="token punctuation">&quot;</span></span>
+               <span class="token attr-name">secure</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>true<span class="token punctuation">&quot;</span></span>
+               <span class="token attr-name">maxParameterCount</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>1000<span class="token punctuation">&quot;</span></span>
+     <span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>SSLHostConfig</span><span class="token punctuation">&gt;</span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>Certificate</span> <span class="token attr-name">certificateKeystoreFile</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>conf/keystore.jks<span class="token punctuation">&quot;</span></span>
+                         <span class="token attr-name">certificateKeystorePassword</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>Fkey13579.<span class="token punctuation">&quot;</span></span>
+                         <span class="token attr-name">certificateKeystoreType</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>JKS<span class="token punctuation">&quot;</span></span>
+                         <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>RSA<span class="token punctuation">&quot;</span></span> <span class="token punctuation">/&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>SSLHostConfig</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>Connector</span><span class="token punctuation">&gt;</span></span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div>`,13),o=[p];function l(i,c){return n(),s("div",null,o)}const r=a(t,[["render",l],["__file","JavaWebyingyongshiyongziqianmingzhengshuqianyidaoHTTPS.html.vue"]]);export{r as default};

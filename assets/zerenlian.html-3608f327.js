@@ -1,0 +1,1 @@
+import{_ as a,o as t,c as n,b as e,d as r}from"./app-be491351.js";const c={},o=e("h1",{id:"责任链",tabindex:"-1"},[e("a",{class:"header-anchor",href:"#责任链","aria-hidden":"true"},"#"),r(" 责任链")],-1),s=[o];function _(d,i){return t(),n("div",null,s)}const h=a(c,[["render",_],["__file","zerenlian.html.vue"]]);export{h as default};

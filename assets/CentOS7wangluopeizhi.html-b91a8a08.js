@@ -1,0 +1,9 @@
+import{_ as e,o as a,c as s,a as n}from"./app-be491351.js";const i={},d=n(`<h1 id="centos7网络配置" tabindex="-1"><a class="header-anchor" href="#centos7网络配置" aria-hidden="true">#</a> CentOS7网络配置</h1><h2 id="nat方式" tabindex="-1"><a class="header-anchor" href="#nat方式" aria-hidden="true">#</a> NAT方式</h2><h3 id="编辑网络配置文件" tabindex="-1"><a class="header-anchor" href="#编辑网络配置文件" aria-hidden="true">#</a> 编辑网络配置文件</h3><div class="language-bash line-numbers-mode" data-ext="sh"><pre class="language-bash"><code><span class="token builtin class-name">cd</span> /etc/sysconfig/network-scripts/
+<span class="token function">vim</span> ifcfg-ens33
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div></div></div><h3 id="修改以下内容" tabindex="-1"><a class="header-anchor" href="#修改以下内容" aria-hidden="true">#</a> 修改以下内容</h3><div class="language-bash line-numbers-mode" data-ext="sh"><pre class="language-bash"><code><span class="token assign-left variable">BOOTPROTO</span><span class="token operator">=</span>dhcp
+<span class="token comment"># 默认这里是no, 也就是默认关闭的</span>
+<span class="token assign-left variable">ONBOOT</span><span class="token operator">=</span>yes
+
+<span class="token comment"># 可选 配置静态ip地址</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><h4 id="重启网络服务" tabindex="-1"><a class="header-anchor" href="#重启网络服务" aria-hidden="true">#</a> 重启网络服务</h4><div class="language-bash line-numbers-mode" data-ext="sh"><pre class="language-bash"><code>systemctl restart network.service
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div></div></div>`,8),r=[d];function c(t,l){return a(),s("div",null,r)}const h=e(i,[["render",c],["__file","CentOS7wangluopeizhi.html.vue"]]);export{h as default};

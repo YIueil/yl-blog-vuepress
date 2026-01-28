@@ -1,0 +1,6 @@
+import{_ as a,o as s,c as n,a as e}from"./app-be491351.js";const t={},r=e(`<h1 id="dist内容" tabindex="-1"><a class="header-anchor" href="#dist内容" aria-hidden="true">#</a> DIST内容</h1><div class="language-bash line-numbers-mode" data-ext="sh"><pre class="language-bash"><code><span class="token comment"># yarn 安装依赖, 使用公司环境仓库</span>
+<span class="token function">yarn</span> <span class="token function">install</span> <span class="token parameter variable">--registry</span><span class="token operator">=</span>http://1.202.165.39:22282/repository/npm-public/
+
+<span class="token comment"># 缓存清除</span>
+http://127.0.0.1:7150/DapREST/app/dictionary/removeCache?name<span class="token operator">=</span>%E7%BC%96%E8%BE%91%E7%9B%AE%E5%BD%95%E6%9D%83%E9%99%90<span class="token operator">&amp;</span><span class="token assign-left variable">isAll</span><span class="token operator">=</span>false
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div>`,2),i=[r];function o(c,l){return s(),n("div",null,i)}const d=a(t,[["render",o],["__file","DISTnarong.html.vue"]]);export{d as default};

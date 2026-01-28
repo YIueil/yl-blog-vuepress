@@ -1,0 +1,1 @@
+import{_ as a,o as t,c as o,b as e,d as c}from"./app-be491351.js";const r={},s=e("h1",{id:"桥接",tabindex:"-1"},[e("a",{class:"header-anchor",href:"#桥接","aria-hidden":"true"},"#"),c(" 桥接")],-1),n=[s];function _(i,d){return t(),o("div",null,n)}const l=a(r,[["render",_],["__file","qiaojie.html.vue"]]);export{l as default};
