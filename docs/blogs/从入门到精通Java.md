@@ -14,12 +14,15 @@
 >https://www.bilibili.com/video/BV1aA411x7Us
 
 ### 1.2 Java基础 240H
+- 视频：https://www.bilibili.com/video/BV1fh411y7R8
+- 结合博客学习，进行练习：https://liaoxuefeng.com/books/java/introduction/index.html
+
 | 学习内容    | 重点知识                                           | 学习时间(h) |
 | ------- | ---------------------------------------------- | ------- |
 | 环境搭建    | 搭建Java8+IDEA的开发环境，编写Hello World程序              | 2       |
 | 语法学习*   | 变量、数据类型、运算符、流程控制、数组、字符串<br>                    | 20-30   |
 | 面向对象*   | 类与对象、封装继承多态、接口抽象类、简单UML                        | 30-40   |
-| 核心API   | 集合框架(List/Set/Map)、异常处理、IO流、多线程基础、网络编程(Socket) | 60-80   |
+| 核心API*  | 集合框架(List/Set/Map)、异常处理、IO流、多线程基础、网络编程(Socket) | 60-80   |
 | JDK8+特性 | Lambda表达式、Stream API、Optional、日期时间API          | 15-20   |
 | 项目练习    | 控制台通讯录系统、图书管理系统、简易聊天室                          | 40-60   |
 ### 1.3 数据库学习 120H
@@ -28,7 +31,7 @@
 | --------- | ----------------------------------- | ----------- |
 | MySQL基础*  | 安装、库表操作、CRUD语句、数据类型、约束              | 20-30       |
 | SQL进阶     | 多表查询、JOIN、子查询、索引基础、事务、视图            | 20-25       |
-| JDBC      | JDBC连接、PreparedStatement、事务管理、连接池概念 | 15-20       |
+| JDBC*     | JDBC连接、PreparedStatement、事务管理、连接池概念 | 15-20       |
 | 项目练习      | 控制台+MySQL版学生管理系统、订单系统               | 30-50       |
 | 了解其他常用数据库 | Oracle、PostgreSQL                   | **105-155** |
 
@@ -42,7 +45,7 @@
 | 学习内容         | 重点知识                                     | 学习时间（h） |
 | ------------ | ---------------------------------------- | ------- |
 | JavaWeb基础内容* | HTTP协议、请求响应、Session/Cookie、Servlet/JSP基础 | 20-30   |
-| 前端基础*        | HTML/CSS/JavaScript基础、Ajax               | 240     |
+| 前端基础*        | HTML/CSS/JavaScript基础、Ajax               | 340     |
 
 ### 1.6 框架学习
 | 学习内容         | 重点知识                                | 学习时间（h） |
@@ -51,12 +54,12 @@
 | Spring MVC*  | 控制器、RESTful API、参数绑定、拦截器            | 50h     |
 | MyBatis      | Mapper配置、动态SQL、结果映射、分页、MyBatis-Plus | 30h     |
 | Spring Boot* | 自动配置原理、启动器、配置文件、Actuator、部署         | 80h     |
-| Vue3         | Vue3框架使用：生命周期，组件化                   | 40h     |
+| Vue3*        | Vue3框架使用：生命周期，组件化                   | 40h     |
 ### 1.7 中间件
 | 学习内容   | 重点知识                                | 学习时间（h） |
 | ------ | ----------------------------------- | ------- |
-| Redis  | 数据类型、缓存策略、分布式锁、持久化、集群概念             | 25-35   |
-| Nginx  | 反向代理原理、配置学习                         | 30      |
+| Redis* | 数据类型、缓存策略、分布式锁、持久化、集群概念             | 25-35   |
+| Nginx* | 反向代理原理、配置学习                         | 30      |
 | 消息队列   | RabbitMQ/Kafka基础、生产者消费者模型、可靠性保证     | 30-40   |
 | Docker | 镜像容器、Dockerfile、Docker Compose、私服搭建 | 15-20   |
 | K8s基础  | Pod/Service/Deployment概念、简单部署       | 10-15   |
