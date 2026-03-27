@@ -6,11 +6,11 @@
     "emojiStyle": "native",
     "iconColor": null,
     "recentlyUsedIcons": [
+      "SiPowershell",
+      "LiUser",
+      "LiHistory",
       "SiApachetomcat",
-      "SiCloudera",
-      "RiUbuntuLine",
-      "RiCentosFill",
-      "RiCentosLine"
+      "SiCloudera"
     ],
     "recentlyUsedIconsSize": 5,
     "rules": [],
@@ -80,5 +80,8 @@
   "docs/blogs/Linux/Ubuntu": "RiUbuntuLine",
   "docs/blogs/Spring/SpringCloud": "SiCloudera",
   "pic": "TiPhoto",
-  "docs/blogs/Java/Tomcat": "SiApachetomcat"
+  "docs/blogs/Java/Tomcat": "SiApachetomcat",
+  "docs/draft/DIST/Z俊 - 工作交接内容/历史项目归档.md": "LiHistory",
+  "docs/draft/DIST/Z俊 - 工作交接内容": "LiUser",
+  "docs/blogs/Windows/脚本": "SiPowershell"
 }
