@@ -3,5 +3,6 @@
     "custom"
   ],
   "showViewHeader": false,
-  "showRibbon": true
+  "showRibbon": true,
+  "theme": "obsidian"
 }

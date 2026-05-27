@@ -10,6 +10,8 @@ categories:
 
 # CentOS7监控流量
 
+## 1 安装
+
 ```bash
 ### 安装vnstat
 yum install -y vnstat
@@ -24,7 +26,16 @@ sudo systemctl enable vnstat
 curl -o /dev/null http://speedtest.tele2.net/1GB.zip
 
 ```
-### 常用命令
+
+## 2 统计平均和峰值流量
+```bash
+### 统计平均流量
+
+### 统计峰值流量
+
+```
+
+## 附录：常用命令
 
 | 命令                | 功能说明               | 示例                  |
 | ----------------- | ------------------ | ------------------- |

@@ -16,6 +16,8 @@ yarn install --registry=http://1.202.165.39:22282/repository/npm-public/
 http://127.0.0.1:7150/DapREST/app/dictionary/removeCache?name=业务类型-办件查询箱&isAll=false
 ```
 
+
+
 ## DAP5联动下拉配置
 1、第一个下拉正常配置
 2、第二个下拉
