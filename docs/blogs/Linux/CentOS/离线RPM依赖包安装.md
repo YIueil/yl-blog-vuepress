@@ -16,6 +16,10 @@ categories:
 yum install --downloadonly --downloaddir=. postgresql
 # 这个示例将nginx所需的依赖全部进行下载, 并将相关的依赖RPM包保存到当前的目录。
 yum install --downloadonly --downloaddir=. gcc wget gcc-c++ automake autoconf libtool libxml2-devel libxslt-devel perl-devel perl-ExtUtils-Embed pcre-devel openssl-devel
+
+# 使用yum-utils安装
+yum install -y yum-utils
+repotrack sysstat
 ```
 
 ## 依赖安装
@@ -24,6 +28,8 @@ yum install --downloadonly --downloaddir=. gcc wget gcc-c++ automake autoconf li
 # yum 命令安装
 sudo yum localinstall *.rpm
 
-# rpm 命令安装
+# rpm 命令安装 存疑 可能报错依赖缺失?
 rpm -ivh *.rpm
+# 强制安装
+rpm -Uvh --force --nodeps *.rpm
 ```

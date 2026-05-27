@@ -50,6 +50,10 @@ Could not retrieve mirrorlist http://mirrorlist.centos.org/?release=7&arch=x86_6
 
 ## 替换为国内源
 ```bash
+# 把原来的失效repo备份一下
+mkdir -p /etc/yum.repos.d/bak
+mv /etc/yum.repos.d/*.repo /etc/yum.repos.d/bak/
+
 # 下载阿里源
 curl -o /etc/yum.repos.d/Centos-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
 
