@@ -78,6 +78,8 @@ Type=simple
 User=redis
 Group=redis
 WorkingDirectory=/usr/src/redis-8.8.0
+RuntimeDirectory=redis
+RuntimeDirectoryMode=0755
 
 # 启动命令：使用绝对路径 + 绝对配置文件路径
 ExecStart=/usr/src/redis-8.8.0/src/redis-server /usr/src/redis-8.8.0/redis-full.conf
@@ -108,7 +110,25 @@ SyslogIdentifier=redis
 WantedBy=multi-user.target
 ```
 
-### 8 服务管理
+### 8 Redis配置
+```bash
+# 支持远程访问 监听所有 IPv4 和 IPv6 接口（支持远程访问）
+bind 0.0.0.0 ::
+
+# 修改端口
+port 16379
+
+# 保持保护模式开启（配合密码使用，未认证时拒绝非回环请求）
+protected-mode yes
+
+# 设置强密码（务必替换为自定义密码，12位以上含大小写+数字+符号）
+requirepass YourStrongPassword2026!
+
+# 若原配置有 pidfile 且硬编码了旧端口，请更新或注释
+# pidfile /run/redis/redis.pid
+```
+
+### 9 服务管理
 ```bash
 # 1. 重载 systemd 配置
 sudo systemctl daemon-reload

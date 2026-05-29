@@ -78,9 +78,12 @@ cd /usr/local/pgsql/bin
 ./pg_ctl -D /usr/local/pgsql/data -l logfile start
 ```
 ## 7 登入修改postgres用户密码
-```sql
+```bash
 # 登陆
 ./psql -d postgres
+# > 如果失败
+sudo -u postgres psql -p 15432
+
 # 修改密码
 ALTER USER postgres WITH PASSWORD 'postgres';
 # 退出
