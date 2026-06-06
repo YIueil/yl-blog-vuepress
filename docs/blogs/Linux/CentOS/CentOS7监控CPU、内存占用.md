@@ -37,7 +37,7 @@ sh memory_usage.sh release
 
 # 搜集报告
 ### 搜集某一天的CPU使用情况
-sar -u -f /var/log/sa/sa25
+sar -u -f /var/log/sa/sa29
 ### 搜集某一天的内存使用情况
-sar -r -f /var/log/sa/sa25
+sar -r -f /var/log/sa/sa29
 ```

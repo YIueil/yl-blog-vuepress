@@ -6,11 +6,11 @@
     "emojiStyle": "native",
     "iconColor": null,
     "recentlyUsedIcons": [
+      "SiDebian",
       "TiPackages",
       "SiPowershell",
       "LiUser",
-      "LiHistory",
-      "SiApachetomcat"
+      "LiHistory"
     ],
     "recentlyUsedIconsSize": 5,
     "rules": [],
@@ -82,5 +82,6 @@
   "pic": "TiPhoto",
   "docs/blogs/Java/Tomcat": "SiApachetomcat",
   "docs/blogs/Windows/脚本": "SiPowershell",
-  "docs/blogs/软件工程": "TiPackages"
+  "docs/blogs/软件工程": "TiPackages",
+  "docs/blogs/Linux/Debian": "SiDebian"
 }
