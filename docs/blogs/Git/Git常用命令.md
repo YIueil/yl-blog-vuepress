@@ -33,6 +33,6 @@ git commit -m "合并后的提交信息"
 # --oneline: 单行显示. --no-merges: 排除合并请求
 git log --since="2026-01-12" --author="YIueil" --oneline --no-merges
 
-git log --after="2026-04-13" --before="2026-04-19" --author="liuhao" --pretty=format:"%h | %ad | %s" --date=short
+git log --after="2026-06-15" --before="2026-06-30" --author="liuhao" --pretty=format:"%h | %ad | %s" --date=short
 ```
 
