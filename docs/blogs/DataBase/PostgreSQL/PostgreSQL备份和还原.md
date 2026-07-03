@@ -30,3 +30,20 @@ pg_dump -h 9.77.254.9 -p 20001 -U gt_ytgz_online -d gt_ytgz_online -n ynytgz_dap
 pg_dump -h 9.77.254.9 -p 20001 -U gt_ytgz_online -d gt_ytgz_online -n ynytgz_dmap -T ynytgz_dmap.dmap_anls_cache -F c -O -x -f ynytgz_dmap.dump
 ```
 ## 2 还原
+```bash
+# public
+# log "导入 public schema..."
+pg_restore -h 9.77.254.9 -p20001 -U gt_ytgz -dgt_ytgz -n public --no-owner --no-privileges --clean --if-exists public.dump
+# inst
+# log "导入 ynytgz_inst schema..."
+pg_restore -h 9.77.254.9 -p20001 -U gt_ytgz -dgt_ytgz -n ynytgz_inst --no-owner --no-privileges --clean --if-exists ynytgz_inst.dump
+
+# sec
+# log "导入 ynytgz_sec schema..."
+pg_restore -h 9.77.254.9 -p20001 -U gt_ytgz -dgt_ytgz -n ynytgz_sec --no-owner --no-privileges --clean --if-exists ynytgz_sec.dump
+
+# dap
+# log "导入 ynytgz_dap schema..."
+pg_restore -h 9.77.254.9 -p20001 -U gt_ytgz -dgt_ytgz -n ynytgz_dap --no-owner --no-privileges --clean --if-exists ynytgz_dap.dump
+
+```
