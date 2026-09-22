@@ -19,7 +19,7 @@
 /usr/lib/postgresql/12/bin/pg_dump -h 9.77.254.9 -p 20001 -U gt_ytgz_online -d gt_ytgz_online -n ynytgz_inst -F c --no-owner --no-privileges -f ynytgz_inst.dump
 
 # inst仅结构
-/usr/lib/postgresql/12/bin/pg_dump -h 9.77.254.9 -p 20001 -U gt_ytgz_online -d gt_ytgz_online -n ynytgz_inst -F c --schema-only --no-owner --no-privileges -f ynytgz_inst.dump
+/usr/lib/postgresql/12/bin/pg_dump -h 9.77.254.9 -p 20001 -U gt_ytgz_online -d gt_ytgz_online -n ynytgz_inst -F c --schema-only --no-owner --no-privileges -f ynytgz_inst_only.dump
 
 # sec
 /usr/lib/postgresql/12/bin/pg_dump -h 9.77.254.9 -p 20001 -U gt_ytgz_online -d gt_ytgz_online -n ynytgz_sec -F c --no-owner --no-privileges -f ynytgz_sec.dump
