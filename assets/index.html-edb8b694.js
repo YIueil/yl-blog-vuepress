@@ -1,0 +1,1 @@
+const e=JSON.parse('{"key":"v-e72e3a5a","path":"/categories/Spring/SpringBoot/SpringBoot-kuozhan/1/","title":"","lang":"en-US","frontmatter":{"layout":"Categories"},"headers":[],"git":{},"filePathRelative":null}');export{e as data};
