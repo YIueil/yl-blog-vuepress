@@ -1,0 +1,1 @@
+const e=JSON.parse('{"key":"v-f05d94ea","path":"/categories/ruanjiangongcheng/yanshouwendang/1/","title":"","lang":"en-US","frontmatter":{"layout":"Categories"},"headers":[],"git":{},"filePathRelative":null}');export{e as data};
