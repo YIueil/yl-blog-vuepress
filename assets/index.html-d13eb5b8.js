@@ -1,0 +1,1 @@
+const e=JSON.parse('{"key":"v-210ef4f7","path":"/categories/IDE/IntelliJ/1/","title":"","lang":"en-US","frontmatter":{"layout":"Categories"},"headers":[],"git":{},"filePathRelative":null}');export{e as data};

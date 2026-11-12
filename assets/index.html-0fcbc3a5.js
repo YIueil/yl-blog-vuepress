@@ -1,0 +1,1 @@
+const e=JSON.parse('{"key":"v-79584096","path":"/categories/Windows/jiaoben/1/","title":"","lang":"en-US","frontmatter":{"layout":"Categories"},"headers":[],"git":{},"filePathRelative":null}');export{e as data};
