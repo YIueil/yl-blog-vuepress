@@ -80,3 +80,21 @@ pg_restore -h 9.77.254.9 -p20001 -U gt_ytgz -dgt_ytgz -n ynytgz_dap --no-owner -
 # log "导入 ynytgz_dap schema..."
 .\pg_restore -h 192.168.6.150 -p5432 -U yunnanytgz -dyunnanytgzdb -n ynytgz_dap --no-owner --no-privileges --clean --if-exists ynytgz_dap.dump
 ```
+
+```bash
+# public
+# log "导入 public schema..."
+pg_restore -h 192.168.193.8 -p15432 -U postgres -dgt_ytgz_online -n public --no-owner --no-privileges --clean --if-exists public.dump
+
+# inst
+# log "导入 ynytgz_inst schema..."
+pg_restore -h 192.168.193.8 -p15432 -U postgres -dgt_ytgz_online -n ynytgz_inst --no-owner --no-privileges --clean --if-exists ynytgz_inst.dump
+
+# sec
+# log "导入 ynytgz_sec schema..."
+pg_restore -h 192.168.193.8 -p15432 -U postgres -dgt_ytgz_online -n ynytgz_sec --no-owner --no-privileges --clean --if-exists ynytgz_sec.dump
+
+# dap
+# log "导入 ynytgz_dap schema..."
+pg_restore -h 192.168.193.8 -p15432 -U postgres -dgt_ytgz_online -n ynytgz_dap --no-owner --no-privileges --clean --if-exists ynytgz_dap.dump
+```
