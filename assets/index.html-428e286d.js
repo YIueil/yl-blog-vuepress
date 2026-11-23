@@ -1,0 +1,1 @@
+const e=JSON.parse('{"key":"v-9df330e6","path":"/tags/shujukulianjiechi/1/","title":"","lang":"en-US","frontmatter":{"layout":"Categories"},"headers":[],"git":{},"filePathRelative":null}');export{e as data};

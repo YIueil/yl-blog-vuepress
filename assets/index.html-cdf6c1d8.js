@@ -1,0 +1,1 @@
+const e=JSON.parse('{"key":"v-0a8abaa4","path":"/categories/shejimoshi/xingweixing/1/","title":"","lang":"en-US","frontmatter":{"layout":"Categories"},"headers":[],"git":{},"filePathRelative":null}');export{e as data};

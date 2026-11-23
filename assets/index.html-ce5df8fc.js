@@ -1,0 +1,1 @@
+const e=JSON.parse('{"key":"v-34e4c3bf","path":"/categories/wangluogongcheng/luyouqi/1/","title":"","lang":"en-US","frontmatter":{"layout":"Categories"},"headers":[],"git":{},"filePathRelative":null}');export{e as data};
